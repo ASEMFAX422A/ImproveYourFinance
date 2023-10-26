@@ -37,7 +37,7 @@ public class WebSecurityConfig {
                         .ignoringRequestMatchers("/api/v1/auth/**")
                         .csrfTokenRepository(new HttpSessionCsrfTokenRepository()))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, "/api/v1/auth/**").permitAll()
+                        .requestMatchers("/api/v1/auth/**").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(ses -> ses.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
