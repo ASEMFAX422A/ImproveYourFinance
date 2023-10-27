@@ -1,0 +1,15 @@
+<h2>TEST</h2>
+<div class="login-container">
+    <h1>Finanz Login</h1>
+    <form>
+      <div class="input-group">
+        <label for="username">Benutzername:</label>
+        <input type="text" id="username" name="username" [(ngModel)]="this.loginObject.username" required>
+      </div>
+      <div class="input-group">
+        <label for="password">Passwort:</label>
+        <input type="password" id="password" name="password" [(ngModel)]="this.loginObject.password" required>
+      </div>
+      <button type="submit" (click)="this.sendForm()">Einloggen</button>
+    </form>
+</div>
