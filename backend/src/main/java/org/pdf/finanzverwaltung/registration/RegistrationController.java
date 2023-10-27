@@ -1,5 +1,8 @@
 package org.pdf.finanzverwaltung.registration;
 
+import org.pdf.finanzverwaltung.user.User;
+import org.pdf.finanzverwaltung.user.UserRole;
+import org.pdf.finanzverwaltung.user.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,16 +15,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path = "/api/v1/auth/registration")
 public class RegistrationController {
 
-    private final RegistrationService registrationService;
+    private final UserService userService;
 
-    public RegistrationController(RegistrationService registrationService) {
-        this.registrationService = registrationService;
+    public RegistrationController(UserService userService) {
+        this.userService = userService;
     }
 
     @PostMapping
     public ResponseEntity<String> register(@RequestBody RegistrationRequest request) {
-        // TODO Check username/password
-        final boolean registered = registrationService.register(request);
+        // TODO: Check username/password
+        final boolean registered = userService.addUser(new User(request.getUsername(), request.getPassword(), UserRole.USER));
         if (registered)
             return ResponseEntity.ok("{ \"messsage\": \"user registered\" }");
         else
