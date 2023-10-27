@@ -26,7 +26,9 @@ public class UserService implements UserDetailsService {
     public boolean addUser(User user) {
         boolean userExists = userRepo.findByUsername(user.getUsername()).isPresent();
         if (userExists) {
-            throw new IllegalStateException("username already taken");
+            // TODO: vernünftige alternative
+            //throw new IllegalStateException("username already taken");
+            return false;
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
