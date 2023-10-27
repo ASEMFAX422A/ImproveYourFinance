@@ -31,7 +31,7 @@ public class RegistrationControllerTest {
 
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("user registered", response.getBody());
+        assertEquals("{ \"messsage\": \"user registered\" }", response.getBody());
     }
 
     @Test
@@ -45,6 +45,6 @@ public class RegistrationControllerTest {
 
         // Assert
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("user could not be registered", response.getBody());
+        assertEquals("{ \"messsage\": \"user could not be registered\" }", response.getBody());
     }
 }
