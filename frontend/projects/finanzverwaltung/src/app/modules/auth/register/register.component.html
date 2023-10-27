@@ -1,1 +1,14 @@
-<p>register works!</p>
+<div class="register-container">
+    <h1>Register</h1>
+    <form>
+      <div class="input-group">
+        <label for="username">Benutzername:</label>
+        <input type="text" id="username" name="username" [(ngModel)]="this.registerObject.username" required>
+      </div>
+      <div class="input-group">
+        <label for="password">Passwort:</label>
+        <input type="password" id="password" name="password" [(ngModel)]="this.registerObject.password" required>
+      </div>
+      <button type="submit" (click)="this.sendForm()">Registrieren</button>
+    </form>
+</div>

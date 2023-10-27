@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { RequestService } from './request.service';
+import { Observable, catchError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -52,7 +53,8 @@ export class AuthService {
 
   register(registrationInfo: { username: string; password: string }) : Promise<boolean> {
     return new Promise((resolve, reject) => {
-      this.requestService.post("auth/registration", registrationInfo).subscribe((response: any) => {
+      this.requestService.post("auth/registration", registrationInfo)
+      .subscribe((response: any) => {
         resolve(response.status == 200);
       });
     });

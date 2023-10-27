@@ -23,9 +23,9 @@ public class RegistrationController {
         // TODO Check username/password
         final boolean registered = registrationService.register(request);
         if (registered)
-            return ResponseEntity.ok("user registered");
+            return ResponseEntity.ok("{ \"messsage\": \"user registered\" }");
         else
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("user could not be registered");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{ \"messsage\": \"user could not be registered\" }");
     }
 
     @GetMapping(path = "/test")
