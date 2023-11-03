@@ -1,5 +1,8 @@
-package org.pdf.finanzverwaltung.user;
+package org.pdf.finanzverwaltung.services;
 
+import org.pdf.finanzverwaltung.models.User;
+import org.pdf.finanzverwaltung.repos.user.DUser;
+import org.pdf.finanzverwaltung.repos.user.UserRepo;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,16 +26,18 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("user: " + username + " not found"));
     }
 
+    /**
+     *
+     * @return True only when a user was added to the repo
+     */
     public boolean addUser(User user) {
         boolean userExists = userRepo.findByUsername(user.getUsername()).isPresent();
         if (userExists) {
-            // TODO: vernünftige alternative
-            //throw new IllegalStateException("username already taken");
             return false;
         }
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepo.save(user);
+        final String password = passwordEncoder.encode(user.getPassword());
+        userRepo.save(new DUser(user.getUsername(), password, user.getUserRole()));
 
         return true;
     }

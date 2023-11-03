@@ -1,4 +1,4 @@
-package org.pdf.finanzverwaltung.user;
+package org.pdf.finanzverwaltung.models;
 
 public enum UserRole {
 

@@ -2,7 +2,7 @@ package org.pdf.finanzverwaltung.security;
 
 import java.util.Arrays;
 
-import org.pdf.finanzverwaltung.user.UserService;
+import org.pdf.finanzverwaltung.services.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

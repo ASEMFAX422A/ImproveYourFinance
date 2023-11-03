@@ -1,7 +1,8 @@
-package org.pdf.finanzverwaltung.login;
+package org.pdf.finanzverwaltung.controllers;
 
+import org.pdf.finanzverwaltung.models.LoginRequest;
 import org.pdf.finanzverwaltung.security.JwtGenerator;
-import org.pdf.finanzverwaltung.user.UserService;
+import org.pdf.finanzverwaltung.services.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,16 +28,28 @@ public class LoginController {
     }
 
     @PostMapping
-    public ResponseEntity<String> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<Response> login(@RequestBody LoginRequest request) {
         UserDetails user = userService.loadUserByUsername(request.getUsername());
         if (user == null) {
-            return ResponseEntity.status(400).body("Unknown user");
+            return ResponseEntity.status(400).body(null);
         }
 
         Authentication auth = authManager
                 .authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(auth);
 
-        return ResponseEntity.ok("Bearer " + jwtGenerator.generateToken(auth));
+        return ResponseEntity.ok(new Response(jwtGenerator.generateToken(auth)));
+    }
+
+    public class Response {
+        private final String token;
+
+        public Response(String token) {
+            this.token = token;
+        }
+
+        public String getToken() {
+            return token;
+        }
     }
 }

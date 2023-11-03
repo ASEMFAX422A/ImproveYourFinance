@@ -1,5 +1,6 @@
-package org.pdf.finanzverwaltung.user;
+package org.pdf.finanzverwaltung.repos.user;
 
+import org.pdf.finanzverwaltung.models.UserRole;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,7 +25,7 @@ import java.util.Collections;
 @EqualsAndHashCode
 @NoArgsConstructor
 @Entity
-public class User implements UserDetails {
+public class DUser implements UserDetails {
 
     @Id
     @SequenceGenerator(name = "user_sequence", sequenceName = "user_sequence", allocationSize = 1)
@@ -35,7 +36,7 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    public User(String username, String password, UserRole role) {
+    public DUser(String username, String password, UserRole role) {
         this.username = username;
         this.password = password;
         this.role = role;

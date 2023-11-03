@@ -1,4 +1,4 @@
-package org.pdf.finanzverwaltung.user;
+package org.pdf.finanzverwaltung.repos.user;
 
 import java.util.Optional;
 
@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @Transactional(readOnly = true)
-public interface UserRepo extends JpaRepository<User, Long> {
+public interface UserRepo extends JpaRepository<DUser, Long> {
 
-    public Optional<User> findByUsername(String username);
+    public Optional<DUser> findByUsername(String username);
 }
