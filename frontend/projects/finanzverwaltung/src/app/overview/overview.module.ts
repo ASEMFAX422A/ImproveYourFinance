@@ -1,24 +1,30 @@
-import { NgModule} from '@angular/core';
+import { NgModule, ViewChild, isStandalone } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 
-import { LandingPageComponent } from './landing-page.component';
+import { OverviewComponent } from './overview.component';
+
+
+
 
 
 
 const routes: Routes = [
-  { path: '', component: LandingPageComponent 
+  { path: 'overview', component: OverviewComponent
 }
 ]
 
 @NgModule({
   declarations: [
-    LandingPageComponent
+    OverviewComponent
   ],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
 
+    
   ]
 })
-export class LandingPageModule {}
+export class OverviewModule {
+  
+ }

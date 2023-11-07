@@ -1,14 +1,16 @@
-<div class="register-container">
-    <h1>Register</h1>
-    <form>
-      <div class="input-group">
-        <label for="username">Benutzername:</label>
-        <input type="text" id="username" name="username" [(ngModel)]="this.registerObject.username" required>
-      </div>
-      <div class="input-group">
-        <label for="password">Passwort:</label>
-        <input type="password" id="password" name="password" [(ngModel)]="this.registerObject.password" required>
-      </div>
-      <button type="submit" (click)="this.sendForm()">Registrieren</button>
-    </form>
+<div class="login-container">
+  <form>
+    <a class ="logo" href=""><img src="assets/logo.png"></a>
+    <h1>Account anlegen</h1>
+
+    <div class="input-group">
+      <input type="text" id="username" placeholder="Benutzername" name="username" [(ngModel)]="this.registerObject.username" required>
+    </div>
+    <div class="input-group">
+      <input type="password" id="password" placeholder="Passwort" name="password" [(ngModel)]="this.registerObject.password" required>
+    </div>
+    <div class="route"><a href="login">Anmelden</a></div>
+    
+    <button mat-flat-button type="submit" (click)="this.sendForm()">Registrieren</button>
+  </form>
 </div>

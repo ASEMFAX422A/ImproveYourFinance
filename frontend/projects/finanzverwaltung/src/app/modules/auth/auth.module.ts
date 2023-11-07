@@ -6,9 +6,13 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 
+import { authGuardLogin } from '../../core/guards/auth.guard';
+import { MaterialModule } from '../../material/material.module';
+
+
 const routes: Routes = [
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent }
+  { path: 'login', component: LoginComponent,canActivate:[authGuardLogin]},
+  { path: 'register', component: RegisterComponent, canActivate:[authGuardLogin]}
 ];
 
 @NgModule({
@@ -19,7 +23,9 @@ const routes: Routes = [
   imports: [
     CommonModule,
     FormsModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    MaterialModule
+
   ]
 })
 export class AuthModule { }

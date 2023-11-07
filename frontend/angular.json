@@ -30,6 +30,7 @@
               "projects/finanzverwaltung/src/assets"
             ],
             "styles": [
+              "@angular/material/prebuilt-themes/pink-bluegrey.css",
               "projects/finanzverwaltung/src/styles.scss"
             ],
             "scripts": []
@@ -88,5 +89,8 @@
         }        
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }

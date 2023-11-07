@@ -3,7 +3,7 @@ import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+  styleUrls: ['../style.component.scss']
 })
 export class RegisterComponent {
   protected registerObject: any = {
