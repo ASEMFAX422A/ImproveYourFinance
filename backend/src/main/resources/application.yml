@@ -7,6 +7,9 @@ server:
 spring:
   config:
     import: optional:file:./db.yml
+  datasource:
+    driverClassName: org.sqlite.JDBC
+    url: jdbc:sqlite:./db.sqlite
   jpa:
     hibernate:
       ddl-auto: update
