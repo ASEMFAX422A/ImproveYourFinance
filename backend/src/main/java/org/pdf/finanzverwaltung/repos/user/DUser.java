@@ -1,40 +1,48 @@
 package org.pdf.finanzverwaltung.repos.user;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
+
 import org.pdf.finanzverwaltung.models.UserRole;
+import org.pdf.finanzverwaltung.repos.bank.DBankAccount;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.SequenceGenerator;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.OneToMany;
 
-import java.util.Collection;
-import java.util.Collections;
-
-@Getter
-@Setter
-@EqualsAndHashCode
-@NoArgsConstructor
 @Entity
 public class DUser implements UserDetails {
 
     @Id
-    @SequenceGenerator(name = "user_sequence", sequenceName = "user_sequence", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @Column(unique = true, nullable = false, length = 50)
     private String username;
+
+    @Column(nullable = false)
     private String password;
+
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 10)
     private UserRole role;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true)
+    private Set<DBankAccount> bankAccounts;
+
+    public DUser() {
+    }
 
     public DUser(String username, String password, UserRole role) {
         this.username = username;
@@ -84,6 +92,10 @@ public class DUser implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public Set<DBankAccount> getBankAccounts() {
+        return bankAccounts;
     }
 
     public void setPassword(String encodedPassword) {
