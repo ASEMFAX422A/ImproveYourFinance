@@ -1,30 +1,59 @@
 <div class="container">
-    <nav>
-      <ul>
-        <li><a href="overview">
-          <i class="fas fa-home"></i>
-          <span class="nav-item">Übersicht</span>
-        </a></li>
-        <li><a href="">
-          <i class="fas fa-chart-bar"></i>
-          <span class="nav-item">Analytics</span>
-        </a></li>
-        <li><a href="">
-          <i class="fas fa-wallet"></i>
-          <span class="nav-item">Kontoauszüge</span>
-        </a></li>
-        <li class="settings"><a href="">
-          <i class="fas fa-cog"></i>
-          <span class="nav-item">Einstellungen</span>
-        </a></li>
-      </ul>
-    </nav>
+<app-side-bar></app-side-bar>
 <div class="main-body">
-    <div class="welcome-box">
+  <div class="welcome-box">
       <div class="welcome-content">
-        <h1>Willkommen {{username}},</h1>
-        <span>Hier siehst du deine Monatliche Übersicht</span>
+        <h1>Willkommen Username<!-- {{username}}-->,</h1>
+        <span>Hier siehst du deine Monatliche Übersicht.</span>
+        <span></span>
+      </div>
+      
+    </div>
+    <div class="fin">
+      <h3>Deine Monatliche Ausgabe.</h3>
+    </div>
+    <div class="fin-1">
+      <h3>Kontostand am Anfang des Monats</h3>
+    </div>
+    <div class="chart-box">
+    <div id="chart">
+      <apx-chart
+        [series]="chartOptions.series"
+        [chart]="chartOptions.chart"
+        [xaxis]="chartOptions.xaxis"
+        [dataLabels]="chartOptions.dataLabels"
+        [grid]="chartOptions.grid"
+        [stroke]="chartOptions.stroke"
+        [title]="chartOptions.title"
+      ></apx-chart>
+    </div>
+    </div>
+    <div class="chart-box2">
+      <div id="chart">
+        <apx-chart
+          [series]="chartOptions.series"
+          [chart]="chartOptions.chart"
+          [xaxis]="chartOptions.xaxis"
+          [dataLabels]="chartOptions.dataLabels"
+          [grid]="chartOptions.grid"
+          [stroke]="chartOptions.stroke"
+          [title]="chartOptions.title"
+        ></apx-chart>
+      </div>
+
+    </div>
+    <div class ="chart-donut">
+      <div id="chartt">
+        <apx-chart
+          [series]="chartOptions.seriess"
+          [chart]="chartOptions.chartt"
+          [labels]="chartOptions.labels"
+          [responsive]="chartOptions.responsive"
+        ></apx-chart>
       </div>
     </div>
   </div>
 </div>
+<button (click)="this.test()">Hallo</button>
+
+

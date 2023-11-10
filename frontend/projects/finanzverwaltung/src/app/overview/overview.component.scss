@@ -14,47 +14,6 @@
     background-position: center;
     background-size: 100%;
   }
-  //SIDENAV
-  nav{
-    position: relative;
-    top: 0;
-    bottom: 0;
-    height: 100vh;
-    left: 0;
-    background: #fff;
-    width: 270px;
-    overflow: hidden;
-    box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
-  }
-  a{
-    position: relative;
-    color: #212121;
-    font-size: 15px;
-    display: table;
-    width: 270px;
-    padding: 10px;
-  }
-  nav .fas{
-    position: relative;
-    width: 70px;
-    height: 40px;
-    top: 14px;
-    font-size: 20px;
-    text-align: center;
-  }
-  .nav-item{
-    position: relative;
-    top: 12px;
-    margin-left: 10px;
-  }
-  a:hover{
-    background: #eee;
-  }
-  .settings{
-    position: absolute;
-    bottom: 0;
-  }
-  //SIDENAV END
 
 
   //OVERVIEW MAIN
@@ -63,18 +22,18 @@
     padding: 1rem;
   }
   .welcome-box{
-    width: 55%;
-    height: 25%;
-    color: #fff;
-    padding: 0.5rem 1rem 1rem 3rem;
-    margin-top: 30px;
-    border-radius: 20px;
-    background: #212121;
+    width: 41%;
+    height: 33%;
+    position: absolute;
+    color: #212121;
+    padding: 15px;
+    background: #f8f8f8;
+    border-radius: 25px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
   }
   
   .welcome-content {
     font-size: 1.5rem;
-    margin: 50px 0 15px;
   }
   .welcome-content .h1{
     font-size: 1.5rem;
@@ -86,3 +45,93 @@
     margin: 10px;
   }
     //OVERVIEW MAIN END
+
+
+    body {
+      font-family: Roboto, sans-serif;
+    }
+    
+    #chart {
+      width: 100%;
+      margin: 0;
+      padding: 15px 30px;
+
+    }
+    #chartt {
+      width: 80%;
+    }
+    
+
+    .chart-box{
+
+      position: absolute;
+      height: 40%;
+      width: 42%;
+      top: 63%;
+      display: box;
+      background-color: #f8f8f8;
+      border-radius: 25px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+      padding: 25px;
+
+    }
+    .chart-box2{
+
+      position: absolute;
+      height: 40%;
+      width: 42%;
+      right: 15px;
+      margin-left: 10px;
+      top: 63%;
+      display: box;
+      background-color: #f8f8f8;
+      border-radius: 25px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+      padding: 25px;
+
+    }
+
+    .chart-donut{
+
+      position: absolute;
+      right: 15px;
+      display: box;
+      background-color: #f8f8f8;
+      border-radius: 30px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+      width: 42%;
+      top: 8%;
+      margin-bottom: 5%;
+    }
+
+    .fin{
+
+      width: 20%;
+      height: 15%;
+      position: absolute;
+      top: 45%;
+      color: #212121;
+      padding: 15px;
+      background: #f8f8f8;
+      border-radius: 25px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+
+    }
+
+    .fin-1{
+
+      width: 20%;
+      height: 15%;
+      position: absolute;
+      top: 45%;
+      left: 36%;
+      color: #212121;
+      padding: 15px;
+      background: #f8f8f8;
+      border-radius: 25px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+
+    }
+
+
+    

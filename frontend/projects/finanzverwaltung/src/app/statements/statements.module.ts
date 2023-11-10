@@ -1,36 +1,26 @@
-import { NgModule, ViewChild, isStandalone } from '@angular/core';
+import { NgModule} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 
-import { OverviewComponent } from './overview.component';
-import { NgApexchartsModule } from "ng-apexcharts";
+import { StatementsComponent } from './statements.component';
+import { AppComponent } from '../app.component';
 import { SideBarComponent } from '../side-bar/side-bar.component';
 
-
-
-
-
 const routes: Routes = [
-  { path: 'overview', component: OverviewComponent
+  { path: 'hallo', component: StatementsComponent
 }
 ]
 
 @NgModule({
   declarations: [
-    OverviewComponent,
+    StatementsComponent,
+    
   ],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
-    NgApexchartsModule,
     SideBarComponent
 
-
-    
-  ]
+  ],
 })
-export class OverviewModule {
-
-
-  }
-  
+export class StatementsModule {}

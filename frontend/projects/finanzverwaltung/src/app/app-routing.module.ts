@@ -23,10 +23,17 @@ const routes: Routes = [
   },
   { 
     path: '',
-    title:  'overview',
+    title:  'Übersicht',
     loadChildren: () => import('./overview/overview.module').then((m) => m.OverviewModule),
-    canActivate:[authGuard]
-  }
+    //canActivate:[authGuard]
+  },
+  { 
+    path: '',
+    title:  'Kontoauszüge',
+    loadChildren: () => import('./statements/statements.module').then((m) => m.StatementsModule),
+    //canActivate:[authGuard]
+  },
+  
 ];
 
 @NgModule({
