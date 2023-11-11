@@ -5,8 +5,9 @@
   padding: 4%;
   text-align: center;
   width: 20%;
-  height: 45%;
-  margin: 10% auto;
+  min-height: 45%;
+  height: auto;
+  margin: 5% auto;
 }
 img{
   width:60%;
@@ -44,10 +45,12 @@ button{
   font-size: 100%;
   padding: 7% 15%;
   border-radius: 15px;
-  
 }
 button.mat-unthemed{
   background-color: #212121;
+}
+button:disabled{
+  background-color: darkred;
 }
 
 
