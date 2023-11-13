@@ -5,6 +5,10 @@ import java.util.Set;
 
 import org.pdf.finanzverwaltung.repos.transaction.DTransaction;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,6 +26,7 @@ import jakarta.persistence.TemporalType;
  * DBankStatement
  */
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class DBankStatement {
 
     @Id
@@ -40,7 +45,7 @@ public class DBankStatement {
     private int oldBalance;
 
     @Column(nullable = false)
-    private int newBalance;
+    private String filePath;
 
     @OneToMany(mappedBy = "bankStatement", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private Set<DTransaction> transactions;
@@ -48,11 +53,10 @@ public class DBankStatement {
     public DBankStatement() {
     }
 
-    public DBankStatement(DBankAccount bankAccount, Date issueDate, int oldBalance, int newBalance) {
+    public DBankStatement(DBankAccount bankAccount, Date issueDate, int oldBalance) {
         this.bankAccount = bankAccount;
         this.issuedDate = issueDate;
         this.oldBalance = oldBalance;
-        this.newBalance = newBalance;
     }
 
     public long getId() {
@@ -67,12 +71,19 @@ public class DBankStatement {
         return issuedDate;
     }
 
+    public String getFilePath() {
+        return filePath;
+    }
+
     public int getOldBalance() {
         return oldBalance;
     }
 
+    @JsonProperty("newBalance")
     public int getNewBalance() {
-        return newBalance;
+        if (transactions == null)
+            return 0;
+        return transactions.stream().mapToInt(DTransaction::getAmount).sum();
     }
 
     public Set<DTransaction> getTransactions() {
