@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AuthService } from '../../../core/services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { RequestService } from '../../../core/services/request.service';
 
 @Component({
   templateUrl: './register.component.html',
@@ -10,16 +11,34 @@ import { ToastrService } from 'ngx-toastr';
 export class RegisterComponent {
   protected registrationForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService, private toastr: ToastrService) {
+  constructor(private requestService: RequestService, private formBuilder: FormBuilder, private authService: AuthService, private toastr: ToastrService) {
+    let usernameMinLength = 3;
+
+    let passwordMinLength = 6;
+    let passwordLowercase = 1;
+    let passwordUppercase = 1;
+    let passwordMinNumbers = 1;
+    let passwordMinSpecialCharacters = 1;
+    
+    this.requestService.get("settings").subscribe((responseBody: any) => {
+      usernameMinLength = responseBody?.usernameMinLength || usernameMinLength;
+      
+      passwordMinLength = responseBody?.passwordMinLength || passwordMinLength;
+      passwordMinNumbers = responseBody?.passwordMinNumbers || passwordMinNumbers;
+      passwordMinSpecialCharacters = responseBody?.passwordMinSpecialCharacters || passwordMinSpecialCharacters;
+    });
+
+    const regexString = `^(?=(?:[A-Z]*[a-z]*){${passwordLowercase},})(?=(?:[a-z]*[A-Z]*){${passwordUppercase},})(?=(?:\\D*\\d*){${passwordMinNumbers},})(?=(?:[!@#$%^&*,.]*[!@#$%^&*,.]){${passwordMinSpecialCharacters},})[A-Za-z\\d@#$%^&*!,.]*$`;
+
     this.registrationForm = this.formBuilder.group({
       username: ['', [
         Validators.required,
-        Validators.minLength(3)
+        Validators.minLength(usernameMinLength)
       ]],
       password: ['', [
         Validators.required,
-        Validators.minLength(6),
-        Validators.pattern(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@#$%^&*!,.])[A-Za-z\d@#$%^&*!,.]*$/)
+        Validators.minLength(passwordMinLength),
+        Validators.pattern(regexString)
       ]],
       confirmPassword: ['', [
         Validators.required
