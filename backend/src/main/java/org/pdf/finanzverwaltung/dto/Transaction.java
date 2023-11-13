@@ -1,6 +1,7 @@
 package org.pdf.finanzverwaltung.dto;
 
 import java.sql.Date;
+import org.pdf.finanzverwaltung.repos.currency.DCurrency;
 
 public class Transaction {
 
@@ -44,7 +45,7 @@ public class Transaction {
         return bankStatement;
     }
 
-    public Currency getCurrency() {
+    public DCurrency getCurrency() {
         return currency;
     }
 
