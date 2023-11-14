@@ -1,6 +1,6 @@
 <div class="login-container">
   <form [formGroup]="this.registrationForm" (ngSubmit)="this.sendForm()">
-    <a class ="logo" href=""><img src="assets/logo.png"></a>
+    <a class ="logo" routerLink="/"><img src="assets/logo.png"></a>
     <h1>Account anlegen</h1>
 
     <div class="input-group">
@@ -24,7 +24,7 @@
     <div *ngIf="password?.value !== confirmPassword?.value">
       Passwort und Passwortbestätigung stimmen nicht überein.
     </div>
-    <div class="route"><a href="login">Anmelden</a></div>
+    <div class="route"><a routerLink="/login">Anmelden</a></div>
     
     <button mat-flat-button [disabled]="!this.isValid" type="submit">Registrieren</button>
   </form>
