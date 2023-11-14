@@ -24,15 +24,22 @@ const routes: Routes = [
   { 
     path: '',
     title:  'Übersicht',
-    loadChildren: () => import('./overview/overview.module').then((m) => m.OverviewModule),
+    loadChildren: () => import('./modules/home/home.module').then((m) => m.HomeModule),
     //canActivate:[authGuard]
   },
   { 
     path: '',
     title:  'Kontoauszüge',
-    loadChildren: () => import('./statements/statements.module').then((m) => m.StatementsModule),
+    loadChildren: () => import('./modules/home/home.module').then((m) => m.HomeModule),
     //canActivate:[authGuard]
   },
+  { 
+    path: '',
+    title:  'Analytics',
+    loadChildren: () => import('./modules/home/home.module').then((m) => m.HomeModule),
+    //canActivate:[authGuard]
+  },
+  
   
 ];
 

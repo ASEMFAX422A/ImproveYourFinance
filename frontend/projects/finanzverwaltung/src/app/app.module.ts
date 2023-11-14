@@ -17,6 +17,9 @@ import {CommonModule, NgIf} from '@angular/common';
 
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { PdfDialogComponent } from './extras/pdf-dialog/pdf-dialog.component';
+import { TransactionDialogComponent } from './extras/transaction-dialog/transaction-dialog.component';
 
 
 
@@ -24,6 +27,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 @NgModule({
   declarations: [
     AppComponent,
+    PdfDialogComponent,
+    TransactionDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -45,7 +50,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
    
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: MAT_DATE_LOCALE, useValue: 'de-DE' }
   ],
   bootstrap: [AppComponent]
 })

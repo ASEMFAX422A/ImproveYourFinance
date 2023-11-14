@@ -1,0 +1,173 @@
+
+*{
+ margin: 0;
+ padding: 0;
+ outline: none;
+ border: none;
+ text-decoration: none;
+ box-sizing: border-box;
+ font-family: Arial, sans-serif;
+}
+.example-form-field {
+ margin: 0 8px 16px 0;
+}
+.container{    
+ display: flex;
+ background-size: 100%;
+ background: url('../../../../assets/background-main.jpg') no-repeat center center fixed;
+ height: 100%;
+ background-size:100%;
+}
+
+
+//OVERVIEW MAIN
+.main-body{
+ width: 70%;
+ padding: 1rem;
+}
+.welcome-box{
+ width: 41%;
+ height: 35%;
+ position: absolute;
+ color: #212121;
+ padding: 15px;
+ background: #f8f8f8;
+ border-radius: 25px;
+ box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+
+.welcome-content .h1{
+ font-size: 1rem;
+}
+ //OVERVIEW MAIN END
+
+
+ body {
+   font-family: Roboto, sans-serif;
+ }
+ 
+ #chart {
+   width: 100%;
+   margin: 0;
+   padding: 15px 30px;
+
+ }
+ #chartt {
+   width: 80%;
+ }
+ 
+
+ .chart-box{
+
+   position: absolute;
+   height: 40%;
+   width: 42%;
+   top: 63%;
+   display: box;
+   background-color: #f8f8f8;
+   border-radius: 25px;
+   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+   padding: 25px;
+
+ }
+ .chart-box2{
+
+   position: absolute;
+   height: 40%;
+   width: 42%;
+   right: 15px;
+   margin-left: 10px;
+   top: 63%;
+   display: box;
+   background-color: #f8f8f8;
+   border-radius: 25px;
+   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+   padding: 25px;
+
+ }
+
+ .chart-donut{
+
+   position: absolute;
+   right: 15px;
+   display: box;
+   background-color: #f8f8f8;
+   border-radius: 30px;
+   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+   width: 42%;
+   top: 8%;
+   margin-bottom: 5%;
+ }
+
+ .fin{
+
+   width: 13%;
+   height: 15%;
+   position: absolute;
+   top: 45%;
+   color: #212121;
+   padding: 15px;
+   background: #f8f8f8;
+   border-radius: 25px;
+   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+
+ }
+
+ .fin-1{
+
+   width: 13%;
+   height: 15%;
+   position: absolute;
+   top: 45%;
+   left: 29%;
+   color: #212121;
+   padding: 15px;
+   background: #f8f8f8;
+   border-radius: 25px;
+   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+
+ }
+ .fin-2{
+
+  width: 13%;
+  height: 15%;
+  position: absolute;
+  top: 45%;
+  left: 43%;
+  color: #212121;
+  padding: 15px;
+  background: #f8f8f8;
+  border-radius: 25px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+
+}
+
+
+.welcome-content h2 {
+  color: #212121;
+  margin: 0;
+  padding-top: 20px;
+  font-style: italic;
+  font-size: 155%;
+ }
+ .welcome-content p{
+  color: #212121;
+  margin: 0;
+  padding-top: 10px;
+  padding-bottom: 35px;
+ }
+
+
+ .welcome-box{
+  padding-left: 30px;
+  display: block;
+  margin: 0;
+ }
+ .welcome-box button{
+  width: 20%;
+  border-radius: 20px;
+  display: block;
+ }
+
+
