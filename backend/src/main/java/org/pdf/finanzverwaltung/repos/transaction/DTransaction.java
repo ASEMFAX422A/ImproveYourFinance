@@ -5,6 +5,10 @@ import java.util.Date;
 import org.pdf.finanzverwaltung.repos.bank.DBankStatement;
 import org.pdf.finanzverwaltung.repos.currency.DCurrency;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,6 +23,7 @@ import jakarta.persistence.TemporalType;
  * DTransaction
  */
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class DTransaction {
 
     @Id

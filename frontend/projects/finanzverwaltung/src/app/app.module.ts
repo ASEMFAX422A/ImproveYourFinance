@@ -7,23 +7,19 @@ import { AppComponent } from './app.component';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import {MatToolbarModule} from '@angular/material/toolbar';
-
 import {MatMenuModule} from '@angular/material/menu';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatListModule} from '@angular/material/list';
 import {CommonModule, NgIf} from '@angular/common';
-
-
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { StatmentsComponent } from './statments/statments.component';
 
 
 
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent
   ],
   imports: [
     BrowserModule,
@@ -38,10 +34,22 @@ import { StatmentsComponent } from './statments/statments.component';
     MatListModule,
     NgIf,
     BrowserAnimationsModule,
-    CommonModule
+    CommonModule,
+    ReactiveFormsModule,
+    ToastrModule.forRoot({
+      timeOut: 3000,
+      preventDuplicates: true,
+      positionClass: 'toast-top-right',
+      enableHtml: true
+    })
+    
+  ],
+  exports:[
+    
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: MAT_DATE_LOCALE, useValue: 'de-DE' }
   ],
   bootstrap: [AppComponent]
 })

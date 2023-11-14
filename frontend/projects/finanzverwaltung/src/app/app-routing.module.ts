@@ -28,10 +28,24 @@ const routes: Routes = [
   },
   { 
     path: '',
-    title:  'overview',
-    loadChildren: () => import('./overview/overview.module').then((m) => m.OverviewModule),
-    canActivate:[authGuard]
-  }
+    title:  'Übersicht',
+    loadChildren: () => import('./modules/home/home.module').then((m) => m.HomeModule),
+    //canActivate:[authGuard]
+  },
+  { 
+    path: '',
+    title:  'Kontoauszüge',
+    loadChildren: () => import('./modules/home/home.module').then((m) => m.HomeModule),
+    //canActivate:[authGuard]
+  },
+  { 
+    path: '',
+    title:  'Analytics',
+    loadChildren: () => import('./modules/home/home.module').then((m) => m.HomeModule),
+    //canActivate:[authGuard]
+  },
+  
+  
 ];
 
 @NgModule({

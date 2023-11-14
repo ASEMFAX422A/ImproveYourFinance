@@ -1,4 +1,4 @@
-
+//SIDENAV
 *{
     margin: 0;
     padding: 0;
@@ -6,17 +6,8 @@
     border: none;
     text-decoration: none;
     box-sizing: border-box;
-    
-  }
-  .container{    
-    display: flex;
-    background-size: 100%;
-    background: url('../../assets/background-main.jpg') no-repeat center center fixed;
-    height: 100%;
-    background-size:100%;
-  }
-  //SIDENAV
-  nav{
+}
+nav{
     position: relative;
     top: 0;
     bottom: 0;
@@ -26,6 +17,7 @@
     width: 270px;
     overflow: hidden;
     box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
+    
   }
   a{
     position: relative;
@@ -56,34 +48,3 @@
     bottom: 0;
   }
   //SIDENAV END
-
-
-  //OVERVIEW MAIN
-  .main-body{
-    width: 70%;
-    padding: 1rem;
-  }
-  .welcome-box{
-    width: 55%;
-    height: 25%;
-    color: #fff;
-    padding: 0.5rem 1rem 1rem 3rem;
-    margin-top: 30px;
-    border-radius: 20px;
-    background: #212121;
-  }
-  
-  .welcome-content {
-    font-size: 1.5rem;
-    margin: 50px 0 15px;
-  }
-  .welcome-content .h1{
-    font-size: 1.5rem;
-  }
-  .welcome-content span{
-    font-size: 1.2rem;
-  }
-  .welcome-box h1, .welcome-box  span{
-    margin: 10px;
-  }
-    //OVERVIEW MAIN END

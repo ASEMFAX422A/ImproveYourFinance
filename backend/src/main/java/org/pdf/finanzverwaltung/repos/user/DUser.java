@@ -10,6 +10,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreType;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -56,6 +58,10 @@ public class DUser implements UserDetails {
         return Collections.singleton(auth);
     }
 
+    public Long getId() {
+        return id;
+    }
+
     @Override
     public String getPassword() {
         return password;
@@ -100,5 +106,17 @@ public class DUser implements UserDetails {
 
     public void setPassword(String encodedPassword) {
         password = encodedPassword;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null)
+            return false;
+
+        if (!(obj instanceof DUser))
+            return false;
+
+        DUser other = (DUser) obj;
+        return this.getId() == other.getId();
     }
 }

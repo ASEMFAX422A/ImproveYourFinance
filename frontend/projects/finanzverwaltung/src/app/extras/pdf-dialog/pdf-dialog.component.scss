@@ -1,0 +1,48 @@
+
+.pdf-main{
+ background-color: #eee;
+ padding: 0;
+ margin: 0;
+ height: 100%;
+ width: 100%;
+ overflow: hidden;
+
+}
+
+h1{
+ padding: 0 50px;
+ padding-top: 50px;
+}
+.pdf-main-content{
+ padding-left: 50px;
+ padding-bottom: 5px;
+
+}
+.upload-content{
+ padding-top: 10px;
+ padding-left: 50px;
+
+}
+.pdf-actions{
+ padding-top: 50px;
+ margin-left: 50px;
+}
+.pdf-actions button{
+ margin-bottom: 50px;
+ margin-right: 10px;
+
+}
+
+#drop-area {
+ margin-left: 50px;
+ width: 350px;
+ height: 200px;
+ border: 2px dashed #ccc;
+ border-radius: 8px;
+ text-align: center;
+}
+
+#drop-area.highlight {
+ border-color: #2185d0;
+ background-color: #f0f8ff;
+}
