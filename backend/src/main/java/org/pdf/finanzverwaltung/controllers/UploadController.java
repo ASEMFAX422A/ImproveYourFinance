@@ -1,125 +1,61 @@
 package org.pdf.finanzverwaltung.controllers;
 
-import java.util.Date;
-import java.util.Optional;
-import java.util.Random;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 
-import org.pdf.finanzverwaltung.repos.bank.BankAccountRepo;
-import org.pdf.finanzverwaltung.repos.bank.BankStatementRepo;
-import org.pdf.finanzverwaltung.repos.bank.DBankAccount;
-import org.pdf.finanzverwaltung.repos.bank.DBankStatement;
-import org.pdf.finanzverwaltung.repos.currency.CurrencyRepo;
-import org.pdf.finanzverwaltung.repos.currency.DCurrency;
-import org.pdf.finanzverwaltung.repos.transaction.DTransaction;
-import org.pdf.finanzverwaltung.repos.transaction.DTransactionCategory;
-import org.pdf.finanzverwaltung.repos.transaction.TransactionCategoryRepo;
-import org.pdf.finanzverwaltung.repos.transaction.TransactionRepo;
-import org.pdf.finanzverwaltung.repos.user.DUser;
-import org.pdf.finanzverwaltung.repos.user.UserRepo;
+import org.pdf.finanzverwaltung.dto.MessageDto;
+import org.pdf.finanzverwaltung.services.BankStatementService;
+import org.pdf.finanzverwaltung.services.StorageService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping(path = "api/v1/upload/account-statement")
+@RequestMapping(path = "/api/v1/upload")
 public class UploadController {
+    private static final Logger logger = LoggerFactory.getLogger(UploadController.class);
 
     @Autowired
-    private BankAccountRepo bankAccountRepo;
+    private BankStatementService bankStatementService;
 
     @Autowired
-    private CurrencyRepo currencyRepo;
-
-    @Autowired
-    private UserRepo userRepo;
-
-    @Autowired
-    private TransactionRepo transactionRepo;
-
-    @Autowired
-    private TransactionCategoryRepo transactionCategoryRepo;
-
-    @Autowired
-    private BankStatementRepo bankStatementRepo;
+    private StorageService storageService;
 
     public UploadController() {
     }
 
-    @PostMapping
-    public ResponseEntity<String> accountStatement(@AuthenticationPrincipal UserDetails userDetails) {
-        Optional<DUser> ouser = userRepo.findByUsername(userDetails.getUsername());
-        if (!ouser.isPresent())
-            return ResponseEntity.badRequest().body("NoNo");
+    @PostMapping("/account-statement")
+    public ResponseEntity<MessageDto> file(@RequestParam("file") MultipartFile file) {
+        if (file.isEmpty())
+            return MessageDto.createResponse(HttpStatus.BAD_REQUEST, "No file received");
 
-        DUser user = ouser.get();
-
-        Optional<DCurrency> oCur = currencyRepo.findByShortName("€");
-        DCurrency currency;
-        if (!oCur.isPresent()) {
-            currency = new DCurrency("€", "Euro");
-            currencyRepo.save(currency);
-        } else {
-            currency = oCur.get();
+        if (!file.getOriginalFilename().toLowerCase().endsWith(".pdf")) {
+            return MessageDto.createResponse(HttpStatus.BAD_REQUEST, "Wrong file type");
         }
 
-        Optional<DTransactionCategory> oTransCat = transactionCategoryRepo.findByName("Einkauf");
-        DTransactionCategory transCat;
-        if (!oTransCat.isPresent()) {
-            transCat = new DTransactionCategory("Einkauf");
-            transactionCategoryRepo.save(transCat);
-        } else {
-            transCat = oTransCat.get();
-        }
-
-        DBankAccount bankAccount = new DBankAccount("IBAN: " + new Random().nextInt(), user, currency);
-        bankAccountRepo.save(bankAccount);
-
-        final Random ran = new Random();
-
-        for (int i = 0; i < ran.nextInt(4) + 1; i++) {
-            DBankStatement statement = new DBankStatement(bankAccount, new Date(), 0, 10);
-            bankStatementRepo.save(statement);
-
-            for (int j = 0; j < ran.nextInt(4) + 1; j++) {
-                DTransaction transaction = new DTransaction(new Date(), ran.nextInt(1673), statement, transCat,
-                        currency);
-                transactionRepo.save(transaction);
+        try {
+            File bankStatement = storageService.getNewRandomUserFilePath("bank-statements", ".pdf");
+            if (bankStatement == null) {
+                return MessageDto.createResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Could not save file");
             }
 
+            Files.copy(file.getInputStream(), bankStatement.toPath());
+
+            if (bankStatementService.parseAndSave(bankStatement))
+                return MessageDto.createResponse(HttpStatus.OK, "File successful uploaded");
+            else
+                bankStatement.delete();
+        } catch (IOException e) {
+            logger.error("Could not save file", e);
         }
-        return ResponseEntity.ok("Ok");
+        return MessageDto.createResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Could not save file");
     }
-
-    @GetMapping
-    public ResponseEntity<String> accountsCount(@AuthenticationPrincipal UserDetails userDetails) {
-        Optional<DUser> ouser = userRepo.findByUsername(userDetails.getUsername());
-        if (!ouser.isPresent())
-            return ResponseEntity.badRequest().body("NoNo");
-
-        DUser user = ouser.get();
-        final String NEW_LINE = "\n";
-        StringBuilder response = new StringBuilder("User: " + user.getUsername() + NEW_LINE);
-
-        for (DBankAccount acc : user.getBankAccounts()) {
-            response.append("BankAccount: " + acc.getIban() + "(" + acc.getCurrency().getShortName() + ")" + NEW_LINE);
-            for (DBankStatement statement : acc.getStatements()) {
-                response.append(
-                        "\tStatement from: " + statement.getIssuedDate() + "(" + statement.getOldBalance()
-                                + "->" + statement.getNewBalance() + ")" + NEW_LINE);
-                for (DTransaction transaction : statement.getTransactions()) {
-                    response.append(
-                            "\t\tTransaction: " + transaction.getAmount() + transaction.getCurrency().getShortName()
-                                    + " - " + transaction.getCategory().getName() + NEW_LINE);
-                }
-            }
-        }
-
-        return ResponseEntity.ok(response.toString());
-    }
-
 }

@@ -55,9 +55,9 @@ export class AuthService {
     }
 
     return new Promise((resolve, reject) => {
-      this.requestService.post("auth/login", loginInfo).pipe(catchError(error=>{
+      this.requestService.post("auth/login", loginInfo).pipe(catchError(error => {
         resolve(false);
-        return "";
+        return of(false);
       })).subscribe((response: any) => {
         if(response != ""){
           this.setToken(response.token);
@@ -69,9 +69,12 @@ export class AuthService {
 
   register(registrationInfo: { username: string; password: string }) : Promise<boolean> {
     return new Promise((resolve, reject) => {
-      this.requestService.post("auth/registration", registrationInfo)
-      .subscribe((response: any) => {
-        resolve(response.status == 200);
+      this.requestService.post("auth/registration", registrationInfo).pipe(catchError(error => {
+        resolve(false);
+        return of(false);
+      })).subscribe((response: any) => {
+        // response ist der HTTP Body
+        resolve(true);
       });
     });
   }
