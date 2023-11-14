@@ -17,12 +17,13 @@ import {CommonModule, NgIf} from '@angular/common';
 
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { StatmentsComponent } from './statments/statments.component';
 
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
