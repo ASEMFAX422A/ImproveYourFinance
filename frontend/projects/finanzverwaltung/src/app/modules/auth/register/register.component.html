@@ -19,7 +19,7 @@
       Dein Passwort muss mindestens einen Großbuchstaben, mindestens einen Kleinbuchstaben, mindestens eine Zahl und mindestens ein Sonderzeichen enthalten.
     </div>
     <div class="input-group">
-      <input type="password" id="password" placeholder="Passwort bestätigen" name="password-confirm" formControlName="confirmPassword" required>
+      <input type="password" id="password-confirm" placeholder="Passwort bestätigen" name="password-confirm" formControlName="confirmPassword" required>
     </div>
     <div *ngIf="password?.value !== confirmPassword?.value">
       Passwort und Passwortbestätigung stimmen nicht überein.

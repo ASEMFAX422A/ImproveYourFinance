@@ -10,6 +10,7 @@ import { RequestService } from '../../../core/services/request.service';
 })
 export class RegisterComponent {
   protected registrationForm: FormGroup;
+  private regexString: RegExp;
 
   constructor(private requestService: RequestService, private formBuilder: FormBuilder, private authService: AuthService, private toastr: ToastrService) {
     let usernameMinLength = 3;
@@ -28,8 +29,8 @@ export class RegisterComponent {
       passwordMinSpecialCharacters = responseBody?.passwordMinSpecialCharacters || passwordMinSpecialCharacters;
     });
 
-    const regexString = `^(?=(?:[A-Z]*[a-z]*){${passwordLowercase},})(?=(?:[a-z]*[A-Z]*){${passwordUppercase},})(?=(?:\\D*\\d*){${passwordMinNumbers},})(?=(?:[!@#$%^&*,.]*[!@#$%^&*,.]){${passwordMinSpecialCharacters},})[A-Za-z\\d@#$%^&*!,.]*$`;
-
+    this.regexString = new RegExp(`^(?=(?:.*[A-Z]){${passwordUppercase},})(?=(?:.*[a-z]){${passwordLowercase},})(?=(?:.*\\d){${passwordMinNumbers},})(?=(?:.*[!@#$%^&*,.+:;=?_\\[\\]{}()|<>]){${passwordMinSpecialCharacters},})[A-Za-z\\d@#$%^&*!.,+:;=?_\\[\\]{}()|<>]*$`);
+    
     this.registrationForm = this.formBuilder.group({
       username: ['', [
         Validators.required,
@@ -38,7 +39,7 @@ export class RegisterComponent {
       password: ['', [
         Validators.required,
         Validators.minLength(passwordMinLength),
-        Validators.pattern(regexString)
+        Validators.pattern(this.regexString)
       ]],
       confirmPassword: ['', [
         Validators.required
