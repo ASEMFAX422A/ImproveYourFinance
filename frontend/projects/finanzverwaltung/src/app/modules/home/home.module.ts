@@ -14,7 +14,13 @@ import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
+import { MatTable, MatTableDataSource, MatTableModule} from '@angular/material/table';
 
+import {MatDividerModule} from '@angular/material/divider';
+import {MatIconModule} from '@angular/material/icon';
+import {DatePipe} from '@angular/common';
+import {MatListModule} from '@angular/material/list';
 
 const routes: Routes = [
   {path: 'analytics', component: AnalyticsComponent,},
@@ -43,6 +49,12 @@ const routes: Routes = [
     MatNativeDateModule,
     FormsModule,
     ReactiveFormsModule,
+    MatPaginatorModule,
+    MatDividerModule,
+    MatIconModule,
+    DatePipe,
+    MatListModule,
+    MatTableModule,
   ]
 })
 export class HomeModule { }

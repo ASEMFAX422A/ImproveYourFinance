@@ -17,11 +17,6 @@ const routes: Routes = [
   },
   { 
     path: '',
-    title:  'Einloggen',
-    loadChildren: () => import('./statments/statments.module').then((m) => m.StatmentsModule),
-  },
-  { 
-    path: '',
     title:  'Registrieren',
     loadChildren: () => import('./modules/auth/auth.module').then((m) => m.AuthModule),
     

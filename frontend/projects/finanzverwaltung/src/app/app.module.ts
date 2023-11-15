@@ -14,6 +14,9 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatListModule} from '@angular/material/list';
 import {CommonModule, NgIf} from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { ToastrModule } from 'ngx-toastr';
 
 
 
