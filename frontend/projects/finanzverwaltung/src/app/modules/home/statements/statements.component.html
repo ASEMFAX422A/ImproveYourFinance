@@ -30,7 +30,7 @@
           </ng-container>
           <ng-container matColumnDef="button">
             <th mat-header-cell *matHeaderCellDef></th>
-            <td mat-cell *matCellDef="let element"><button mat-raised-button color="primary">Überweisungen</button></td>
+            <td mat-cell *matCellDef="let element"><button mat-raised-button color="primary" (click)="openTransactionDialog()">Überweisungen</button></td>
             
           </ng-container>
           

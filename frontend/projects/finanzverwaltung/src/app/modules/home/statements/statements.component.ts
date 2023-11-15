@@ -28,7 +28,6 @@ export class StatementsComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   ngAfterViewInit() {
-    console.log("Hallo");
     if(this.dataSource != undefined){
       this.dataSource.data = [];
     }
@@ -44,6 +43,7 @@ export class StatementsComponent implements AfterViewInit {
     this.dialog.open(PdfDialogComponent)
   }
   openTransactionDialog() {
+    console.log("hashd");
     this.dialog.open(TransactionDialogComponent)
   }
   PdfSwitch() {
@@ -55,14 +55,10 @@ export class StatementsComponent implements AfterViewInit {
   }
 
   loadTableData() {
-
-    console.log("loadTable");
     this.dataSource.data = [];
     this.cdr.detectChanges();
     this.dataSource.data = ELEMENT_DATA;
     this.dataSource.paginator = this.paginator;
-
-
   }
 }
 
