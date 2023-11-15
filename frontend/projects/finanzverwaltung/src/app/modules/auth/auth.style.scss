@@ -7,7 +7,7 @@
   width: 20%;
   min-height: 45%;
   height: auto;
-  margin: 5% auto;
+  margin: 8% auto;
 }
 img{
   width:60%;
@@ -41,7 +41,7 @@ input {
 }
 
 button{
-  margin-top: 3%;
+  margin-top: 5%;
   font-size: 100%;
   padding: 7% 15%;
   border-radius: 15px;
@@ -53,6 +53,65 @@ button:disabled{
   background-color: darkred;
 }
 
+
+@media screen and (max-width: 600px) {
+  .login-container {
+    margin-top: 15%;
+    border-radius: 30px;
+    width: 60%;
+    min-height: auto;
+    font-size: 15px;
+  }
+  img{
+    margin-top: 8%;
+    width:40%;
+  }
+
+  
+}
+@media screen and (min-width: 600px) and (max-width:800px){
+  .login-container {
+
+    border-radius: 50px;
+    width: 50%;
+    height: auto;
+    font-size: 15px;
+  }
+  img{
+    width:40%;
+  }
+}
+@media screen and (min-width: 800px) and (max-width:1000px){
+  .login-container {
+    margin-top: 15%;
+    border-radius: 60px;
+    width: 35%;
+    height: auto;
+    font-size: 15px;
+  }
+  img{
+    margin-top: 8%;
+    width:35%;
+  }
+
+
+  
+}
+@media screen and (min-width: 1000px) and (max-width:1200px){
+  .login-container {
+    margin-top: 15%;
+    border-radius: 60px;
+    width: 30%;
+    height: auto;
+  }
+  img{
+    margin-top: 8%;
+    width:30%;
+  }
+
+
+  
+}
 
 
 
