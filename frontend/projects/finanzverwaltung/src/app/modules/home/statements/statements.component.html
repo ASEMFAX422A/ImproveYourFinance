@@ -2,11 +2,11 @@
     <div class="nav">
         <app-side-bar></app-side-bar>
     </div>
-    <button mat-raised-button color="primary" (click)="openDialog()">Hinzufügen</button>
-    <button mat-raised-button>PDF Ansicht</button>
-    <button mat-raised-button>Tabellenansicht</button>
+    <button mat-raised-button color="primary" (click)="openPdfDialog()">Hinzufügen</button>
+    <button mat-raised-button *ngIf="this.pdfview" (click)="PdfSwitch()">PDF Ansicht</button>
+    <button mat-raised-button *ngIf="!this.pdfview" (click)="PdfSwitch()">Tabellenansicht</button>
 </div>
-<div class="tab">
+<div class="tab" *ngIf="this.pdfview">
         <table mat-table [dataSource]="dataSource">
           <ng-container matColumnDef="position">
             <th mat-header-cell *matHeaderCellDef> No. </th>
