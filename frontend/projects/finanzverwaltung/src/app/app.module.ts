@@ -18,6 +18,7 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { PdfDialogComponent } from './extras/pdf-dialog/pdf-dialog.component';
+import { TransactionModule } from './extras/transaction/transaction.module';
 
 
 @NgModule({
@@ -37,6 +38,7 @@ import { PdfDialogComponent } from './extras/pdf-dialog/pdf-dialog.component';
     MatSidenavModule,
     MatListModule,
     NgIf,
+    TransactionModule,
     BrowserAnimationsModule,
     CommonModule,
     ReactiveFormsModule,

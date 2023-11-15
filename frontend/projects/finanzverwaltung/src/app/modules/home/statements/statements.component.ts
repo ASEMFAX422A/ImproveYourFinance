@@ -37,14 +37,16 @@ export class StatementsComponent implements AfterViewInit {
     this.loadTableData();
     }
 
-  constructor(private httpClient: HttpClient, public dialog: MatDialog, private cdr : ChangeDetectorRef) { }
+  constructor(private httpClient: HttpClient, public dialog: MatDialog, private cdr : ChangeDetectorRef,) { }
 
   openPdfDialog() {
     this.dialog.open(PdfDialogComponent)
   }
   openTransactionDialog() {
-    console.log("hashd");
-    this.dialog.open(TransactionComponent)
+    const dialogRef = this.dialog.open(TransactionComponent,{
+      width: '100%',
+      height: '75%'
+    })
   }
   PdfSwitch() {
 
