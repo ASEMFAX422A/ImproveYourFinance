@@ -21,6 +21,8 @@ import {MatDividerModule} from '@angular/material/divider';
 import {MatIconModule} from '@angular/material/icon';
 import {DatePipe} from '@angular/common';
 import {MatListModule} from '@angular/material/list';
+import { PdfDialogComponent } from '../../extras/pdf-dialog/pdf-dialog.component';
+import { PdfDialogModule } from '../../extras/pdf-dialog/pdf-dialog.module';
 
 const routes: Routes = [
   {path: 'analytics', component: AnalyticsComponent,},
@@ -33,9 +35,6 @@ const routes: Routes = [
     AnalyticsComponent,
     OverviewComponent,
     StatementsComponent,
-
-    
-
   ],
   imports: [
     CommonModule,
@@ -55,6 +54,7 @@ const routes: Routes = [
     DatePipe,
     MatListModule,
     MatTableModule,
+    PdfDialogModule
   ]
 })
 export class HomeModule { }

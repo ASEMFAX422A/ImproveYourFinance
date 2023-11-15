@@ -9,8 +9,8 @@ import { LoginComponent } from '../../auth/login/login.component';
 import { PdfDialogComponent } from '../../../extras/pdf-dialog/pdf-dialog.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { TransactionDialogComponent } from '../../../extras/transaction-dialog/transaction-dialog.component';
 import { ChangeDetectorRef } from '@angular/core';
+import { TransactionComponent } from '../../../extras/transaction/transaction.component';
 @Component({
   selector: 'statements',
   templateUrl: './statements.component.html',
@@ -44,7 +44,7 @@ export class StatementsComponent implements AfterViewInit {
   }
   openTransactionDialog() {
     console.log("hashd");
-    this.dialog.open(TransactionDialogComponent)
+    this.dialog.open(TransactionComponent)
   }
   PdfSwitch() {
 
