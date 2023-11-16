@@ -7,7 +7,8 @@
   width: 20%;
   min-height: 45%;
   height: auto;
-  margin: 8% auto;
+  margin: 10% auto;
+
 }
 img{
   width:60%;
@@ -56,16 +57,17 @@ button:disabled{
 
 @media screen and (max-width: 600px) {
   .login-container {
-    margin-top: 15%;
+    margin: 15%;
     border-radius: 30px;
     width: 60%;
-    min-height: auto;
     font-size: 15px;
+    
   }
   img{
     margin-top: 8%;
     width:40%;
   }
+
 
   
 }
@@ -76,6 +78,7 @@ button:disabled{
     width: 50%;
     height: auto;
     font-size: 15px;
+    
   }
   img{
     width:40%;
@@ -83,11 +86,13 @@ button:disabled{
 }
 @media screen and (min-width: 800px) and (max-width:1000px){
   .login-container {
-    margin-top: 15%;
+    margin-top:10%;
+    margin-bottom: 25%;
     border-radius: 60px;
-    width: 35%;
+    width: 45%;
     height: auto;
     font-size: 15px;
+    
   }
   img{
     margin-top: 8%;
@@ -99,10 +104,11 @@ button:disabled{
 }
 @media screen and (min-width: 1000px) and (max-width:1200px){
   .login-container {
-    margin-top: 15%;
     border-radius: 60px;
     width: 30%;
-    height: auto;
+    margin-top:10%;
+    margin-bottom: 15%;
+    
   }
   img{
     margin-top: 8%;

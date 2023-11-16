@@ -10,6 +10,7 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 
 import { authGuardLogin } from '../../core/guards/auth.guard';
+import { FooterComponent } from '../../extras/footer/footer.component';
 
 
 const routes: Routes = [
@@ -33,7 +34,8 @@ const routes: Routes = [
       enableHtml: true
     }),
     RouterModule.forChild(routes),
-    MaterialModule
+    MaterialModule,
+    FooterComponent
   ]
 })
 export class AuthModule { }
