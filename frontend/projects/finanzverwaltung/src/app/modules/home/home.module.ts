@@ -23,6 +23,7 @@ import {DatePipe} from '@angular/common';
 import {MatListModule} from '@angular/material/list';
 import { PdfDialogComponent } from '../../extras/pdf-dialog/pdf-dialog.component';
 import { PdfDialogModule } from '../../extras/pdf-dialog/pdf-dialog.module';
+import { FooterComponent } from '../../extras/footer/footer.component';
 
 const routes: Routes = [
   {path: 'analytics', component: AnalyticsComponent,},
@@ -41,6 +42,7 @@ const routes: Routes = [
     MaterialModule,
     RouterModule.forChild(routes),
     SideBarComponent,
+    FooterComponent,
     NgApexchartsModule,
     ChartSettingsModule,
     MatDatepickerModule,

@@ -19,11 +19,14 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { PdfDialogComponent } from './extras/pdf-dialog/pdf-dialog.component';
 import { TransactionModule } from './extras/transaction/transaction.module';
+import { FooterComponent } from './extras/footer/footer.component';
+import { FooterModule } from './extras/footer/footer.module';
 
 
 @NgModule({
   declarations: [
     AppComponent,
+
     
   ],
   imports: [
@@ -37,7 +40,9 @@ import { TransactionModule } from './extras/transaction/transaction.module';
     MatIconModule,
     MatSidenavModule,
     MatListModule,
+    FooterModule,
     NgIf,
+    FooterComponent,
     TransactionModule,
     BrowserAnimationsModule,
     CommonModule,

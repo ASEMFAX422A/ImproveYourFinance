@@ -11,6 +11,11 @@ const routes: Routes = [
     loadChildren: () => import('./modules/landing-page/landing-page.module').then((m) => m.LandingPageModule)
   },
   { 
+    path: '', 
+    title:  'footer',
+    loadChildren: () => import('./extras/footer/footer.module').then((m) => m.FooterModule)
+  },
+  { 
     path: '',
     title:  'Einloggen',
     loadChildren: () => import('./modules/auth/auth.module').then((m) => m.AuthModule),

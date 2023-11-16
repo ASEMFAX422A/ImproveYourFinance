@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 
 import { LandingPageComponent } from './landing-page.component';
+import { FooterComponent } from '../../extras/footer/footer.component';
 
 
 
@@ -18,6 +19,7 @@ const routes: Routes = [
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
+    FooterComponent
 
   ]
 })
