@@ -1,59 +1,106 @@
-.main{
+.main {
   background: url('../../../assets/background-main.jpg') no-repeat center center fixed;
   height: 100%;
-  background-size:100%;
-  
-  
-}
-.max-width{
-    max-width: 1300px;
-    padding: 0 80px;
-    margin: auto;
-  }
-  section{
-    margin-left: 10%;
-    padding: 0;
-    position: absolute;
-    top: 10%;
-  }
-  .landing-main{
-    display: flex;
-  }
-  .landing-main .max-width{
-    width: 100%;
-    padding: 0;
-    margin: 0;
-  }
-  .landing-main .landing-content{
-    width: 100%;
-    padding: 2rem;
-  }
-  .landing-main h3{
-    color: #000000;
-    margin-top: 6rem;
-    font-size: 4.5rem;
-    margin-bottom: 4%;
-  }
-.landing-main p{
-
-    color: #000000;
-    padding: 0;
-    margin: 0;
-    font-size: 1.4rem;
+  background-size: 100%;
+  min-height: 100%;
 
 }
-button{
-    margin-top: 50px;
-    border-radius: 15px;
-    border: none;
-    width: 15%;
-    padding: 10px 10px;
-    background-color: #212121;
-    color: white;
+
+section {
+  margin-left: 10%;
+  position: absolute;
+  top: 10%;
+}
+
+.landing-main h3 {
+  color: #000000;
+  margin-top: 6rem;
+  font-size: 4.5rem;
+  margin-bottom: 4%;
+}
+
+.landing-main p {
+  color: #000000;
+  padding: 0;
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+button {
+  margin-top: 50px;
+  border-radius: 15px;
+  border: none;
+  width: 15%;
+  padding: 10px 10px;
+  background-color: #212121;
+  color: white;
+  font-size: 20px;
+}
+
+button:hover {
+  background-color: #302f2f;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 600px) {
+
+  .main {
+    background-size: cover;
+  }
+  section {
+    top: 0;
+  }
+  .landing-main h3 {
+    font-size: 40px;
+
+  }
+  .landing-main p {
     font-size: 20px;
-}
-button:hover{
-    background-color: #302f2f;
-    cursor: pointer;
+  }
+  button {
+    width: 30%;
+    font-size: 20px;
+  }
 }
 
+@media screen and (min-width: 600px) and (max-width: 800px) {
+  .landing-main {
+    margin: 0;
+    padding: 0;
+
+  }
+
+  .main {
+    background-size: cover;
+  }
+
+  .landing-content {
+    margin-left: 10%;
+  }
+
+}
+
+@media screen and (min-width: 800px) and (max-width: 1000px) {
+  .main {
+    background-size: cover;
+  }
+}
+
+@media screen and (min-width: 1000px) and (max-width: 1200px) {
+  .main {
+    background-size: cover;
+  }
+  .landing-main h3 {
+    font-size: 55px;
+
+  }
+
+  .landing-main p {
+    font-size: 40px;
+  }
+  button {
+    width: 30%;
+    padding: 10px 0;
+    font-size: 35px;
+  }
+}
