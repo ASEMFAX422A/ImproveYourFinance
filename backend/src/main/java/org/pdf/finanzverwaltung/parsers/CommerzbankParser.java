@@ -1,42 +1,131 @@
 package org.pdf.finanzverwaltung.parsers;
 
-import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.text.PDFTextStripper;
+import org.pdf.finanzverwaltung.dto.BankStatement;
+import org.pdf.finanzverwaltung.dto.Transaction;
 import org.pdf.finanzverwaltung.repos.bank.DBankStatement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import com.lowagie.text.pdf.PdfReader;
-import com.lowagie.text.pdf.parser.PdfTextExtractor;
-
-/**
- * CommerzbankParser
- */
 @Component
 public class CommerzbankParser implements BankStatementParser {
     private static final Logger logger = LoggerFactory.getLogger(CommerzbankParser.class);
     private static String bics[] = { "COBADEFFXXX" };
 
-    private static final Pattern bicPattern = Pattern.compile("BIC\\s*:\\s*(\\S+)");
-    private static final Pattern ibanPattern = Pattern.compile("IBAN:\\s*(.*)\\s*(US|$)");
-    private static final Pattern datePattern = Pattern.compile("Kontoauszugvom\\s*(\\S+)");
+    private static final Pattern bicPattern = Pattern.compile("BIC\\s+:\\s*(\\S+)");
+    private static final Pattern datePattern = Pattern.compile("\\d{2,}\\.\\d{2,}\\.\\d{4,}");
+    private static final Pattern ibanPattern = Pattern.compile("IBAN:\\s*(.*?)\\s*(US|$)");
+    private static final Pattern transactionPattern = Pattern.compile("\\d{2}\\.\\d{2} \\d+,\\d+-*$");
+    private static final Pattern transactionEndReached = Pattern
+            .compile("(^Folgeseite\\s+\\d+\\s+)|(^Buchungsdatum:\\s*\\d{2,}\\.\\d{2,}\\.\\d{4,})");
+    private static final Pattern endReached = Pattern.compile("^Rechnungsabschluss\\s+\\d{2}.\\d{2}");
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+    private static final SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
 
     @Override
-    public DBankStatement parse(PdfReader document) {
-        PdfTextExtractor extractor = new PdfTextExtractor(document);
-        String date = null;
+    public DBankStatement parse(PDDocument document) {
+        final String pages = getAllPages(document);
+        if (pages == null)
+            return null;
+
+        Date date = null;
         String iban = null;
-        String bic = null;
+        double oldBalance = -1;
+        boolean parsingTransaction = false;
+
+        StringBuilder transaction = new StringBuilder();
+        List<Transaction> transactions = new ArrayList<>();
+
+        try (Scanner scanner = new Scanner(pages)) {
+            scanner.useDelimiter("\\n");
+
+            while (scanner.hasNextLine()) {
+                final String line = scanner.nextLine();
+
+                final Matcher endReachedMatcher = endReached.matcher(line);
+                if (endReachedMatcher.find()) {
+                    transactions.add(parseTransaction(transaction, yearFormat.format(date)));
+                    break;
+                }
+
+                if (date == null && line.startsWith("Kontoauszug vom")) {
+                    date = getDate(line);
+                }
+                if (iban == null && line.startsWith("IBAN")) {
+                    iban = getIban(line);
+                }
+                if (oldBalance == -1 && line.startsWith("Alter Kontostand")) {
+                    oldBalance = getOldBalance(line);
+                }
+
+                if (parsingTransaction) {
+
+                    Matcher transactionEndMatcher = transactionEndReached.matcher(line);
+                    if (transactionEndMatcher.find()) {
+                        transactions.add(parseTransaction(transaction, yearFormat.format(date)));
+                        parsingTransaction = false;
+                    } else {
+                        Matcher newTransactionMatcher = transactionPattern.matcher(line);
+                        if (newTransactionMatcher.find()) {
+                            transactions.add(parseTransaction(transaction, yearFormat.format(date)));
+                        }
+                        transaction.append(line).append("\n");
+                    }
+                } else {
+                    Matcher newTransactionMatcher = transactionPattern.matcher(line);
+                    if (newTransactionMatcher.find()) {
+                        parsingTransaction = true;
+                        transaction.append(line).append("\n");
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public boolean canParse(PDDocument document) {
+        final String firstPage = getPages(document, 1, 1);
+        if (firstPage == null)
+            return false;
+
+        final String bic = getBic(firstPage);
+        if (bic == null)
+            return false;
+
+        for (String knownBic : bics) {
+            if (bic.equals(knownBic))
+                return true;
+        }
+
+        return false;
+    }
+
+    private String getAllPages(PDDocument document) {
+        return getPages(document, -1, -1);
+    }
+
+    private String getPages(PDDocument document, int startPage, int endPage) {
+        PDFTextStripper extractor = new PDFTextStripper();
+        extractor.setAverageCharTolerance(2);
+        extractor.setSpacingTolerance(2);
+        extractor.setStartPage(startPage);
+        extractor.setEndPage(endPage);
 
         try {
-            String page = extractor.getTextFromPage(1);
-            date = getDate(page);
-            iban = getIban(page);
-            bic = getBic(page);
-
+            return extractor.getText(document);
         } catch (Exception e) {
             logger.error("Could not extract text from pdf", e);
         }
@@ -44,53 +133,75 @@ public class CommerzbankParser implements BankStatementParser {
         return null;
     }
 
-    @Override
-    public boolean canParse(PdfReader document) {
-        PdfTextExtractor extractor = new PdfTextExtractor(document);
-        String firstPage;
+    private static Transaction parseTransaction(StringBuilder transaction, String year) {
+        Transaction trans = new Transaction();
+        transaction.delete(transaction.length(), transaction.length());
+
+        final int endLineIndex = transaction.indexOf("\n");
+        final StringBuilder firstLine = new StringBuilder(transaction.substring(0, endLineIndex));
+        transaction.delete(0, endLineIndex);
+
+        final String amount = removeLastWord(firstLine);
+        trans.setAmount(Double.parseDouble(amount.replaceAll("\\,", ".").replaceAll("\\-", "")));
+        if (amount.endsWith("-"))
+            trans.setAmount(trans.getAmount() * -1);
+
+        final String date = removeLastWord(firstLine) + "." + year;
         try {
-            firstPage = extractor.getTextFromPage(1);
-        } catch (IOException e) {
-            logger.error("Could not extract text from pdf", e);
-            return false;
+            trans.setDate(dateFormat.parse(date));
+        } catch (ParseException e) {
+            logger.error("Could not parse date: " + date, e);
         }
 
-        String bic = getBic(firstPage);
-        if (bic == null)
-            return false;
+        trans.setTitle(firstLine.toString());
+        trans.setDescription(transaction.toString());
 
-        for (String knownBic : bics) {
-            if (bic.equals(knownBic))
-                return true;
+        transaction.delete(0, transaction.length());
 
-        }
-        return false;
+        return trans;
     }
 
-    private String getDate(String page) {
-        Matcher matcher = datePattern.matcher(page);
+    private static String removeLastWord(StringBuilder stringBuilder) {
+        final int lastSpace = stringBuilder.lastIndexOf(" ");
+        final String lastWord = stringBuilder.substring(lastSpace + 1);
 
+        stringBuilder.delete(lastSpace, stringBuilder.length());
+
+        return lastWord;
+    }
+
+    private static double getOldBalance(String line) {
+        final int lastSpace = line.lastIndexOf(' ');
+        return Double.parseDouble(line.substring(lastSpace + 1).replaceAll("\\,", "."));
+    }
+
+    private static String getBic(String line) {
+        Matcher matcher = bicPattern.matcher(line);
         if (matcher.find()) {
             return matcher.group(1);
         }
         return null;
     }
 
-    private String getIban(String page) {
-        Matcher matcher = ibanPattern.matcher(page);
-
+    private static String getIban(String line) {
+        Matcher matcher = ibanPattern.matcher(line);
         if (matcher.find()) {
             return matcher.group(1);
         }
         return null;
     }
 
-    private String getBic(String page) {
-        Matcher matcher = bicPattern.matcher(page);
+    private static Date getDate(String line) {
+        Matcher matcher = datePattern.matcher(line);
 
         if (matcher.find()) {
-            return matcher.group(1);
+            try {
+                return dateFormat.parse(matcher.group());
+            } catch (ParseException e) {
+                logger.error("Could not parse date: " + matcher.group(), e);
+            }
         }
+
         return null;
     }
 }

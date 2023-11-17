@@ -42,7 +42,10 @@ public class DBankStatement {
     private Date issuedDate;
 
     @Column(nullable = false)
-    private int oldBalance;
+    private double oldBalance;
+
+    @Column(nullable = false)
+    private double newBalance;
 
     @Column(nullable = false)
     private String filePath;
@@ -53,10 +56,13 @@ public class DBankStatement {
     public DBankStatement() {
     }
 
-    public DBankStatement(DBankAccount bankAccount, Date issueDate, int oldBalance) {
+    public DBankStatement(DBankAccount bankAccount, Date issueDate, double oldBalance, double newBalance,
+            String filePath) {
         this.bankAccount = bankAccount;
         this.issuedDate = issueDate;
         this.oldBalance = oldBalance;
+        this.newBalance = newBalance;
+        this.filePath = filePath;
     }
 
     public long getId() {
@@ -75,18 +81,19 @@ public class DBankStatement {
         return filePath;
     }
 
-    public int getOldBalance() {
+    public double getOldBalance() {
         return oldBalance;
     }
 
-    @JsonProperty("newBalance")
-    public int getNewBalance() {
-        if (transactions == null)
-            return 0;
-        return transactions.stream().mapToInt(DTransaction::getAmount).sum();
+    public double getNewBalance() {
+        return newBalance;
     }
 
     public Set<DTransaction> getTransactions() {
         return transactions;
+    }
+
+    public void setTransactions(Set<DTransaction> transactions) {
+        this.transactions = transactions;
     }
 }

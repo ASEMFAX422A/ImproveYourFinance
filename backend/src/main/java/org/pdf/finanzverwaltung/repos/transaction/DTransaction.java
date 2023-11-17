@@ -3,11 +3,6 @@ package org.pdf.finanzverwaltung.repos.transaction;
 import java.util.Date;
 
 import org.pdf.finanzverwaltung.repos.bank.DBankStatement;
-import org.pdf.finanzverwaltung.repos.currency.DCurrency;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,11 +14,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
-/**
- * DTransaction
- */
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class DTransaction {
 
     @Id
@@ -35,7 +26,7 @@ public class DTransaction {
     private Date date;
 
     @Column(nullable = false)
-    private int amount;
+    private double amount;
 
     @ManyToOne
     @JoinColumn(name = "bank_statement_id", nullable = false)
@@ -45,20 +36,14 @@ public class DTransaction {
     @JoinColumn(name = "category_id", nullable = false)
     private DTransactionCategory category;
 
-    @ManyToOne
-    @JoinColumn(name = "currency_id")
-    private DCurrency currency;
-
     public DTransaction() {
     }
 
-    public DTransaction(Date date, int amount, DBankStatement bankStatement, DTransactionCategory category,
-            DCurrency currency) {
+    public DTransaction(Date date, double amount, DBankStatement bankStatement, DTransactionCategory category) {
         this.date = date;
         this.amount = amount;
         this.bankStatement = bankStatement;
         this.category = category;
-        this.currency = currency;
     }
 
     public long getId() {
@@ -69,16 +54,12 @@ public class DTransaction {
         return date;
     }
 
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
 
     public DBankStatement getBankStatement() {
         return bankStatement;
-    }
-
-    public DCurrency getCurrency() {
-        return currency;
     }
 
     public DTransactionCategory getCategory() {

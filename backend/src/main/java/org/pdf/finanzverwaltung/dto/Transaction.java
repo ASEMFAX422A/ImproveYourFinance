@@ -1,55 +1,81 @@
 package org.pdf.finanzverwaltung.dto;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class Transaction {
 
     private long id;
-
+    private String title;
     private Date date;
-
-    private int amount;
-
+    private double amount;
+    private String desc;
     private BankStatement bankStatement;
-
     private TransactionCategory category;
-
-    private DCurrency currency;
 
     public Transaction() {
     }
 
-    public Transaction(Date date, int amount, BankStatement bankStatement, TransactionCategory category,
-            DCurrency currency) {
+    public Transaction(Date date, double amount, BankStatement bankStatement, TransactionCategory category,
+            Currency currency) {
         this.date = date;
         this.amount = amount;
         this.bankStatement = bankStatement;
         this.category = category;
-        this.currency = currency;
     }
 
     public long getId() {
         return id;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
     public Date getDate() {
         return date;
     }
 
-    public int getAmount() {
+    public double getAmount() {
         return amount;
+    }
+
+    public String getDesc() {
+        return desc;
     }
 
     public BankStatement getBankStatement() {
         return bankStatement;
     }
 
-    public Currency getCurrency() {
-        return currency;
-    }
-
     public TransactionCategory getCategory() {
         return category;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public void setDescription(String desc) {
+        this.desc = desc;
+    }
+
+    public void setBankStatement(BankStatement bankStatement) {
+        this.bankStatement = bankStatement;
+    }
+
+    public void setCategory(TransactionCategory category) {
+        this.category = category;
+    }
 }

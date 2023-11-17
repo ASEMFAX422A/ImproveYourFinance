@@ -80,6 +80,10 @@ public class DUser implements UserDetails {
         return username;
     }
 
+    public UserRole getRole() {
+        return role;
+    }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;

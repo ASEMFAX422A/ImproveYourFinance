@@ -32,7 +32,7 @@ public class UploadController {
     public UploadController() {
     }
 
-    @PostMapping("/account-statement")
+    @PostMapping("/bank-statement")
     public ResponseEntity<MessageDto> file(@RequestParam("file") MultipartFile file) {
         if (file.isEmpty())
             return MessageDto.createResponse(HttpStatus.BAD_REQUEST, "No file received");

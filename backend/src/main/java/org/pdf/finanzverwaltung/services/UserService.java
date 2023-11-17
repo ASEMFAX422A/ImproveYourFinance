@@ -3,6 +3,7 @@ package org.pdf.finanzverwaltung.services;
 import org.pdf.finanzverwaltung.models.User;
 import org.pdf.finanzverwaltung.repos.user.DUser;
 import org.pdf.finanzverwaltung.repos.user.UserRepo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -12,12 +13,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService implements UserDetailsService {
 
-    private final UserRepo userRepo;
-    private final PasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepo userRepo, PasswordEncoder passwordEncoder) {
-        this.userRepo = userRepo;
-        this.passwordEncoder = passwordEncoder;
+    @Autowired
+    private UserRepo userRepo;
+
+    public UserService() {
     }
 
     @Override

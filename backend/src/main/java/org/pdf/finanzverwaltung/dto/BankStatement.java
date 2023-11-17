@@ -3,28 +3,23 @@ package org.pdf.finanzverwaltung.dto;
 import java.sql.Date;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public class BankStatement {
     private long id;
-
     private BankAccount bankAccount;
-
     private Date issuedDate;
-
     private int oldBalance;
-
+    private int newBalance;
     private String filePath;
-
     private Set<Transaction> transactions;
 
     public BankStatement() {
     }
 
-    public BankStatement(BankAccount bankAccount, Date issueDate, int oldBalance) {
+    public BankStatement(BankAccount bankAccount, Date issueDate, int oldBalance, int newBalance) {
         this.bankAccount = bankAccount;
         this.issuedDate = issueDate;
         this.oldBalance = oldBalance;
+        this.newBalance = newBalance;
     }
 
     public long getId() {
@@ -47,14 +42,40 @@ public class BankStatement {
         return oldBalance;
     }
 
-    @JsonProperty("newBalance")
     public int getNewBalance() {
-        if (transactions == null)
-            return 0;
-        return transactions.stream().mapToInt(Transaction::getAmount).sum();
+        return newBalance;
     }
 
     public Set<Transaction> getTransactions() {
         return transactions;
     }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setBankAccount(BankAccount bankAccount) {
+        this.bankAccount = bankAccount;
+    }
+
+    public void setIssuedDate(Date issuedDate) {
+        this.issuedDate = issuedDate;
+    }
+
+    public void setOldBalance(int oldBalance) {
+        this.oldBalance = oldBalance;
+    }
+
+    public void setNewBalance(int newBalance) {
+        this.newBalance = newBalance;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public void setTransactions(Set<Transaction> transactions) {
+        this.transactions = transactions;
+    }
+
 }

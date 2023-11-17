@@ -44,7 +44,7 @@ public class QueryController {
             categories.add(TransactionCategory.create(category));
         }
 
-        return ResponseEntity.ok(categories);
+        return null;
     }
 
     @PostMapping("/bank-statements")
