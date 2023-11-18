@@ -45,7 +45,7 @@ a:hover{
 }
 
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 1000px) {
   nav {
     width: 60px;
 
@@ -71,16 +71,20 @@ a:hover{
 
 
 }
-@media screen and (min-width: 600px) and (max-width: 800px) {
-  nav{
-    width: 230px;
-  }
-  a {
+@media screen and (min-width: 1000px) and (max-width: 1300px) {
+  nav {
     width: 240px;
+
   }
 
+  a {
+
+    width: 240px;
+
+  }
 
 }
+
 
 
 

@@ -1,12 +1,12 @@
-<!-- <div class="container"> -->
+<div class="container">
   <div class="nav">
     <app-side-bar></app-side-bar>
   </div>
-  <!-- <div class="main-body" id="scrollbereich">
+  <div class="main-body" id="scrollbereich">
     <div class="welcome-box">
       <div class="welcome-content">
-        <h1>Willkommen Username{{username}},</h1>-->
-        <!-- <span>Hier siehst du deine Monatliche Übersicht.</span>
+        <!--<h1>Willkommen Username{{username}},</h1>-->
+        <span>Hier siehst du deine Monatliche Übersicht.</span>
         <span></span>
       </div>
     </div>
@@ -24,11 +24,13 @@
           [xaxis]="chartData.xaxis"
           [chart]="chartSettings.settings.lineChart" 
           [stroke]="chartSettings.settings.lineStroke"
-          [grid]="chartSettings.settings.lineChartGrid">
-        </apx-chart> -->
-      <!-- </div> -->
-    <!-- </div> -->
-    <!-- <div class="chart-box2">
+          [grid]="chartSettings.settings.lineChartGrid"
+          [responsive]="chartSettings.settings.responsiveLine">
+          
+        </apx-chart>
+      </div>
+    </div>
+     <div class="chart-box2">
       <div id="chart">
         <apx-chart 
           [series]="chartData.series"
@@ -36,21 +38,26 @@
           [xaxis]="chartData.xaxis"
           [chart]="chartSettings.settings.lineChart"
           [stroke]="chartSettings.settings.lineStroke"
-          [grid]="chartSettings.settings.lineChartGrid">
-        </apx-chart> -->
-      <!-- </div>
+          [grid]="chartSettings.settings.lineChartGrid"
+          [responsive]="chartSettings.settings.responsiveLine">
+          >
+          
+        </apx-chart>
+      </div>
 
-    </div> -->
-    <!-- <div class="chart-donut">
+    </div>
+    <div class="chart-donut">
       <div id="chartt">
         <apx-chart 
           [series]="chartData.donut_data"
           [labels]="chartData.donut_labels"
           [chart]="chartSettings.settings.donutChartType"
-          [responsive]="chartSettings.settings.responsive">
+          
+          >
         </apx-chart>
       </div>
     </div>
   </div>
-</div> -->
-<app-footer></app-footer>
+</div>
+<div class="footer">
+<app-footer></app-footer></div>

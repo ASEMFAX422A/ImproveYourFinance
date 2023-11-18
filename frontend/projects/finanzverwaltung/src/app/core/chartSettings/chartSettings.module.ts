@@ -21,6 +21,7 @@ export type ChartSettings = {
  lineChartGrid: ApexGrid;
  lineStroke: ApexStroke;
  responsive: ApexResponsive[];
+ responsiveLine: ApexResponsive[];
 };
 @NgModule({
 
@@ -48,15 +49,142 @@ constructor(){
   },
   responsive: [
     {
-      breakpoint: 480,
+      breakpoint: 450,
       options: {
         chart: {
-          width: 200
+          width: 400,
         },
+        chartt: {
+          width: 300,
+          height: 200,
+        },
+
         legend: {
           position: "bottom"
         }
       }
+    }
+  ],
+  responsiveLine: [
+    {
+      breakpoint: 450,
+      options: {
+
+        chart: {
+          width: 260,
+          height: 190,
+        },
+      }
+      
+    },
+    {
+      breakpoint: 600,
+      options: {
+
+        chart: {
+          width: 350,
+          height: 200,
+        },
+      }
+      
+    },
+    {
+      breakpoint: 780,
+      options: {
+
+        chart: {
+          width: 460,
+          height: 200,
+        },
+      }
+      
+    },
+    {
+      breakpoint: 800,
+      options: {
+
+        chart: {
+          width: 600,
+          height: 200,
+        },
+      }
+      
+    },
+    {
+      breakpoint: 850,
+      options: {
+
+        chart: {
+          width: 600,
+          height: 200,
+        },
+      }
+      
+    },
+    {
+      breakpoint: 900,
+      options: {
+
+        chart: {
+          width: 600,
+          height: 200,
+        },
+      }
+      
+    },
+    {
+      breakpoint: 1000,
+      options: {
+
+        chart: {
+          width: 650,
+          height: 200,
+        },
+      }
+      
+    },
+    {
+      breakpoint: 1100,
+      options: {
+
+        chart: {
+          width: 700,
+          height: 200,
+        },
+      }
+      
+    },
+    {
+      breakpoint: 1300,
+      options: {
+
+        chart: {
+          width: 800,
+          height: 200,
+        },
+      }
+      
+    },
+    {
+      breakpoint: 1400,
+      options: {
+
+        chart: {
+          width: 900,
+          height: 200,
+        },
+      }
+      
+    },
+    {
+      breakpoint: 1600,
+      options: {
+
+        chart: {
+          height: 190,
+        },
+      }
+      
     }
 
   ],
