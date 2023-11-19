@@ -1,382 +1,276 @@
+* {
+  margin: 0;
+  padding: 0;
+  outline: none;
+  border: none;
+  text-decoration: none;
+  box-sizing: border-box;
 
-*{
-    margin: 0;
-    padding: 0;
-    outline: none;
-    border: none;
-    text-decoration: none;
-    box-sizing: border-box;
-    
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  background-size: 100%;
+  background: url('../../../../assets/background-main.jpg') no-repeat center center fixed;
+  height: 100%;
+  background-size: 100%;
+  min-height: 100%;
+}
+
+.welcome-box {
+  top: 10%;
+  width: 41%;
+  height: 33%;
+  position: absolute;
+  color: #212121;
+  padding: 15px;
+  background: #f8f8f8;
+  border-radius: 25px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+.chart-box {
+  position: absolute;
+  width: 41%;
+  top: 63%;
+  background-color: #f8f8f8;
+  border-radius: 25px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+  padding: 25px;
+
+}
+
+.chart-box2 {
+
+  position: absolute;
+ 
+  width: 41%;
+  right: 15px;
+  top: 63%;
+  background-color: #f8f8f8;
+  border-radius: 25px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+  padding: 25px;
+
+}
+
+.chart-donut {
+  top: 10%;
+  position: absolute;
+  right: 15px;
+  display: flex;
+  background-color: #f8f8f8;
+  border-radius: 30px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+  width: 41%;
+  margin-bottom: 5%;
+}
+
+.fin {
+
+  width: 20%;
+  height: 15%;
+  position: absolute;
+  top: 45%;
+  color: #212121;
+  padding: 15px;
+  background: #f8f8f8;
+  border-radius: 25px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+
+}
+
+.fin-1 {
+
+  width: 20%;
+  height: 15%;
+  position: absolute;
+  top: 45%;
+  left: 36%;
+  color: #212121;
+  padding: 15px;
+  background: #f8f8f8;
+  border-radius: 25px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+
+}
+
+@media screen and (max-width: 1800px){
+  .container {
+    background-size: cover;
   }
-  .container{    
-    display: flex;
-    flex-wrap: wrap;
-    background-size: 100%;
-    background: url('../../../../assets/background-main.jpg') no-repeat center center fixed;
-    height: 100%;
-    background-size:100%;
-    min-height: 100%;
+}
+@media screen and (min-width: 400px) and (max-width: 1000px){
+  
+
+
+  .welcome-box {
+    left: 15%;
+    width: 82%;
+    height: 8%;
+    top: 8%;
   }
-  .welcome-box{
-    top: 10%;
+
+  .welcome-content h1 {
+    font-size: 15px;
+  }
+
+  .welcome-content span {
+    font-size: 11px;
+  }
+
+  .fin {
+    left: 15%;
+    width: 40%;
+    height: 10%;
+    top: 17%;
+    font-size: 10px;
+
+  }
+
+  .fin-1 {
+    left: 57%;
+    width: 40%;
+    height: 10%;
+    top: 17%;
+    font-size: 10px;
+  }
+
+  .chart-donut {
+    width: 82%;
+    height: 21%;
+    top: 30%;
+    left: 15%;
+  }
+
+  .chart-box {
+    left: 15%;
+    height: 26%;
+    width: 82%;
+    top: 52%;
+    padding: 30px;
+
+  }
+
+  .chart-box2 {
+    left: 15%;
+    height: 26%;
+    width: 82%;
+    top: 79%;
+    padding: 30px;
+  }
+
+
+
+}
+@media screen and (min-width: 1000px) and (max-width:1500px) {
+  
+  .welcome-box {
+    width: 30%;
+    height: 15%;
+    left: 24.5%;
+
+  }
+  .chart-box {
+    height: 25%;
+    width: 74%;
+    top: 54%;
+    padding: 25px;
+    left: 24.5%;
+
+  }
+  .chart-box2 {
+    height: 25%;
+    width: 74%;
+    top: 80%;
+    padding: 25px;
+    left: 24.5%;
+
+  }
+  .chart-donut {
+    height: 42%;
+  }
+  #chartt {
+    width: 100%;
+  }
+  .fin {
+    top: 28%;
+    height: 10%;
+    width: 30%;
+    left: 24.5%;
+  }
+  .fin-1 {
+    top: 40%;
+    height: 10%;
+    width: 30%;
+    left: 0;
+    left: 24.5%;
+  }
+
+}
+
+@media screen and (min-width: 1300px) and (max-width:1500px) {
+  
+  .chart-donut {
+    height: 40%;
+
+  }
+
+}
+
+@media screen and (min-width: 1500px) and (max-width:1800px) {
+  .welcome-box {
+    width: 40%;
+  }
+
+  .chart-donut {
+    width: 39%;
+    height: 45%;
+  }
+
+  .fin {
+    width: 18.5%;
+  }
+
+  .fin-1 {
+    left: 38%;
+    width: 18.5%;
+  }
+
+  .chart-box {
+    width: 39%;
+  }
+
+  .chart-box {
+    width: 38%;
+  }
+
+  #chartt {
+    width: 100%;
+  }
+
+
+}
+
+@media screen and (min-width: 1600px) and (max-width:1800px) {
+
+  .chart-donut {
     width: 41%;
-    height: 33%;
-    position: absolute;
-    color: #212121;
-    padding: 15px;
-    background: #f8f8f8;
-    border-radius: 25px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+    height: 51%;
+
   }
-  .chart-box{
-      position: absolute;
-      width: 41%;
-      top: 63%;
-      background-color: #f8f8f8;
-      border-radius: 25px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
-      padding: 25px;
-      height: 40%;
 
-    }
-    .chart-box2{
-
-      position: absolute;
-      height: 40%;
-      width: 41%;
-      right: 15px;
-      top: 63%;
-      background-color: #f8f8f8;
-      border-radius: 25px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
-      padding: 25px;
-
-    }
-
-    .chart-donut{
-      top: 10%;
-      position: absolute;
-      right: 15px;
-      display: flex;
-      background-color: #f8f8f8;
-      border-radius: 30px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
-      width: 41%;
-      height: 50%;
-      margin-bottom: 5%;
-    }
-
-    .fin{
-
-      width: 20%;
-      height: 15%;
-      position: absolute;
-      top: 45%;
-      color: #212121;
-      padding: 15px;
-      background: #f8f8f8;
-      border-radius: 25px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
-
-    }
-
-    .fin-1{
-
-      width: 20%;
-      height: 15%;
-      position: absolute;
-      top: 45%;
-      left: 36%;
-      color: #212121;
-      padding: 15px;
-      background: #f8f8f8;
-      border-radius: 25px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
-
-    }
+  #chartt {
+    width: 80%;
+  }
 
 
-    @media screen and (max-width: 600px){
+}
 
+@media screen and (min-width: 1100px) {
 
-      .container{    
-        background-size: cover;
-      }
-      .welcome-box{
-        left: 15%;
-        width: 82%;
-        height: 8%;
-      }
-      .welcome-content h1{
-        font-size: 15px;
-      }
-      .welcome-content span{
-        font-size: 11px;
-      }
-
-      .fin{
-        left: 15%;
-        width: 40%;
-        height: 10%;
-        top: 17%;
-        font-size: 10px;
-  
-      }
-
-      .fin-1{
-        left: 57%;
-        width: 40%;
-        height: 10%;
-        top: 17%;
-        font-size: 10px;
-      }
-      .chart-donut{
-        width: 82%;
-        height: 21%;
-        top: 30%;
-        left: 15%;
-      }
-      .chart-box{
-        left: 15%;
-        height: 26%;
-        width: 82%;
-        top: 52%;
-        padding: 30px;
-  
-      }
-      .chart-box2{
-        left: 15%;
-        height: 26%;
-        width: 82%;
-        top: 79%;
-        padding: 30px;
-      }
-
-
-
-    }
-    @media screen and (min-width: 600px) and (max-width: 1000px){
-
-
-      .container{    
-        background-size: cover;
-
-      }
-      .welcome-box{
-        left: 15%;
-        width: 82%;
-        height: 8%;
-      }
-      .welcome-content h1{
-        font-size: 15px;
-      }
-      .welcome-content span{
-        font-size: 11px;
-      }
-
-      .fin{
-        left: 15%;
-        width: 40%;
-        height: 10%;
-        top: 17%;
-        font-size: 10px;
-  
-      }
-      .fin-1{
-
-        left: 57%;
-        width: 40%;
-        height: 10%;
-        top: 17%;
-        font-size: 10px;
-      }
-      .chart-donut{
-        width: 82%;
-        height: 21%;
-        top: 30%;
-        left: 15%;
-        
-      }
-
-      .chart-box{
-
-        
-        left: 15%;
-        height: 26%;
-        width: 82%;
-        top: 52%;
-        padding: 30px;
-  
-      }
-      .chart-box2{
-  
-        
-        left: 15%;
-        height: 26%;
-        width: 82%;
-        top: 79%;
-        padding: 30px;
-      }
-
-
-
-    }
-    @media screen and (min-width: 1000px) and (max-width:1300px){
-      .container{
-        background-size: cover;
-
-      }
-      .welcome-box{
-
-        width: 30%;
-        height: 19%;
-        left: 24.5%;
-      }
-
-      .chart-box{
-
-        
-        height: 25%;
-        width: 74%;
-        top: 54%;
-        padding: 25px;
-        left: 24.5%;
-  
-      }
-      .chart-box2{
-        height: 25%;
-        width: 74%;
-        top: 80%;
-        padding: 25px;
-        left: 24.5%;
-  
-      }
-      .chart-donut{
-        height: 45%;
-        
-      }
-      #chartt{
-        width: 100%;
-      }
-
-      .fin{
-        top: 28%;
-        height: 10%;
-        width: 30%;
-        left: 24.5%;
-      }
-      
-      .fin-1{
-        top: 40%;
-        height: 10%;
-        width: 30%;
-        left: 0;
-        left: 24.5%;
-      }
-
-    }
-    @media screen and (min-width: 1300px) and (max-width:1500px){
-      .container{
-        background-size: cover;
-
-      }
-      .welcome-box{
-
-        width: 30%;
-        height: 19%;
-        left: 24.5%;
-      }
-      #chartt{
-        width: 100%;
-      }
-      .chart-box{
-
-
-        height: 25%;
-        width: 74%;
-        top: 54%;
-        padding: 25px;
-        left: 24.5%;
-  
-      }
-      .chart-box2{
-        height: 25%;
-        width: 74%;
-        top: 80%;
-        padding: 25px;
-        left: 24.5%;
-  
-      }
-      .chart-donut{
-        height: 45%;
-        
-      }
-      .fin{
-        top: 28%;
-        height: 10%;
-        width: 30%;
-        left: 24.5%;
-      }
-      
-      .fin-1{
-        top: 40%;
-        height: 10%;
-        width: 30%;
-        left: 0;
-        left: 24.5%;
-      }
-
-    }
-    @media screen and (min-width: 1500px) and (max-width:1800px){
-      .welcome-box{
-        width: 40%;
-      }
-      .chart-donut{
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
-        width: 39%;
-        height: 51%;
-        
-      }
-      .fin{
-        width: 18.5%;
-      }
-      
-      .fin-1{
-        left: 38%;
-        width: 18.5%;
-      }
-      .chart-box{
-        width: 39%;
-      }
-      .chart-box{
-        width: 38%;
-      }
-      #chartt{
-        width: 100%;
-      }
-
-
-    }
-    @media screen and (min-width: 1600px) and (max-width:1800px){
-      .welcome-box{
-        width: 40%;
-      }
-      .chart-donut{
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
-        width: 41%;
-        height: 51%;
-        
-      }
-      #chartt{
-        width: 80%;
-      }
-
-
-    }
-
-    @media screen and (min-width: 1800px){
-
-
-
-    }
-    
+  #chartt {
+    width: 70%;
+  }
+}
