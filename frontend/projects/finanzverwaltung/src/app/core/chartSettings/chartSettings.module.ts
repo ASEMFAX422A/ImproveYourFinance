@@ -66,14 +66,24 @@ constructor(){
     }
   ],
   responsiveLine: [
-    
+    {
+      breakpoint: 400,
+      options: {
+
+        chart: {
+          width: 270,
+          height: 170
+        },
+      }
+      
+    },
     {
       breakpoint: 600,
       options: {
 
         chart: {
           width: 300,
-          height: 150
+          height: 200
         },
       }
       

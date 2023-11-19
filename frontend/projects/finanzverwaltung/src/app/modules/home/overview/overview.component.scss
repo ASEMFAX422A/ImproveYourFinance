@@ -17,12 +17,8 @@
     background-size:100%;
     min-height: 100%;
   }
-
-
-  //OVERVIEW MAIN
-
   .welcome-box{
-    top: 8%;
+    top: 10%;
     width: 41%;
     height: 33%;
     position: absolute;
@@ -32,45 +28,15 @@
     border-radius: 25px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
   }
-  
-  .welcome-content {
-    font-size: 1.5rem;
-  }
-  .welcome-content .h1{
-    font-size: 1.5rem;
-  }
-  .welcome-content span{
-    font-size: 1.2rem;
-  }
-  .welcome-box h1, .welcome-box  span{
-    margin: 10px;
-  }
-    //OVERVIEW MAIN END
-
-
-    body {
-      font-family: Roboto, sans-serif;
-    }
-    
-    #chart {
-      width: 100%;
-      margin: 0;
-
-
-    }
-
-    
-
-    .chart-box{
-
+  .chart-box{
       position: absolute;
-      height: 40%;
       width: 41%;
       top: 63%;
       background-color: #f8f8f8;
       border-radius: 25px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
       padding: 25px;
+      height: 40%;
 
     }
     .chart-box2{
@@ -88,7 +54,7 @@
     }
 
     .chart-donut{
-
+      top: 10%;
       position: absolute;
       right: 15px;
       display: flex;
@@ -96,7 +62,7 @@
       border-radius: 30px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
       width: 41%;
-      top: 8%;
+      height: 50%;
       margin-bottom: 5%;
     }
 
@@ -135,7 +101,6 @@
 
       .container{    
         background-size: cover;
-
       }
       .welcome-box{
         left: 15%;
@@ -157,11 +122,8 @@
         font-size: 10px;
   
       }
-      .footer{
-        margin-top: 0%;
-      }
-      .fin-1{
 
+      .fin-1{
         left: 57%;
         width: 40%;
         height: 10%;
@@ -169,21 +131,12 @@
         font-size: 10px;
       }
       .chart-donut{
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
         width: 82%;
         height: 21%;
         top: 30%;
         left: 15%;
-        
-      }
-      #chartt{
-        width: 80%;
-        height: 100vh;
-        overflow: hidden;
       }
       .chart-box{
-
-        position: absolute;
         left: 15%;
         height: 26%;
         width: 82%;
@@ -191,18 +144,7 @@
         padding: 30px;
   
       }
-      #chart {
-        max-width: 100%;
-        width: 70%;
-        height: 20%;
-        margin: 0;
-        padding: 0;
-  
-      }
-      
       .chart-box2{
-  
-        position: absolute;
         left: 15%;
         height: 26%;
         width: 82%;
@@ -240,9 +182,6 @@
         font-size: 10px;
   
       }
-      .footer{
-        margin-top: 0%;
-      }
       .fin-1{
 
         left: 57%;
@@ -252,7 +191,6 @@
         font-size: 10px;
       }
       .chart-donut{
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
         width: 82%;
         height: 21%;
         top: 30%;
@@ -262,7 +200,7 @@
 
       .chart-box{
 
-        position: absolute;
+        
         left: 15%;
         height: 26%;
         width: 82%;
@@ -270,18 +208,9 @@
         padding: 30px;
   
       }
-      #chart {
-        max-width: 100%;
-        width: 120%;
-        height: 20%;
-        margin: 0;
-        padding: 0;
-  
-      }
-      
       .chart-box2{
   
-        position: absolute;
+        
         left: 15%;
         height: 26%;
         width: 82%;
@@ -306,26 +235,18 @@
 
       .chart-box{
 
-        position: absolute;
+        
         height: 25%;
         width: 74%;
         top: 54%;
-        background-color: #f8f8f8;
-        border-radius: 25px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
         padding: 25px;
         left: 24.5%;
   
       }
       .chart-box2{
-  
-        position: absolute;
         height: 25%;
         width: 74%;
         top: 80%;
-        background-color: #f8f8f8;
-        border-radius: 25px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
         padding: 25px;
         left: 24.5%;
   
@@ -337,9 +258,7 @@
       #chartt{
         width: 100%;
       }
-      #chart{
-        width: 100%;
-      }
+
       .fin{
         top: 28%;
         height: 10%;
@@ -367,29 +286,23 @@
         height: 19%;
         left: 24.5%;
       }
-
+      #chartt{
+        width: 100%;
+      }
       .chart-box{
 
-        position: absolute;
+
         height: 25%;
         width: 74%;
         top: 54%;
-        background-color: #f8f8f8;
-        border-radius: 25px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
         padding: 25px;
         left: 24.5%;
   
       }
       .chart-box2{
-  
-        position: absolute;
         height: 25%;
         width: 74%;
         top: 80%;
-        background-color: #f8f8f8;
-        border-radius: 25px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
         padding: 25px;
         left: 24.5%;
   
@@ -397,12 +310,6 @@
       .chart-donut{
         height: 45%;
         
-      }
-      #chartt{
-        width: 90%;
-      }
-      #chart{
-        width: 100%;
       }
       .fin{
         top: 28%;
@@ -438,14 +345,14 @@
         left: 38%;
         width: 18.5%;
       }
-      #chartt{
-        width: 90%;
-      }
       .chart-box{
         width: 39%;
       }
       .chart-box{
         width: 38%;
+      }
+      #chartt{
+        width: 100%;
       }
 
 
@@ -461,7 +368,7 @@
         
       }
       #chartt{
-        width: 70%;
+        width: 80%;
       }
 
 
@@ -469,9 +376,6 @@
 
     @media screen and (min-width: 1800px){
 
-      #chartt{
-        width: 75%;
-      }
 
 
     }
