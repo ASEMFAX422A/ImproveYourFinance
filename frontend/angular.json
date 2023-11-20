@@ -31,6 +31,7 @@
             ],
             "styles": [
               "@angular/material/prebuilt-themes/pink-bluegrey.css",
+              "node_modules/ngx-toastr/toastr.css",
               "projects/finanzverwaltung/src/styles.scss"
             ],
             "scripts": []

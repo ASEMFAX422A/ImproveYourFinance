@@ -1,16 +1,32 @@
 <div class="login-container">
-  <form>
-    <a class ="logo" href=""><img src="assets/logo.png"></a>
+  <form [formGroup]="this.registrationForm" (ngSubmit)="this.sendForm()">
+    <a class ="logo" routerLink="/"><img src="assets/logo.png"></a>
     <h1>Account anlegen</h1>
 
     <div class="input-group">
-      <input type="text" id="username" placeholder="Benutzername" name="username" [(ngModel)]="this.registerObject.username" required>
+      <input type="text" id="username" placeholder="Benutzername" name="username" formControlName="username" required>
+    </div>
+    <div *ngIf="username?.hasError('minlength')">
+      Dein Username muss mindestens 3 Zeichen lang sein.
     </div>
     <div class="input-group">
-      <input type="password" id="password" placeholder="Passwort" name="password" [(ngModel)]="this.registerObject.password" required>
+      <input type="password" id="password" placeholder="Passwort" name="password" formControlName="password"required>
     </div>
-    <div class="route"><a href="login">Anmelden</a></div>
+    <div *ngIf="password?.hasError('minlength')">
+      Dein Passwort muss mindestens 6 Zeichen lang sein.
+    </div>
+    <div *ngIf="password?.hasError('pattern')">
+      Dein Passwort muss mindestens einen Großbuchstaben, mindestens einen Kleinbuchstaben, mindestens eine Zahl und mindestens ein Sonderzeichen enthalten.
+    </div>
+    <div class="input-group">
+      <input type="password" id="password-confirm" placeholder="Passwort bestätigen" name="password-confirm" formControlName="confirmPassword" required>
+    </div>
+    <div *ngIf="password?.value !== confirmPassword?.value">
+      Passwort und Passwortbestätigung stimmen nicht überein.
+    </div>
+    <div class="route"><a routerLink="/login">Anmelden</a></div>
     
-    <button mat-flat-button type="submit" (click)="this.sendForm()">Registrieren</button>
+    <button mat-flat-button [disabled]="!this.isValid" type="submit">Registrieren</button>
   </form>
 </div>
+<app-footer></app-footer>

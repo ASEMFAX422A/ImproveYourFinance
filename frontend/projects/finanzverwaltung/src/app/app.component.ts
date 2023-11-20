@@ -15,13 +15,7 @@ export class AppComponent {
   title = 'finanzverwaltung';
   showFiller = false;
 
-  constructor(protected auth: AuthService){
+  constructor(protected auth: AuthService){}
 
-  }
-
-  getYear(){
-
-    return new Date().getFullYear();
-  }
 
 }
