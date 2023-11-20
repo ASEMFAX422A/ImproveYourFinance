@@ -12,9 +12,13 @@ import {
   ApexDataLabels,
   ApexTitleSubtitle,
   ApexStroke,
-  ApexGrid
+  ApexGrid,
+  ApexPlotOptions,
+  ApexYAxis,
+  ApexFill
 } from "ng-apexcharts";
 import { ChartSettingsModule } from '../../../core/chartSettings/chartSettings.module';
+import { RequestService } from '../../../core/services/request.service';
 
 
 export type chartData = {
@@ -27,7 +31,16 @@ export type chartData = {
 
 };
 
-
+export type ChartOptions = {
+  series: ApexAxisChartSeries;
+  chart: ApexChart;
+  dataLabels: ApexDataLabels;
+  plotOptions: ApexPlotOptions;
+  yaxis: ApexYAxis;
+  xaxis: ApexXAxis;
+  fill: ApexFill;
+  title: ApexTitleSubtitle;
+};
 @Component({
   templateUrl: './overview.component.html',
   styleUrls: ['./overview.component.scss']
@@ -40,20 +53,17 @@ export class OverviewComponent {
 
   @ViewChild("chart") chart!: ChartComponent;
   public chartData: Partial<chartData>;
+  public chartOptions: Partial<ChartOptions>;
+  
 
 
-
-
-
-
-  constructor(protected chartSettings: ChartSettingsModule) {
-
+  constructor(protected chartSettings: ChartSettingsModule, requestService: RequestService) {
     
     this.chartData = {
       series: [
         {
           name: "Ausgaben",
-          data: [1, 2, 3, 4, 55],
+          data: [3000, 2600, 3, 55],
         }
       ],
       xaxis: {
@@ -72,7 +82,110 @@ export class OverviewComponent {
 
     };
 
+    this.chartOptions = {
+      series: [
+        {
+          name: "Inflation",
+          data: [2.3, 3.1, 4.0, 200, 4.0, 3.6, 3.2, 2.3, 1.4, 0.8, 0.5, -222]
+        }
+      ],
+      chart: {
+        height: 280,
+        type: "bar"
+      },
+      plotOptions: {
+        bar: {
+          dataLabels: {
+            position: "top"
+          }
+        }
+      },
+      dataLabels: {
+        enabled: true,
+        formatter: function(val) {
+          return val + "%";
+        },
+        offsetY: -20,
+        style: {
+          fontSize: "12px",
+          colors: ["#212121"]
+        }
+      },
 
-    
+      xaxis: {
+        categories: [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec"
+        ],
+        position: "top",
+        labels: {
+          offsetY: -18
+        },
+        axisBorder: {
+          show: false
+        },
+        axisTicks: {
+          show: false
+        },
+        crosshairs: {
+          fill: {
+            type: "gradient",
+            gradient: {
+              colorFrom: "#D8E3F0",
+              colorTo: "#BED1E6",
+              stops: [0, 100],
+              opacityFrom: 0.4,
+              opacityTo: 0.5
+            }
+          }
+        },
+        tooltip: {
+          enabled: true,
+          offsetY: -35
+        }
+      },
+      fill: {
+        colors: [function({ value, seriesIndex, w }:{ value: number, seriesIndex: number, w: any }) {
+          if(value < 0) {
+              return '#fd0606'
+          } else {
+              return '#06fd1b'
+          }
+        }]
+      },
+      yaxis: {
+        axisBorder: {
+          show: false
+        },
+        axisTicks: {
+          show: false
+        },
+        labels: {
+          show: false,
+          formatter: function(val) {
+            return val + "%";
+          }
+        }
+      },
+      title: {
+        text: "Monthly Inflation in Argentina, 2002",
+        floating: false,
+        offsetY: 320,
+        align: "center",
+        style: {
+          color: "#444"
+        }
+      }
+    };
   }
-}
+ }

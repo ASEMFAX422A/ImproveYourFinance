@@ -38,9 +38,15 @@ export class PdfDialogComponent {
           console.error('Error uploading file', error);
         }
       );
+      alert("Erfolgreich hinzugefügt");
+      this.dialogRef.close();
+    }
+    else{
+      alert("Bitte Datei auswählen!");
     }
   }
   onClose() {
+    
     this.dialogRef.close();
   }
 

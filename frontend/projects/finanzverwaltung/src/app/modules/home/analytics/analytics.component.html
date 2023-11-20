@@ -28,17 +28,23 @@
    <div class="fin-2">
     <h3>Kontostand am Anfang des Monats</h3>
   </div>
+  <div class="fin-3">
+    <h3>Kontostand am Anfang des Monats</h3>
+  </div>
    <div class="chart-box">
-     <div id="chart">
-       <apx-chart 
-         [series]="chartData.series"
-         [title]="chartData.title" 
-         [xaxis]="chartData.xaxis"
-         [chart]="chartSettings.settings.lineChart" 
-         [stroke]="chartSettings.settings.lineStroke"
-         [grid]="chartSettings.settings.lineChartGrid">
-       </apx-chart>
-     </div>
+    <div id="chart">
+      <apx-chart
+        [series]="chartOptions.series"
+        [chart]="chartOptions.chart"
+        [dataLabels]="chartOptions.dataLabels"
+        [plotOptions]="chartOptions.plotOptions"
+        [yaxis]="chartOptions.yaxis"
+        [xaxis]="chartOptions.xaxis"
+        [fill]="chartOptions.fill"
+        [title]="chartOptions.title"
+        [responsive]="chartSettings.settings.responsiveLine"
+      ></apx-chart>
+    </div>
    </div>
    <div class="chart-box2">
      <div id="chart">
@@ -48,7 +54,9 @@
          [xaxis]="chartData.xaxis"
          [chart]="chartSettings.settings.lineChart"
          [stroke]="chartSettings.settings.lineStroke"
-         [grid]="chartSettings.settings.lineChartGrid">
+         [grid]="chartSettings.settings.lineChartGrid"
+         [responsive]="chartSettings.settings.responsiveLine">
+         
        </apx-chart>
      </div>
 
@@ -58,8 +66,8 @@
        <apx-chart 
          [series]="chartData.donut_data"
          [labels]="chartData.donut_labels"
-         [chart]="chartSettings.settings.donutChartType"
-         [responsive]="chartSettings.settings.responsive">
+         [chart]="chartSettings.settings.donutChartType">
+
        </apx-chart>
      </div>
    </div>
