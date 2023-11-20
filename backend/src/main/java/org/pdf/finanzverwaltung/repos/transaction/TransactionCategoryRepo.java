@@ -3,7 +3,8 @@ package org.pdf.finanzverwaltung.repos.transaction;
 import java.util.List;
 import java.util.Optional;
 
-import org.pdf.finanzverwaltung.repos.user.DUser;
+import org.pdf.finanzverwaltung.models.DTransactionCategory;
+import org.pdf.finanzverwaltung.models.DUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;

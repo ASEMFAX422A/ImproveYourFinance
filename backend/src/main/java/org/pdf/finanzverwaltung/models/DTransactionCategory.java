@@ -1,6 +1,4 @@
-package org.pdf.finanzverwaltung.repos.transaction;
-
-import org.pdf.finanzverwaltung.repos.user.DUser;
+package org.pdf.finanzverwaltung.models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,11 +22,15 @@ public class DTransactionCategory {
     @Column(unique = true, nullable = false, length = 100)
     private String name;
 
+    @Column(nullable = true)
+    private String matcherPattern;
+
     public DTransactionCategory() {
     }
 
-    public DTransactionCategory(String name) {
+    public DTransactionCategory(String name, String matcherPattern) {
         this.name = name;
+        this.matcherPattern = matcherPattern;
     }
 
     public long getId() {
@@ -37,5 +39,9 @@ public class DTransactionCategory {
 
     public String getName() {
         return name;
+    }
+
+    public String getMatcherPattern() {
+        return matcherPattern;
     }
 }

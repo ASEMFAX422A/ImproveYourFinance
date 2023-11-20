@@ -1,60 +1,63 @@
 package org.pdf.finanzverwaltung.dto;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.Set;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class BankStatement {
     private long id;
-
-    private BankAccount bankAccount;
-
     private Date issuedDate;
-
-    private int oldBalance;
-
-    private String filePath;
-
+    private double oldBalance;
+    private double newBalance;
     private Set<Transaction> transactions;
 
     public BankStatement() {
     }
 
-    public BankStatement(BankAccount bankAccount, Date issueDate, int oldBalance) {
-        this.bankAccount = bankAccount;
+    public BankStatement(long id, Date issueDate, double oldBalance, double newBalance, Set<Transaction> transactions) {
+        this.id = id;
         this.issuedDate = issueDate;
         this.oldBalance = oldBalance;
+        this.newBalance = newBalance;
+        this.transactions = transactions;
     }
 
     public long getId() {
         return id;
     }
 
-    public BankAccount getBankAccount() {
-        return bankAccount;
-    }
-
     public Date getIssuedDate() {
         return issuedDate;
     }
 
-    public String getFilePath() {
-        return filePath;
-    }
-
-    public int getOldBalance() {
+    public double getOldBalance() {
         return oldBalance;
     }
 
-    @JsonProperty("newBalance")
-    public int getNewBalance() {
-        if (transactions == null)
-            return 0;
-        return transactions.stream().mapToInt(Transaction::getAmount).sum();
+    public double getNewBalance() {
+        return newBalance;
     }
 
     public Set<Transaction> getTransactions() {
         return transactions;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setIssuedDate(Date issuedDate) {
+        this.issuedDate = issuedDate;
+    }
+
+    public void setOldBalance(int oldBalance) {
+        this.oldBalance = oldBalance;
+    }
+
+    public void setNewBalance(int newBalance) {
+        this.newBalance = newBalance;
+    }
+
+    public void setTransactions(Set<Transaction> transactions) {
+        this.transactions = transactions;
     }
 }

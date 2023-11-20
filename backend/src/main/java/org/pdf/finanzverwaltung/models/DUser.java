@@ -1,34 +1,26 @@
-package org.pdf.finanzverwaltung.repos.user;
+package org.pdf.finanzverwaltung.models;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Set;
 
-import org.pdf.finanzverwaltung.models.UserRole;
-import org.pdf.finanzverwaltung.repos.bank.DBankAccount;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreType;
-
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 
 @Entity
 public class DUser implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private long id;
 
     @Column(unique = true, nullable = false, length = 50)
     private String username;
@@ -39,9 +31,6 @@ public class DUser implements UserDetails {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 10)
     private UserRole role;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true)
-    private Set<DBankAccount> bankAccounts;
 
     public DUser() {
     }
@@ -58,7 +47,7 @@ public class DUser implements UserDetails {
         return Collections.singleton(auth);
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
@@ -78,6 +67,10 @@ public class DUser implements UserDetails {
 
     public String getLastName() {
         return username;
+    }
+
+    public UserRole getRole() {
+        return role;
     }
 
     @Override
@@ -100,10 +93,6 @@ public class DUser implements UserDetails {
         return true;
     }
 
-    public Set<DBankAccount> getBankAccounts() {
-        return bankAccounts;
-    }
-
     public void setPassword(String encodedPassword) {
         password = encodedPassword;
     }
@@ -112,6 +101,9 @@ public class DUser implements UserDetails {
     public boolean equals(Object obj) {
         if (obj == null)
             return false;
+
+        if (obj == this)
+            return true;
 
         if (!(obj instanceof DUser))
             return false;

@@ -1,4 +1,4 @@
-package org.pdf.finanzverwaltung.repos.currency;
+package org.pdf.finanzverwaltung.models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

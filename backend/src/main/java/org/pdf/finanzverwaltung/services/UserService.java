@@ -1,8 +1,12 @@
 package org.pdf.finanzverwaltung.services;
 
-import org.pdf.finanzverwaltung.models.User;
-import org.pdf.finanzverwaltung.repos.user.DUser;
+import java.util.Optional;
+
+import org.pdf.finanzverwaltung.dto.User;
+import org.pdf.finanzverwaltung.models.DUser;
 import org.pdf.finanzverwaltung.repos.user.UserRepo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -12,23 +16,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService implements UserDetailsService {
 
-    private final UserRepo userRepo;
-    private final PasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepo userRepo, PasswordEncoder passwordEncoder) {
-        this.userRepo = userRepo;
-        this.passwordEncoder = passwordEncoder;
-    }
+    @Autowired
+    private UserRepo userRepo;
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepo.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("user: " + username + " not found"));
+    public UserService() {
     }
 
     /**
-     *
-     * @return True only when a user was added to the repo
+     * @return True only when the user was added to the repo
      */
     public boolean addUser(User user) {
         boolean userExists = userRepo.findByUsername(user.getUsername()).isPresent();
@@ -40,5 +38,51 @@ public class UserService implements UserDetailsService {
         userRepo.save(new DUser(user.getUsername(), password, user.getUserRole()));
 
         return true;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepo.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("user: " + username + " not found"));
+    }
+
+    public User getById(long id) {
+        Optional<DUser> userOpt = userRepo.findById(id);
+        if (!userOpt.isPresent())
+            return null;
+
+        return dUserToUser(userOpt.get());
+    }
+
+    public User getCurrentUser() {
+        Object user = getCurrentDUser();
+        if (user == null)
+            return null;
+
+        return dUserToUser((DUser) user);
+    }
+
+    public DUser getCurrentDUser() {
+        Object user = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (user == null)
+            return null;
+
+        return (DUser) user;
+    }
+
+    public User dUserToUser(DUser user) {
+        return new User(user.getId(), user.getUsername(), user.getPassword(), user.getRole());
+    }
+
+    public DUser userToDUser(User user) {
+        final DUser currentUser = getCurrentDUser();
+        if (currentUser.getId() == user.getId())
+            return currentUser;
+
+        Optional<DUser> userOpt = userRepo.findById(user.getId());
+        if (userOpt.isPresent())
+            return userOpt.get();
+
+        return new DUser(user.getUsername(), user.getPassword(), user.getUserRole());
     }
 }

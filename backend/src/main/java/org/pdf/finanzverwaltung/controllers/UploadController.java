@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import org.pdf.finanzverwaltung.dto.MessageDto;
 import org.pdf.finanzverwaltung.services.BankStatementService;
 import org.pdf.finanzverwaltung.services.StorageService;
+import org.pdf.finanzverwaltung.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,15 +30,18 @@ public class UploadController {
     @Autowired
     private StorageService storageService;
 
+    @Autowired
+    private UserService userService;
+
     public UploadController() {
     }
 
-    @PostMapping("/account-statement")
+    @PostMapping("/bank-statement")
     public ResponseEntity<MessageDto> file(@RequestParam("file") MultipartFile file) {
         if (file.isEmpty())
             return MessageDto.createResponse(HttpStatus.BAD_REQUEST, "No file received");
 
-        if (!file.getOriginalFilename().toLowerCase().endsWith(".pdf")) {
+        if (file.getOriginalFilename() == null || !file.getOriginalFilename().toLowerCase().endsWith(".pdf")) {
             return MessageDto.createResponse(HttpStatus.BAD_REQUEST, "Wrong file type");
         }
 
@@ -49,10 +53,12 @@ public class UploadController {
 
             Files.copy(file.getInputStream(), bankStatement.toPath());
 
-            if (bankStatementService.parseAndSave(bankStatement))
-                return MessageDto.createResponse(HttpStatus.OK, "File successful uploaded");
-            else
+            final ResponseEntity<MessageDto> response = bankStatementService.parseAndSave(userService.getCurrentUser(),
+                    bankStatement);
+            if (response.getStatusCode() != HttpStatus.OK)
                 bankStatement.delete();
+
+            return response;
         } catch (IOException e) {
             logger.error("Could not save file", e);
         }

@@ -1,25 +1,25 @@
 package org.pdf.finanzverwaltung.dto;
 
-import org.pdf.finanzverwaltung.repos.transaction.DTransactionCategory;
-
 public class TransactionCategory {
-    private String name;
     private long id;
+    private String name;
+    private String matcherPattern;
 
-    public TransactionCategory(long id, String name) {
+    public TransactionCategory(long id, String name, String matcherPattern) {
         this.id = id;
         this.name = name;
+        this.matcherPattern = matcherPattern;
     }
 
-    public static TransactionCategory create(DTransactionCategory category) {
-        return new TransactionCategory(category.getId(), category.getName());
+    public long getId() {
+        return id;
     }
 
     public String getName() {
         return name;
     }
 
-    public long getId() {
-        return id;
+    public String getMatcherPattern() {
+        return matcherPattern;
     }
 }

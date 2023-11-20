@@ -1,13 +1,6 @@
-package org.pdf.finanzverwaltung.repos.transaction;
+package org.pdf.finanzverwaltung.models;
 
 import java.util.Date;
-
-import org.pdf.finanzverwaltung.repos.bank.DBankStatement;
-import org.pdf.finanzverwaltung.repos.currency.DCurrency;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,11 +12,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
-/**
- * DTransaction
- */
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class DTransaction {
 
     @Id
@@ -35,30 +24,33 @@ public class DTransaction {
     private Date date;
 
     @Column(nullable = false)
-    private int amount;
+    private String title;
+
+    @Column
+    private String desc;
+
+    @Column(nullable = false)
+    private double amount;
 
     @ManyToOne
     @JoinColumn(name = "bank_statement_id", nullable = false)
     private DBankStatement bankStatement;
 
     @ManyToOne
-    @JoinColumn(name = "category_id", nullable = false)
+    @JoinColumn(name = "category_id", nullable = true)
     private DTransactionCategory category;
-
-    @ManyToOne
-    @JoinColumn(name = "currency_id")
-    private DCurrency currency;
 
     public DTransaction() {
     }
 
-    public DTransaction(Date date, int amount, DBankStatement bankStatement, DTransactionCategory category,
-            DCurrency currency) {
+    public DTransaction(Date date, String title, String desc, double amount, DBankStatement bankStatement,
+            DTransactionCategory category) {
         this.date = date;
+        this.title = title;
+        this.desc = desc;
         this.amount = amount;
         this.bankStatement = bankStatement;
         this.category = category;
-        this.currency = currency;
     }
 
     public long getId() {
@@ -69,7 +61,15 @@ public class DTransaction {
         return date;
     }
 
-    public int getAmount() {
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return desc;
+    }
+
+    public double getAmount() {
         return amount;
     }
 
@@ -77,11 +77,35 @@ public class DTransaction {
         return bankStatement;
     }
 
-    public DCurrency getCurrency() {
-        return currency;
-    }
-
     public DTransactionCategory getCategory() {
         return category;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDescription(String desc) {
+        this.desc = desc;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public void setBankStatement(DBankStatement bankStatement) {
+        this.bankStatement = bankStatement;
+    }
+
+    public void setCategory(DTransactionCategory category) {
+        this.category = category;
     }
 }

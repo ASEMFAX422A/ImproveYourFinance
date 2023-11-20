@@ -1,7 +1,6 @@
 package org.pdf.finanzverwaltung.controllers;
 
 import org.pdf.finanzverwaltung.AppConfiguration;
-import org.pdf.finanzverwaltung.dto.MessageDto;
 import org.pdf.finanzverwaltung.dto.SettingsDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

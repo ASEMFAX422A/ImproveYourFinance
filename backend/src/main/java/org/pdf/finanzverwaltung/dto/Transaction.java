@@ -1,56 +1,73 @@
 package org.pdf.finanzverwaltung.dto;
 
-import java.sql.Date;
-import org.pdf.finanzverwaltung.repos.currency.DCurrency;
+import java.util.Date;
 
 public class Transaction {
 
     private long id;
-
     private Date date;
-
-    private int amount;
-
-    private BankStatement bankStatement;
-
+    private String title;
+    private String desc;
+    private double amount;
     private TransactionCategory category;
-
-    private DCurrency currency;
 
     public Transaction() {
     }
 
-    public Transaction(Date date, int amount, BankStatement bankStatement, TransactionCategory category,
-            DCurrency currency) {
+    public Transaction(long id, Date date, String title, String desc, double amount, TransactionCategory category) {
+        this.id = id;
         this.date = date;
+        this.title = title;
+        this.desc = desc;
         this.amount = amount;
-        this.bankStatement = bankStatement;
         this.category = category;
-        this.currency = currency;
     }
 
     public long getId() {
         return id;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
     public Date getDate() {
         return date;
     }
 
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public BankStatement getBankStatement() {
-        return bankStatement;
-    }
-
-    public DCurrency getCurrency() {
-        return currency;
+    public String getDesc() {
+        return desc;
     }
 
     public TransactionCategory getCategory() {
         return category;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public void setDescription(String desc) {
+        this.desc = desc;
+    }
+
+    public void setCategory(TransactionCategory category) {
+        this.category = category;
+    }
 }
