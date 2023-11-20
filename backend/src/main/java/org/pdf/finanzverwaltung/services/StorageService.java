@@ -5,7 +5,7 @@ import java.security.SecureRandom;
 import java.util.Random;
 
 import org.pdf.finanzverwaltung.AppConfiguration;
-import org.pdf.finanzverwaltung.repos.user.DUser;
+import org.pdf.finanzverwaltung.models.DUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,7 +27,7 @@ public class StorageService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         DUser user = (DUser) authentication.getPrincipal();
 
-        File userDir = new File(config.getAppFolder(), user.getId().toString());
+        File userDir = new File(config.getAppFolder(), user.getId() + "");
         if (!userDir.exists() && !userDir.mkdirs())
             return null;
         return userDir;

@@ -11,7 +11,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.pdf.finanzverwaltung.controllers.RegistrationController;
 import org.pdf.finanzverwaltung.dto.MessageDto;
-import org.pdf.finanzverwaltung.models.RegistrationRequest;
+import org.pdf.finanzverwaltung.dto.RegistrationRequest;
 import org.pdf.finanzverwaltung.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

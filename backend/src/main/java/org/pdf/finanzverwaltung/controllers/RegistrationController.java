@@ -5,8 +5,8 @@ import java.util.regex.Pattern;
 
 import org.pdf.finanzverwaltung.AppConfiguration;
 import org.pdf.finanzverwaltung.dto.MessageDto;
-import org.pdf.finanzverwaltung.models.RegistrationRequest;
-import org.pdf.finanzverwaltung.models.User;
+import org.pdf.finanzverwaltung.dto.RegistrationRequest;
+import org.pdf.finanzverwaltung.dto.User;
 import org.pdf.finanzverwaltung.models.UserRole;
 import org.pdf.finanzverwaltung.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(path = "/api/v1/auth/registration")
 public class RegistrationController {
+    private static final Pattern specialCharsPattern = Pattern.compile("[^a-zA-Z0-9]");
+    private static final Pattern numberPattern = Pattern.compile("\\d");
 
     @Autowired
     private UserService userService;
@@ -27,36 +29,33 @@ public class RegistrationController {
     @Autowired
     private AppConfiguration config;
 
-    private Pattern numberPattern = Pattern.compile("\\d");
-    private Pattern specialCharsPattern = Pattern.compile("[^a-zA-Z0-9]");
-
     public RegistrationController() {
     }
 
     @PostMapping
     public ResponseEntity<MessageDto> register(@RequestBody RegistrationRequest request) {
         if (request.getUsername().length() < config.getUsernameMinLength())
-            return MessageDto.createResponse(HttpStatus.BAD_REQUEST, "username to short");
+            return MessageDto.createResponse(HttpStatus.BAD_REQUEST, "Username to short");
 
         if (request.getPassword().length() < config.getPasswordMinLength())
-            return MessageDto.createResponse(HttpStatus.BAD_REQUEST, "password to short");
+            return MessageDto.createResponse(HttpStatus.BAD_REQUEST, "Password to short");
 
         if (!hasLowerUpper(request.getPassword()))
-            return MessageDto.createResponse(HttpStatus.BAD_REQUEST, "password requires lower and upper case a-z");
+            return MessageDto.createResponse(HttpStatus.BAD_REQUEST, "Password requires lower and upper case a-z");
 
         if (countDigits(request.getPassword()) < config.getPasswordMinNumbers())
-            return MessageDto.createResponse(HttpStatus.BAD_REQUEST, "password not enough numbers");
+            return MessageDto.createResponse(HttpStatus.BAD_REQUEST, "Password not enough numbers");
 
         if (countSpecialCharacters(request.getPassword()) < config.getPasswordMinSpecialCharacters())
-            return MessageDto.createResponse(HttpStatus.BAD_REQUEST, "password not enough special characters");
+            return MessageDto.createResponse(HttpStatus.BAD_REQUEST, "Password not enough special characters");
 
         final boolean added = userService
                 .addUser(new User(request.getUsername(), request.getPassword(), UserRole.USER));
 
         if (added)
-            return MessageDto.createResponse(HttpStatus.OK, "user registered");
+            return MessageDto.createResponse(HttpStatus.OK, "User registered");
         else
-            return MessageDto.createResponse(HttpStatus.BAD_REQUEST, "user could not be registered");
+            return MessageDto.createResponse(HttpStatus.BAD_REQUEST, "User could not be registered");
     }
 
     public boolean hasLowerUpper(String input) {

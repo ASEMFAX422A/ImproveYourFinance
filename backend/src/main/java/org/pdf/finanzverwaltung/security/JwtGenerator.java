@@ -12,6 +12,7 @@ import io.jsonwebtoken.Jwts;
 
 @Component
 public class JwtGenerator {
+
     @Autowired
     private AppConfiguration config;
 

@@ -1,13 +1,7 @@
-package org.pdf.finanzverwaltung.repos.bank;
+package org.pdf.finanzverwaltung.models;
 
 import java.util.Date;
 import java.util.Set;
-
-import org.pdf.finanzverwaltung.repos.transaction.DTransaction;
-
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -22,11 +16,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
-/**
- * DBankStatement
- */
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class DBankStatement {
 
     @Id
@@ -48,7 +38,7 @@ public class DBankStatement {
     private double newBalance;
 
     @Column(nullable = false)
-    private String filePath;
+    private String fileName;
 
     @OneToMany(mappedBy = "bankStatement", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private Set<DTransaction> transactions;
@@ -57,12 +47,12 @@ public class DBankStatement {
     }
 
     public DBankStatement(DBankAccount bankAccount, Date issueDate, double oldBalance, double newBalance,
-            String filePath) {
+            String fileName) {
         this.bankAccount = bankAccount;
         this.issuedDate = issueDate;
         this.oldBalance = oldBalance;
         this.newBalance = newBalance;
-        this.filePath = filePath;
+        this.fileName = fileName;
     }
 
     public long getId() {
@@ -77,8 +67,8 @@ public class DBankStatement {
         return issuedDate;
     }
 
-    public String getFilePath() {
-        return filePath;
+    public String getFileName() {
+        return fileName;
     }
 
     public double getOldBalance() {
@@ -91,6 +81,30 @@ public class DBankStatement {
 
     public Set<DTransaction> getTransactions() {
         return transactions;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setBankAccount(DBankAccount bankAccount) {
+        this.bankAccount = bankAccount;
+    }
+
+    public void setIssuedDate(Date issuedDate) {
+        this.issuedDate = issuedDate;
+    }
+
+    public void setOldBalance(double oldBalance) {
+        this.oldBalance = oldBalance;
+    }
+
+    public void setNewBalance(double newBalance) {
+        this.newBalance = newBalance;
+    }
+
+    public void setFileName(String filePath) {
+        this.fileName = filePath;
     }
 
     public void setTransactions(Set<DTransaction> transactions) {

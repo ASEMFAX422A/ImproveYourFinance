@@ -1,48 +1,39 @@
 package org.pdf.finanzverwaltung.dto;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.Set;
 
 public class BankStatement {
     private long id;
-    private BankAccount bankAccount;
     private Date issuedDate;
-    private int oldBalance;
-    private int newBalance;
-    private String filePath;
+    private double oldBalance;
+    private double newBalance;
     private Set<Transaction> transactions;
 
     public BankStatement() {
     }
 
-    public BankStatement(BankAccount bankAccount, Date issueDate, int oldBalance, int newBalance) {
-        this.bankAccount = bankAccount;
+    public BankStatement(long id, Date issueDate, double oldBalance, double newBalance, Set<Transaction> transactions) {
+        this.id = id;
         this.issuedDate = issueDate;
         this.oldBalance = oldBalance;
         this.newBalance = newBalance;
+        this.transactions = transactions;
     }
 
     public long getId() {
         return id;
     }
 
-    public BankAccount getBankAccount() {
-        return bankAccount;
-    }
-
     public Date getIssuedDate() {
         return issuedDate;
     }
 
-    public String getFilePath() {
-        return filePath;
-    }
-
-    public int getOldBalance() {
+    public double getOldBalance() {
         return oldBalance;
     }
 
-    public int getNewBalance() {
+    public double getNewBalance() {
         return newBalance;
     }
 
@@ -52,10 +43,6 @@ public class BankStatement {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public void setBankAccount(BankAccount bankAccount) {
-        this.bankAccount = bankAccount;
     }
 
     public void setIssuedDate(Date issuedDate) {
@@ -70,12 +57,7 @@ public class BankStatement {
         this.newBalance = newBalance;
     }
 
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
-    }
-
     public void setTransactions(Set<Transaction> transactions) {
         this.transactions = transactions;
     }
-
 }

@@ -1,4 +1,4 @@
-package org.pdf.finanzverwaltung.models;
+package org.pdf.finanzverwaltung.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

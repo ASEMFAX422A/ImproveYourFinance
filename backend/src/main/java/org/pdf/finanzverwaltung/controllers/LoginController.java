@@ -1,8 +1,9 @@
 package org.pdf.finanzverwaltung.controllers;
 
-import org.pdf.finanzverwaltung.models.LoginRequest;
+import org.pdf.finanzverwaltung.dto.LoginRequest;
 import org.pdf.finanzverwaltung.security.JwtGenerator;
 import org.pdf.finanzverwaltung.services.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -31,7 +32,7 @@ public class LoginController {
     public ResponseEntity<Response> login(@RequestBody LoginRequest request) {
         UserDetails user = userService.loadUserByUsername(request.getUsername());
         if (user == null) {
-            return ResponseEntity.status(400).body(null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
 
         Authentication auth = authManager

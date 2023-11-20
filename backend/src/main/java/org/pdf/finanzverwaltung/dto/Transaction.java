@@ -5,21 +5,21 @@ import java.util.Date;
 public class Transaction {
 
     private long id;
-    private String title;
     private Date date;
-    private double amount;
+    private String title;
     private String desc;
-    private BankStatement bankStatement;
+    private double amount;
     private TransactionCategory category;
 
     public Transaction() {
     }
 
-    public Transaction(Date date, double amount, BankStatement bankStatement, TransactionCategory category,
-            Currency currency) {
+    public Transaction(long id, Date date, String title, String desc, double amount, TransactionCategory category) {
+        this.id = id;
         this.date = date;
+        this.title = title;
+        this.desc = desc;
         this.amount = amount;
-        this.bankStatement = bankStatement;
         this.category = category;
     }
 
@@ -41,10 +41,6 @@ public class Transaction {
 
     public String getDesc() {
         return desc;
-    }
-
-    public BankStatement getBankStatement() {
-        return bankStatement;
     }
 
     public TransactionCategory getCategory() {
@@ -69,10 +65,6 @@ public class Transaction {
 
     public void setDescription(String desc) {
         this.desc = desc;
-    }
-
-    public void setBankStatement(BankStatement bankStatement) {
-        this.bankStatement = bankStatement;
     }
 
     public void setCategory(TransactionCategory category) {

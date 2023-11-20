@@ -1,14 +1,8 @@
-package org.pdf.finanzverwaltung.repos.bank;
+package org.pdf.finanzverwaltung.models;
 
 import java.util.Set;
 
-import org.pdf.finanzverwaltung.repos.currency.DCurrency;
-import org.pdf.finanzverwaltung.repos.user.DUser;
-
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -20,18 +14,16 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "iban")
 public class DBankAccount {
 
     @Id
-    private String iban;
+    private String id;
 
     @Column(nullable = false)
     private String bic;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    @JsonIgnore
     private DUser user;
 
     @ManyToOne
@@ -46,14 +38,18 @@ public class DBankAccount {
     }
 
     public DBankAccount(String iban, String bic, DUser user, DCurrency currency) {
-        this.iban = iban;
+        this.id = iban;
         this.bic = bic;
         this.user = user;
         this.currency = currency;
     }
 
+    public String getId() {
+        return id;
+    }
+
     public String getIban() {
-        return iban;
+        return id;
     }
 
     public String getBic() {

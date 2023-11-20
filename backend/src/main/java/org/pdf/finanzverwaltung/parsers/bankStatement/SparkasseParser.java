@@ -1,11 +1,9 @@
-package org.pdf.finanzverwaltung.parsers;
+package org.pdf.finanzverwaltung.parsers.bankStatement;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -13,18 +11,9 @@ import java.util.regex.Pattern;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
-import org.pdf.finanzverwaltung.dto.Transaction;
-import org.pdf.finanzverwaltung.repos.bank.BankAccountRepo;
-import org.pdf.finanzverwaltung.repos.bank.BankStatementRepo;
-import org.pdf.finanzverwaltung.repos.bank.DBankAccount;
-import org.pdf.finanzverwaltung.repos.bank.DBankStatement;
-import org.pdf.finanzverwaltung.repos.transaction.DTransaction;
-import org.pdf.finanzverwaltung.repos.transaction.DTransactionCategory;
-import org.pdf.finanzverwaltung.repos.transaction.TransactionCategoryRepo;
-import org.pdf.finanzverwaltung.repos.transaction.TransactionRepo;
+import org.pdf.finanzverwaltung.models.DTransaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -43,70 +32,27 @@ public class SparkasseParser implements BankStatementParser {
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMANY);
     private static final SimpleDateFormat dateStatementFormat = new SimpleDateFormat("dd. MMMM yyyy", Locale.GERMANY);
 
-    @Autowired
-    private BankAccountRepo bankAccountRepo;
-
-    @Autowired
-    private TransactionCategoryRepo transactionCategoryRepo;
-
-    @Autowired
-    private TransactionRepo transactionRepo;
-
-    @Autowired
-    private BankStatementRepo bankStatementRepo;
-
     public SparkasseParser() {
     }
 
     @Override
-    public DBankStatement parse(PDDocument document) {
+    public ParsedBankStatement parse(PDDocument document) {
         final String pages = getPages(document, 1, document.getNumberOfPages() - 2);
         if (pages == null)
             return null;
 
-        Date date = null;
-        String iban = null;
-        double oldBalance = -1;
+        final ParsedBankStatement bankStatement = new ParsedBankStatement();
+        final Matcher dateMatcher = datePattern.matcher(pages);
 
-        final StringBuilder transaction = new StringBuilder();
-        final List<Transaction> transactions = new ArrayList<>();
-        final Matcher matcher = datePattern.matcher(pages);
-
-        int start = matcher.find() && matcher.find() ? matcher.start() : 0;
-
+        int start = dateMatcher.find() && dateMatcher.find() ? dateMatcher.start() : 0;
         final String startStr = pages.substring(0, start);
 
-        date = getDate(startStr);
-        iban = getIban(startStr);
-        oldBalance = getOldBalance(startStr);
-
-        // TODO check account exists -> create?
-        // Use DTransaction???
-
-        while (matcher.find()) {
-            final Transaction trans = parseTransaction(transaction.append(pages.substring(start, matcher.start())));
-            if (trans == null)
-                break;
-            transactions.add(trans);
-            start = matcher.start();
-        }
-
-        final double newBalance = oldBalance + transactions.stream().mapToDouble(o -> o.getAmount()).sum();
-
-        // TEST
-        DTransactionCategory cat = transactionCategoryRepo.findById(1L).get();
-        DBankAccount bankAccount = bankAccountRepo.findById(iban.trim()).get();
-
-        DBankStatement bankStatement = new DBankStatement(bankAccount, date, oldBalance, newBalance, "LEL");
-        bankStatementRepo.save(bankStatement);
-
-        Set<DTransaction> tr = new HashSet<>();
-        for (Transaction trans : transactions) {
-            DTransaction dTransaction = new DTransaction(trans.getDate(), trans.getAmount(), bankStatement, cat);
-            tr.add(dTransaction);
-        }
-        transactionRepo.saveAll(tr);
-        // TETS END
+        bankStatement.iban = getIban(startStr);
+        bankStatement.issuedDate = getDate(startStr);
+        bankStatement.oldBalance = getOldBalance(startStr);
+        bankStatement.transactions = getTransactions(pages, dateMatcher, start);
+        bankStatement.newBalance = bankStatement.oldBalance
+                + bankStatement.transactions.stream().mapToDouble(o -> o.getAmount()).sum();
 
         return bankStatement;
     }
@@ -129,13 +75,28 @@ public class SparkasseParser implements BankStatementParser {
         return false;
     }
 
-    private static Transaction parseTransaction(StringBuilder transaction) {
-        // TODO Category
+    private Set<DTransaction> getTransactions(String pages, Matcher dateMatcher, int start) {
+        final StringBuilder transaction = new StringBuilder();
+        final Set<DTransaction> transactions = new HashSet<>();
+
+        while (dateMatcher.find()) {
+            final DTransaction trans = parseTransaction(
+                    transaction.append(pages.substring(start, dateMatcher.start())));
+            if (trans == null)
+                break;
+
+            transactions.add(trans);
+            start = dateMatcher.start();
+        }
+        return transactions;
+    }
+
+    private static DTransaction parseTransaction(StringBuilder transaction) {
         final Matcher endReachedMatcher = endReachedPattern.matcher(transaction.toString());
         if (endReachedMatcher.find())
             return null;
 
-        Transaction trans = new Transaction();
+        DTransaction trans = new DTransaction();
 
         final StringBuilder firstLine = new StringBuilder(getFirstLine(transaction));
         final int spaceIndex = firstLine.indexOf(" ");
@@ -149,14 +110,14 @@ public class SparkasseParser implements BankStatementParser {
         trans.setTitle(firstLine.substring(spaceIndex + 1));
 
         final Matcher amountMatcher = amountPattern.matcher(transaction.toString());
-        if (amountMatcher.find()) {
-            // return error ???
+        if (!amountMatcher.find()) {
+            //TODO return error ???
         }
 
         final String amount = amountMatcher.group().trim();
         trans.setAmount(Double.parseDouble(amount.replaceAll("\\,", ".")));
 
-        trans.setDescription(transaction.substring(0, amountMatcher.start()).toString());
+        trans.setDescription(transaction.substring(0, amountMatcher.start()).toString().trim());
         transaction.delete(0, transaction.length());
 
         return trans;

@@ -1,8 +1,6 @@
-package org.pdf.finanzverwaltung.repos.transaction;
+package org.pdf.finanzverwaltung.models;
 
 import java.util.Date;
-
-import org.pdf.finanzverwaltung.repos.bank.DBankStatement;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -26,6 +24,12 @@ public class DTransaction {
     private Date date;
 
     @Column(nullable = false)
+    private String title;
+
+    @Column
+    private String desc;
+
+    @Column(nullable = false)
     private double amount;
 
     @ManyToOne
@@ -33,14 +37,17 @@ public class DTransaction {
     private DBankStatement bankStatement;
 
     @ManyToOne
-    @JoinColumn(name = "category_id", nullable = false)
+    @JoinColumn(name = "category_id", nullable = true)
     private DTransactionCategory category;
 
     public DTransaction() {
     }
 
-    public DTransaction(Date date, double amount, DBankStatement bankStatement, DTransactionCategory category) {
+    public DTransaction(Date date, String title, String desc, double amount, DBankStatement bankStatement,
+            DTransactionCategory category) {
         this.date = date;
+        this.title = title;
+        this.desc = desc;
         this.amount = amount;
         this.bankStatement = bankStatement;
         this.category = category;
@@ -54,6 +61,14 @@ public class DTransaction {
         return date;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return desc;
+    }
+
     public double getAmount() {
         return amount;
     }
@@ -64,5 +79,33 @@ public class DTransaction {
 
     public DTransactionCategory getCategory() {
         return category;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDescription(String desc) {
+        this.desc = desc;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public void setBankStatement(DBankStatement bankStatement) {
+        this.bankStatement = bankStatement;
+    }
+
+    public void setCategory(DTransactionCategory category) {
+        this.category = category;
     }
 }

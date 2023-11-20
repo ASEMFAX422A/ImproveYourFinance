@@ -1,15 +1,12 @@
 package org.pdf.finanzverwaltung.dto;
 
-import org.pdf.finanzverwaltung.repos.bank.DBankAccount;
-import org.pdf.finanzverwaltung.repos.currency.DCurrency;
-
 public class BankAccount {
-    private DCurrency currency;
+    private Currency currency;
     private String iban;
     private String bic;
     private long owner;
 
-    public BankAccount(String iban, String bic, long owner, DCurrency currency) {
+    public BankAccount(String iban, String bic, long owner, Currency currency) {
         this.iban = iban;
         this.bic = bic;
         this.owner = owner;
@@ -28,11 +25,7 @@ public class BankAccount {
         return owner;
     }
 
-    public DCurrency getCurrency() {
+    public Currency getCurrency() {
         return currency;
-    }
-
-    public static BankAccount create(DBankAccount account) {
-        return new BankAccount(account.getIban(), account.getBic(), account.getUser().getId(), account.getCurrency());
     }
 }
