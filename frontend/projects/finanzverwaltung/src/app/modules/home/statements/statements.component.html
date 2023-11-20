@@ -1,11 +1,12 @@
+<div class="nav">
+  <app-side-bar></app-side-bar>
+</div>
 <div class="main">
-    <div class="nav">
-        <app-side-bar></app-side-bar>
-    </div>
+    <div class="create-button">
     <button mat-raised-button color="primary" (click)="openPdfDialog()">Hinzufügen</button>
     <button mat-raised-button *ngIf="this.pdfview" (click)="PdfSwitch()">PDF Ansicht</button>
     <button mat-raised-button *ngIf="!this.pdfview" (click)="PdfSwitch()">Tabellenansicht</button>
-    
+    </div>
     <div class="tab" *ngIf="this.pdfview">
       <table mat-table [dataSource]="dataSource">
         <ng-container matColumnDef="position">
@@ -30,7 +31,7 @@
         </ng-container>
         <ng-container matColumnDef="button">
           <th mat-header-cell *matHeaderCellDef></th>
-          <td mat-cell *matCellDef="let element"><button mat-raised-button color="primary" (click)="openTransactionDialog()">Überweisungen</button></td>
+          <td mat-cell *matCellDef="let element"><button class ="test"(click)="openTransactionDialog()">Überweisungen</button></td>
           
         </ng-container>
         

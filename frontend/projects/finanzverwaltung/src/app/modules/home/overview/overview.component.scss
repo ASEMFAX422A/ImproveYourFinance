@@ -96,12 +96,8 @@
 
 }
 
-@media screen and (max-width: 1800px){
-  .container {
-    background-size: cover;
-  }
-}
-@media screen and (min-width: 400px) and (max-width: 1000px){
+
+@media screen and (max-width: 1000px){
   
 
 
@@ -272,5 +268,10 @@
 
   #chartt {
     width: 70%;
+  }
+}
+@media screen and (max-width: 1800px){
+  .container {
+    background-size: cover;
   }
 }
