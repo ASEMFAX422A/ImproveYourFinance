@@ -11,4 +11,7 @@ public final class AuthMessageConstants {
     public static final String PASSWORD_NOT_ENOUGH_SPECIAL_CHARACTERS = "password not enough special characters";
     public static final String USER_REGISTERED = "user registered";
     public static final String USER_ALREADY_EXISTS = "user with that name already exists";
+    
+    public static final String USER_NON_EXISTENT = "user non-existent ";
+    public static final String INVALID_CREDENTIALS = "invalid credentials";
 }
