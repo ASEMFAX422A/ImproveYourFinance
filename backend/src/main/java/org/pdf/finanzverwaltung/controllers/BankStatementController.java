@@ -10,7 +10,6 @@ import org.pdf.finanzverwaltung.dto.BankAccountQuery;
 import org.pdf.finanzverwaltung.dto.BankStatementDTO;
 import org.pdf.finanzverwaltung.dto.BankStatementQuery;
 import org.pdf.finanzverwaltung.dto.MessageDto;
-import org.pdf.finanzverwaltung.dto.User;
 import org.pdf.finanzverwaltung.services.BankStatementService;
 import org.pdf.finanzverwaltung.services.StorageService;
 import org.pdf.finanzverwaltung.services.UserService;
