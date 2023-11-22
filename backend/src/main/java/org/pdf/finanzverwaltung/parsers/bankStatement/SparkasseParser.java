@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
-import org.pdf.finanzverwaltung.dto.Currency;
+import org.pdf.finanzverwaltung.dto.CurrencyDTO;
 import org.pdf.finanzverwaltung.models.DTransaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,7 +52,7 @@ public class SparkasseParser implements BankStatementParser {
         bankStatement.iban = getIban(startStr);
         bankStatement.issuedDate = getDate(startStr);
         bankStatement.oldBalance = getOldBalance(startStr);
-        bankStatement.currency = new Currency("€", "Euro");
+        bankStatement.currency = new CurrencyDTO("€", "Euro");
         bankStatement.transactions = getTransactions(pages, dateMatcher, start);
         bankStatement.newBalance = bankStatement.oldBalance
                 + bankStatement.transactions.stream().mapToDouble(o -> o.getAmount()).sum();

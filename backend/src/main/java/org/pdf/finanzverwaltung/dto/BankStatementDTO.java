@@ -3,17 +3,18 @@ package org.pdf.finanzverwaltung.dto;
 import java.util.Date;
 import java.util.Set;
 
-public class BankStatement {
+public class BankStatementDTO {
     private long id;
     private Date issuedDate;
     private double oldBalance;
     private double newBalance;
-    private Set<Transaction> transactions;
+    private Set<TransactionDTO> transactions;
 
-    public BankStatement() {
+    public BankStatementDTO() {
     }
 
-    public BankStatement(long id, Date issueDate, double oldBalance, double newBalance, Set<Transaction> transactions) {
+    public BankStatementDTO(long id, Date issueDate, double oldBalance, double newBalance,
+            Set<TransactionDTO> transactions) {
         this.id = id;
         this.issuedDate = issueDate;
         this.oldBalance = oldBalance;
@@ -37,7 +38,7 @@ public class BankStatement {
         return newBalance;
     }
 
-    public Set<Transaction> getTransactions() {
+    public Set<TransactionDTO> getTransactions() {
         return transactions;
     }
 
@@ -57,7 +58,7 @@ public class BankStatement {
         this.newBalance = newBalance;
     }
 
-    public void setTransactions(Set<Transaction> transactions) {
+    public void setTransactions(Set<TransactionDTO> transactions) {
         this.transactions = transactions;
     }
 }

@@ -15,4 +15,6 @@ public interface TransactionCategoryRepo extends JpaRepository<DTransactionCateg
     public DTransactionCategory findByName(String name);
 
     public List<DTransactionCategory> findAllByUser(DUser user);
+
+    public DTransactionCategory findByUserAndName(DUser user, String name);
 }

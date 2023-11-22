@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
-import org.pdf.finanzverwaltung.dto.Currency;
+import org.pdf.finanzverwaltung.dto.CurrencyDTO;
 import org.pdf.finanzverwaltung.models.DTransaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -91,7 +91,7 @@ public class CommerzbankParser implements BankStatementParser {
         }
 
         bankStatement.bic = getBic(pages);
-        bankStatement.currency = new Currency("€", "Euro");
+        bankStatement.currency = new CurrencyDTO("€", "Euro");
         bankStatement.transactions = transactions;
         bankStatement.newBalance = bankStatement.oldBalance
                 + transactions.stream().mapToDouble(o -> o.getAmount()).sum();

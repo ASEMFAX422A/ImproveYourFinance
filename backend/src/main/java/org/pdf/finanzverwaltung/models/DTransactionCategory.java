@@ -57,4 +57,24 @@ public class DTransactionCategory {
     public boolean isMatchDescription() {
         return matchDescription;
     }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setUser(DUser user) {
+        this.user = user;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setMatcherPattern(String matcherPattern) {
+        this.matcherPattern = matcherPattern;
+    }
+
+    public void setMatchDescription(boolean matchDescription) {
+        this.matchDescription = matchDescription;
+    }
 }

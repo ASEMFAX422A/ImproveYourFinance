@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import org.pdf.finanzverwaltung.dto.BankAccount;
+import org.pdf.finanzverwaltung.dto.BankAccountDTO;
 import org.pdf.finanzverwaltung.dto.User;
 import org.pdf.finanzverwaltung.models.DBankAccount;
 import org.pdf.finanzverwaltung.models.DUser;
@@ -36,47 +36,47 @@ public class BankAccountService {
         return bankAccountRepo.existsByIdAndUserId(id, userService.getCurrentDUser());
     }
 
-    public Set<BankAccount> getAllForCurrentUser() {
+    public Set<BankAccountDTO> getAllForCurrentUser() {
         List<DBankAccount> dBankAccounts = bankAccountRepo.findAllByUser(userService.getCurrentDUser());
 
-        Set<BankAccount> bankAccounts = new HashSet<>();
+        Set<BankAccountDTO> bankAccounts = new HashSet<>();
         for (DBankAccount bankAccount : dBankAccounts) {
             bankAccounts.add(dBankAccountToBankAccount(bankAccount));
         }
         return bankAccounts;
     }
 
-    public Set<BankAccount> getAllForUser(User user) {
+    public Set<BankAccountDTO> getAllForUser(User user) {
         List<DBankAccount> dBankAccounts = bankAccountRepo.findAllByUser(userService.userToDUser(user));
 
-        Set<BankAccount> bankAccounts = new HashSet<>();
+        Set<BankAccountDTO> bankAccounts = new HashSet<>();
         for (DBankAccount bankAccount : dBankAccounts) {
             bankAccounts.add(dBankAccountToBankAccount(bankAccount));
         }
         return bankAccounts;
     }
 
-    public BankAccount getByIdAndCurrentUser(String iban) {
+    public BankAccountDTO getByIdAndCurrentUser(String iban) {
         final DBankAccount bankAccount = bankAccountRepo.findByIdAndUser(iban, userService.getCurrentDUser());
 
         return dBankAccountToBankAccount(bankAccount);
     }
 
-    public BankAccount getByIdAndUser(String iban, User user) {
+    public BankAccountDTO getByIdAndUser(String iban, User user) {
         final DBankAccount bankAccount = bankAccountRepo.findByIdAndUser(iban, userService.userToDUser(user));
 
         return dBankAccountToBankAccount(bankAccount);
     }
 
-    public BankAccount dBankAccountToBankAccount(DBankAccount account) {
+    public BankAccountDTO dBankAccountToBankAccount(DBankAccount account) {
         if (account == null)
             return null;
 
-        return new BankAccount(account.getIban(), account.getBic(), account.getUser().getId(),
+        return new BankAccountDTO(account.getIban(), account.getBic(), account.getUser().getId(),
                 currencyService.dCurrencyToCurrency(account.getCurrency()));
     }
 
-    public DBankAccount bankAccountToDBankAccount(BankAccount account) {
+    public DBankAccount bankAccountToDBankAccount(BankAccountDTO account) {
         if (account == null)
             return null;
 

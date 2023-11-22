@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Set;
 
 import org.pdf.finanzverwaltung.dto.BankAccountQuery;
-import org.pdf.finanzverwaltung.dto.BankStatement;
+import org.pdf.finanzverwaltung.dto.BankStatementDTO;
 import org.pdf.finanzverwaltung.dto.BankStatementQuery;
 import org.pdf.finanzverwaltung.dto.MessageDto;
 import org.pdf.finanzverwaltung.dto.User;
@@ -47,7 +47,7 @@ public class BankStatementController {
 
     @GetMapping("/get-pdf")
     public ResponseEntity<ByteArrayResource> getPdf(@RequestParam long id) {
-        final BankStatement bankStatement = bankStatementService.getByIdAndCurrentUser(id);
+        final BankStatementDTO bankStatement = bankStatementService.getByIdAndCurrentUser(id);
 
         if (bankStatement == null)
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
@@ -73,8 +73,8 @@ public class BankStatementController {
     }
 
     @PostMapping("/query-statement")
-    public ResponseEntity<BankStatement> queryBankStatement(@RequestBody BankStatementQuery query) {
-        final BankStatement bankStatement = bankStatementService.getByIdAndCurrentUser(query.id);
+    public ResponseEntity<BankStatementDTO> queryBankStatement(@RequestBody BankStatementQuery query) {
+        final BankStatementDTO bankStatement = bankStatementService.getByIdAndCurrentUser(query.id);
 
         if (bankStatement == null)
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
@@ -83,8 +83,8 @@ public class BankStatementController {
     }
 
     @PostMapping("/query-statements")
-    public ResponseEntity<Set<BankStatement>> queryBankStatements(@RequestBody BankAccountQuery query) {
-        final Set<BankStatement> bankStatements = bankStatementService.getAllByIdAndCurrentUser(query.iban);
+    public ResponseEntity<Set<BankStatementDTO>> queryBankStatements(@RequestBody BankAccountQuery query) {
+        final Set<BankStatementDTO> bankStatements = bankStatementService.getAllByIdAndCurrentUser(query.iban);
 
         return ResponseEntity.ok(bankStatements);
     }

@@ -5,14 +5,14 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.pdf.finanzverwaltung.dto.BankAccount;
+import org.pdf.finanzverwaltung.dto.BankAccountDTO;
 import org.pdf.finanzverwaltung.dto.BankAccountOverviewDto;
 import org.pdf.finanzverwaltung.dto.BankAccountOverviewQuery;
 import org.pdf.finanzverwaltung.dto.BankAccountQuery;
-import org.pdf.finanzverwaltung.dto.BankStatement;
-import org.pdf.finanzverwaltung.dto.CategoryExpenses;
-import org.pdf.finanzverwaltung.dto.DailyExpenses;
-import org.pdf.finanzverwaltung.dto.Transaction;
+import org.pdf.finanzverwaltung.dto.BankStatementDTO;
+import org.pdf.finanzverwaltung.dto.CategoryExpensesDTO;
+import org.pdf.finanzverwaltung.dto.DailyExpensesDTO;
+import org.pdf.finanzverwaltung.dto.TransactionDTO;
 import org.pdf.finanzverwaltung.services.BankAccountService;
 import org.pdf.finanzverwaltung.services.BankStatementService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,15 +36,15 @@ public class BankAccountController {
     }
 
     @PostMapping("/query-accounts")
-    public ResponseEntity<Set<BankAccount>> queryBankAccounts() {
-        final Set<BankAccount> bankAccounts = bankAccountService.getAllForCurrentUser();
+    public ResponseEntity<Set<BankAccountDTO>> queryBankAccounts() {
+        final Set<BankAccountDTO> bankAccounts = bankAccountService.getAllForCurrentUser();
 
         return ResponseEntity.ok(bankAccounts);
     }
 
     @PostMapping("/query-account")
-    public ResponseEntity<BankAccount> queryBankAccount(@RequestBody BankAccountQuery query) {
-        final BankAccount bankAccount = bankAccountService.getByIdAndCurrentUser(query.iban);
+    public ResponseEntity<BankAccountDTO> queryBankAccount(@RequestBody BankAccountQuery query) {
+        final BankAccountDTO bankAccount = bankAccountService.getByIdAndCurrentUser(query.iban);
 
         if (bankAccount == null)
             return ResponseEntity.badRequest().build();
@@ -62,19 +62,20 @@ public class BankAccountController {
         response.categoryExpenses = new ArrayList<>();
 
         if (query.id.equalsIgnoreCase("all")) {
-            final Set<BankStatement> statement = bankStatementService.getByCurrentUserAndIssuedDateBetween(
+            final Set<BankStatementDTO> statement = bankStatementService.getByCurrentUserAndIssuedDateBetween(
                     new Date(query.start),
                     new Date(query.end));
             if (statement == null)
                 return ResponseEntity.badRequest().body(null);
 
-            for (BankStatement bankStatement : statement) {
+            for (BankStatementDTO bankStatement : statement) {
                 response.startBalance += bankStatement.getOldBalance();
                 response.endBalance += bankStatement.getNewBalance();
                 response.transactions.addAll(bankStatement.getTransactions());
             }
         } else {
-            final BankStatement statement = bankStatementService.getByUserAndBankAccountAndIssuedDateBetween(query.id,
+            final BankStatementDTO statement = bankStatementService.getByUserAndBankAccountAndIssuedDateBetween(
+                    query.id,
                     new Date(query.start),
                     new Date(query.end));
             if (statement == null)
@@ -85,57 +86,57 @@ public class BankAccountController {
             response.transactions.addAll(statement.getTransactions());
         }
 
-        CategoryExpenses noCategory = null;
-        for (Transaction trans : response.transactions) {
+        CategoryExpensesDTO noCategory = null;
+        for (TransactionDTO trans : response.transactions) {
 
             /* ==== Creating Daily Expenses ==== */
-            DailyExpenses dailyExpenses = null;
-            for (DailyExpenses dailyExp : response.dailyExpenses) {
-                if (dailyExp.date.compareTo(trans.getDate()) == 0) {
+            DailyExpensesDTO dailyExpenses = null;
+            for (DailyExpensesDTO dailyExp : response.dailyExpenses) {
+                if (dailyExp.date.compareTo(trans.date) == 0) {
                     dailyExpenses = dailyExp;
                     break;
                 }
             }
 
             if (dailyExpenses == null) {
-                dailyExpenses = new DailyExpenses();
-                dailyExpenses.date = trans.getDate();
+                dailyExpenses = new DailyExpensesDTO();
+                dailyExpenses.date = new Date(trans.date.getTime());
                 response.dailyExpenses.add(dailyExpenses);
             }
-            dailyExpenses.amount += trans.getAmount();
+            dailyExpenses.amount += trans.amount;
 
             /* ==== Creating Category Expenses ==== */
-            if (trans.getCategory() == null) {
+            if (trans.category == null) {
                 if (noCategory == null) {
-                    noCategory = new CategoryExpenses();
+                    noCategory = new CategoryExpensesDTO();
                     response.categoryExpenses.add(noCategory);
                 }
 
-                noCategory.amount += trans.getAmount();
+                noCategory.amount += trans.amount;
                 continue;
             }
 
-            CategoryExpenses categoryExpenses = null;
-            for (CategoryExpenses categoryExp : response.categoryExpenses) {
+            CategoryExpensesDTO categoryExpenses = null;
+            for (CategoryExpensesDTO categoryExp : response.categoryExpenses) {
                 if (categoryExp.category == null) {
                     continue;
                 }
 
-                if (categoryExp.category.getName().equals(trans.getCategory().getName())) {
+                if (categoryExp.category.getName().equals(trans.category.getName())) {
                     categoryExpenses = categoryExp;
                     break;
                 }
             }
 
             if (categoryExpenses == null) {
-                categoryExpenses = new CategoryExpenses();
-                categoryExpenses.category = trans.getCategory();
+                categoryExpenses = new CategoryExpensesDTO();
+                categoryExpenses.category = trans.category;
                 response.categoryExpenses.add(categoryExpenses);
             }
-            categoryExpenses.amount += trans.getAmount();
+            categoryExpenses.amount += trans.amount;
         }
 
-        response.dailyExpenses.sort((o1, o2) -> (int) (o1.date.getTime() - o2.date.getTime()));
+        response.dailyExpenses.sort((o1, o2) -> o1.date.compareTo(o2.date));
         return ResponseEntity.ok(response);
     }
 }

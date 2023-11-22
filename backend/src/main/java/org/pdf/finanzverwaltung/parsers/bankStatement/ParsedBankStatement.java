@@ -3,7 +3,7 @@ package org.pdf.finanzverwaltung.parsers.bankStatement;
 import java.util.Date;
 import java.util.Set;
 
-import org.pdf.finanzverwaltung.dto.Currency;
+import org.pdf.finanzverwaltung.dto.CurrencyDTO;
 import org.pdf.finanzverwaltung.models.DTransaction;
 
 public class ParsedBankStatement {
@@ -12,6 +12,6 @@ public class ParsedBankStatement {
     public Date issuedDate;
     public double oldBalance;
     public double newBalance;
-    public Currency currency;
+    public CurrencyDTO currency;
     public Set<DTransaction> transactions;
 }
