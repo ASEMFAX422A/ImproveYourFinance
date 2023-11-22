@@ -30,19 +30,19 @@ const routes: Routes = [
     path: '',
     title:  'Übersicht',
     loadChildren: () => import('./modules/home/home.module').then((m) => m.HomeModule),
-    //canActivate:[authGuard]
+    canActivate:[authGuard]
   },
   { 
     path: '',
     title:  'Kontoauszüge',
     loadChildren: () => import('./modules/home/home.module').then((m) => m.HomeModule),
-    //canActivate:[authGuard]
+    canActivate:[authGuard]
   },
   { 
     path: '',
     title:  'Analytics',
     loadChildren: () => import('./modules/home/home.module').then((m) => m.HomeModule),
-    //canActivate:[authGuard]
+    canActivate:[authGuard]
   },
   
   

@@ -6,8 +6,8 @@
     id="drop-area"
     (drop)="onDrop($event)"
     (dragover)="onDragOver($event)"
-    (dragleave)="onDragLeave($event)"
-  > 
+    (dragleave)="onDragLeave($event)">
+     
     <p type="file">Drag & Drop</p>
     <p *ngIf="selectedFile != null">{{selectedFile.name}}</p>
   </div>

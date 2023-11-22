@@ -16,7 +16,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 
 export type ChartSettings = {
  lineChart: ApexChart;
- donutChartType: ApexChart;
+ chart: ApexChart;
  xaxis: ApexXAxis;
  lineChartGrid: ApexGrid;
  lineStroke: ApexStroke;
@@ -188,8 +188,8 @@ constructor(){
     }
 
   ],
-  donutChartType: {
-    type: "donut"
+  chart: {
+    type: "radialBar"
 
   },
 }

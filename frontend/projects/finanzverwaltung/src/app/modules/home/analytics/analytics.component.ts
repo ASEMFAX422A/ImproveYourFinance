@@ -19,6 +19,7 @@ import {
 } from "ng-apexcharts";
 import { FormControl, FormGroup } from '@angular/forms';
 import { ChartSettingsModule } from '../../../core/chartSettings/chartSettings.module';
+import { ToastrService } from 'ngx-toastr';
 
 
 export type chartData = {
@@ -54,13 +55,14 @@ export class AnalyticsComponent {
     start: new FormControl(new Date(year, month, today.getDate())),
     end: new FormControl(new Date(year, month,today.getDate()+1)),
   });
+  
   getDataDate(){
     
-    const startDate = this.campaignOne.value;
-    console.log(startDate);
-    console.log(startDate.start?.getTime());
-    console.log(startDate.end?.getTime());
-    return alert("Ok");
+    const startEndDate = this.campaignOne.value;
+    console.log(startEndDate);
+    console.log(startEndDate.start?.getTime());
+    console.log(startEndDate.end?.getTime());
+    this.toastr.success("Ausgewählter Zeitraum: " + startEndDate.start?.toLocaleDateString('de-DE') + " bis " + startEndDate.end?.toLocaleDateString('de-DE'));
   }
   //username= this.auth.getUsername();
 
@@ -74,7 +76,7 @@ export class AnalyticsComponent {
 
 
 
-  constructor(public chartSettings: ChartSettingsModule) {
+  constructor(public chartSettings: ChartSettingsModule, private toastr: ToastrService) {
 
 
     this.chartData = {

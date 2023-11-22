@@ -44,89 +44,98 @@ export type ChartOptions = {
 @Component({
   templateUrl: './overview.component.html',
   styleUrls: ['./overview.component.scss']
-}) 
+})
 
 export class OverviewComponent {
-
-  //username= this.auth.getUsername();
-
 
   @ViewChild("chart") chart!: ChartComponent;
   public chartData: Partial<chartData>;
   public chartOptions: Partial<ChartOptions>;
   
+  username = this.auth.getUsername();
+  startBalance=0;
+  endBalance=0;
 
+  getStartDate() {
+    let startDate = new Date();
+    startDate.setMonth(startDate.getMonth() - 1);
+    startDate.setDate(1);
+    return startDate;
+  }
 
-  constructor(protected chartSettings: ChartSettingsModule, requestService: RequestService) {
+  getEndDate() {
+    let endDate = new Date();
+    endDate.setDate(0);
+    return endDate;
+  }
+
+  loadData() {
+    this.requestService.post("bank-account/overview", {
+      "id": "all",
+      "start": 1694124000000, //TODO: startDategetTime(),
+      "end": this.getEndDate().getTime(),
+    }).subscribe(response => {
+      this.updateData(response);
+
+    });
+  }
+  
+  updateData(data: any) {
+    var balance = data.startBalance;
+    this.startBalance = data.startBalance;
+    this.endBalance = data.endBalance;
+    const startDate = this.getStartDate();
+    console.log(data);
+    console.log(data.dailyExpenses.sort((a:any,b:any)=>new Date(a).getTime()- new Date(b).getTime()));
+    console.log(data);
     
-    this.chartData = {
-      series: [
+    this.chartData.title = { text: "Einnahmen/Ausgaben Übersicht für: " + startDate.toLocaleString('de-DE', { month: 'long' }) };
+    this.chartOptions.title = {
+      text: "Einnahmen/Ausgaben Übersicht für: " + startDate.toLocaleString('de-DE', { month: 'long' }),
+      floating: false,
+      offsetY: 20,
+      align: "center",
+      style: {
+        color: "#444"
+      }
+    }
+    this.chartData.donut_data= data.categoryExpenses.map((category:any)=>{
+     let categoryAmount:number = category.amount.toFixed(0);
+     if(categoryAmount < 0){
+      return Math.round(category.amount * -1 *100)/100;
+     }
+     console.log(categoryAmount);
+     return Math.round(category.amount *100)/100;
+    });
+
+    this.chartData.donut_labels= data.categoryExpenses.map((category:any)=>{
+      var categoryName = category.category?.name;
+      if(categoryName == null){
+        return "Nicht Kategorisiert";
+      }
+      return categoryName;
+    });
+    
+    this.chartData.series =
+      [
         {
-          name: "Ausgaben",
-          data: [3000, 2600, 3, 55],
+          name: "Einnahmen/Ausgaben",
+          data: data.dailyExpenses.map((transaction: any) => {
+            balance +=transaction.amount;
+            return balance.toFixed(2);
+          }),
+
         }
       ],
-      xaxis: {
-        categories: [1, 2, 3, 5, 7],
-
-      },
-      donut_data: [44],
-
-
-      donut_labels: ["Team A", "Team B", "Team C", "Team D", "Team E"],
-
-      title: {
-        text: "Ausgabe Übersicht für: "+"",
-
-      },
-
-    };
-
-    this.chartOptions = {
-      series: [
+      this.chartOptions.series =
+      [
         {
-          name: "Inflation",
-          data: [2.3, 3.1, 4.0, 200, 4.0, 3.6, 3.2, 2.3, 1.4, 0.8, 0.5, -222]
+          name: "Einnahmen/Ausgaben",
+          data: data.dailyExpenses.map((transaction: any) => transaction.amount.toFixed(2)),
         }
-      ],
-      chart: {
-        height: 280,
-        type: "bar"
-      },
-      plotOptions: {
-        bar: {
-          dataLabels: {
-            position: "top"
-          }
-        }
-      },
-      dataLabels: {
-        enabled: true,
-        formatter: function(val) {
-          return val + "%";
-        },
-        offsetY: -20,
-        style: {
-          fontSize: "12px",
-          colors: ["#212121"]
-        }
-      },
-
-      xaxis: {
-        categories: [
-          "Jan",
-          "Feb",
-          "Mar",
-          "Apr",
-          "May",
-          "Jun",
-          "Jul",
-          "Aug",
-          "Sep",
-          "Oct",
-          "Nov",
-          "Dec"
-        ],
+      ];
+      this.chartOptions.xaxis={
+        categories: data.dailyExpenses.map((transaction:any) =>new Date(transaction.date).getDate().toString()+"."),
         position: "top",
         labels: {
           offsetY: -18
@@ -153,13 +162,54 @@ export class OverviewComponent {
           enabled: true,
           offsetY: -35
         }
+      };
+      this.chartData.xaxis={
+        categories: data.dailyExpenses.map((transaction:any) =>new Date(transaction.date).getDate().toString()+"."),
+      }
+
+
+  }
+  
+  constructor(protected chartSettings: ChartSettingsModule, private requestService: RequestService, private auth: AuthService) {
+    this.chartData ={};
+    this.loadData();
+
+
+    this.chartOptions = {
+      series: [
+        {
+          name: "Inflation",
+          data: [2.3, 3.1, 4.0, 200, 4.0, 3.6, 3.2, 2.3, 1.4, 0.8, 0.5, -222]
+        }
+      ],
+      chart: {
+        height: 280,
+        type: "bar",
+        zoom: {
+          enabled: false
+        }
+      },
+      plotOptions: {
+        bar: {
+          dataLabels: {
+            position: "top"
+          }
+        }
+      },
+      dataLabels: {
+        enabled: true,
+        offsetY: -20,
+        style: {
+          fontSize: "12px",
+          colors: ["#212121"]
+        }
       },
       fill: {
-        colors: [function({ value, seriesIndex, w }:{ value: number, seriesIndex: number, w: any }) {
-          if(value < 0) {
-              return '#fd0606'
+        colors: [function ({ value, seriesIndex, w }: { value: number, seriesIndex: number, w: any }) {
+          if (value < 0) {
+            return '#fd0606'
           } else {
-              return '#06fd1b'
+            return '#06fd1b'
           }
         }]
       },
@@ -172,20 +222,10 @@ export class OverviewComponent {
         },
         labels: {
           show: false,
-          formatter: function(val) {
-            return val + "%";
-          }
+
         }
       },
-      title: {
-        text: "Monthly Inflation in Argentina, 2002",
-        floating: false,
-        offsetY: 320,
-        align: "center",
-        style: {
-          color: "#444"
-        }
-      }
+
     };
   }
- }
+}

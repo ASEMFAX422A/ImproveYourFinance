@@ -29,7 +29,12 @@
   border-radius: 25px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
 }
-
+.welcome-content{
+  padding: 20px;
+}
+.welcome-box p {
+  margin-top: 15px;
+}
 .chart-box {
   position: absolute;
   width: 41%;
@@ -80,7 +85,14 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
 
 }
-
+.fin p{
+  padding-top: 30px;
+  text-align: center;
+ }
+.fin-1 p{
+  padding-top: 30px;
+  text-align: center;
+ }
 .fin-1 {
 
   width: 20%;
@@ -110,10 +122,12 @@
 
   .welcome-content h1 {
     font-size: 15px;
+
   }
 
-  .welcome-content span {
+  .welcome-content p {
     font-size: 11px;
+    margin-top: 5px;
   }
 
   .fin {

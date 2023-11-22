@@ -50,7 +50,7 @@
  }
 
 
-.chart-box {
+ .chart-box {
   position: absolute;
   width: 41%;
   top: 63%;
@@ -100,7 +100,14 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
 
 }
-
+.fin p{
+  padding-top: 30px;
+  text-align: center;
+ }
+.fin-1 p{
+  padding-top: 30px;
+  text-align: center;
+ }
 .fin-1 {
 
   width: 20%;
@@ -115,48 +122,22 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
 
 }
-.fin-2 {
-
-  width: 20%;
-  height: 15%;
-  position: absolute;
-  top: 45%;
-  left: 58%;
-  color: #212121;
-  padding: 15px;
-  background: #f8f8f8;
-  border-radius: 25px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
-
-}
-.fin-3 {
-
-  width: 20%;
-  height: 15%;
-  position: absolute;
-  top: 45%;
-  right: 15px;
-  color: #212121;
-  padding: 15px;
-  background: #f8f8f8;
-  border-radius: 25px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
-
-}
 
 
 @media screen and (max-width: 1000px){
   
 
-
+  .container{
+    height: 120%;
+  }
   .welcome-box {
     left: 15%;
     width: 82%;
-    height: 8%;
+    height: 28%;
     top: 8%;
   }
 
-  .welcome-content h1 {
+  .welcome-content h2 {
     font-size: 15px;
   }
 
@@ -168,7 +149,7 @@
     left: 15%;
     width: 40%;
     height: 10%;
-    top: 17%;
+    top: 38%;
     font-size: 10px;
 
   }
@@ -177,14 +158,14 @@
     left: 57%;
     width: 40%;
     height: 10%;
-    top: 17%;
+    top: 38%;
     font-size: 10px;
   }
 
   .chart-donut {
     width: 82%;
     height: 21%;
-    top: 30%;
+    top: 50%;
     left: 15%;
   }
 
@@ -192,7 +173,7 @@
     left: 15%;
     height: 26%;
     width: 82%;
-    top: 52%;
+    top: 72%;
     padding: 30px;
 
   }
@@ -201,25 +182,37 @@
     left: 15%;
     height: 26%;
     width: 82%;
-    top: 79%;
+    top: 99%;
     padding: 30px;
   }
-
+  .submit-button{
+    width: 100%;
+    text-align: center;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding: 15px 0;
+    font-size: 10px;
+  }
 
 
 }
 @media screen and (min-width: 1000px) and (max-width:1500px) {
-  
+  .welcome-content h2 {
+    font-size: 15px;
+  }
+  .container{
+    height: 110%;
+  }
   .welcome-box {
     width: 30%;
-    height: 15%;
+    height: 25%;
     left: 24.5%;
 
   }
   .chart-box {
     height: 25%;
     width: 74%;
-    top: 54%;
+    top: 59%;
     padding: 25px;
     left: 24.5%;
 
@@ -227,25 +220,25 @@
   .chart-box2 {
     height: 25%;
     width: 74%;
-    top: 80%;
+    top: 85%;
     padding: 25px;
     left: 24.5%;
 
   }
   .chart-donut {
-    height: 42%;
+    height: 48%;
   }
   #chartt {
     width: 100%;
   }
   .fin {
-    top: 28%;
+    top: 36.5%;
     height: 10%;
     width: 30%;
     left: 24.5%;
   }
   .fin-1 {
-    top: 40%;
+    top: 48%;
     height: 10%;
     width: 30%;
     left: 0;
@@ -297,7 +290,7 @@
 
 }
 
-@media screen and (min-width: 1600px) and (max-width:1800px) {
+@media screen and (min-width: 1600px) and (max-width:1900px) {
 
   .chart-donut {
     width: 41%;
@@ -315,7 +308,7 @@
 @media screen and (min-width: 1100px) {
 
   #chartt {
-    width: 57%;
+    width: 70%;
   }
 }
 @media screen and (max-width: 1800px){

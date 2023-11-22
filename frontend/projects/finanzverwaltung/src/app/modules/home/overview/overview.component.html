@@ -3,16 +3,17 @@
   <div>
     <div class="welcome-box">
       <div class="welcome-content">
-        <h1>Willkommen Username<!--{{username}}-->,</h1>
-        <span>Hier siehst du deine Monatliche Übersicht.</span>
-        <span></span>
+        <h1>Willkommen {{username}},</h1>
+        <p>Hier siehst du deinen letzten Monat als Übersicht.</p>
       </div>
     </div>
     <div class="fin">
-      <h3>Deine Monatliche Ausgabe.</h3>
+      <h3>Kontostand am Anfang des Monats:</h3>
+      <p style="color:red">{{startBalance}}</p>
     </div>
     <div class="fin-1">
-      <h3>Kontostand am Anfang des Monats</h3>
+      <h3>Kontostand am Ende des Monats:</h3>
+      <p style="color:green">{{endBalance}}</p>
     </div>
     <div class="chart-box">
       <div id="chart">
@@ -42,14 +43,13 @@
           
         </apx-chart>
       </div>
-
     </div>
     <div class="chart-donut">
       <div id="chartt">
         <apx-chart 
           [series]="chartData.donut_data"
           [labels]="chartData.donut_labels"
-          [chart]="chartSettings.settings.donutChartType">
+          [chart]="chartSettings.settings.chart">
         </apx-chart>
       </div>
     </div>

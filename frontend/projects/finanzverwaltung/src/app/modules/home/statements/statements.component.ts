@@ -19,7 +19,6 @@ import { TransactionComponent } from '../../../extras/transaction/transaction.co
 
 
 export class StatementsComponent implements AfterViewInit {
-
   pdfview = true;
 
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol', 'button'];
@@ -28,32 +27,29 @@ export class StatementsComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   ngAfterViewInit() {
-    if(this.dataSource != undefined){
+    if (this.dataSource != undefined) {
       this.dataSource.data = [];
     }
-    
+
     this.dataSource = new MatTableDataSource<any>();
     this.dataSource.paginator = this.paginator;
     this.loadTableData();
-    }
+  }
 
-  constructor(private httpClient: HttpClient, public dialog: MatDialog, private cdr : ChangeDetectorRef,) { }
+  constructor(private httpClient: HttpClient, public dialog: MatDialog, private cdr: ChangeDetectorRef,) { }
 
   openPdfDialog() {
     this.dialog.open(PdfDialogComponent)
   }
   openTransactionDialog() {
-    const dialogRef = this.dialog.open(TransactionComponent,{
+    const dialogRef = this.dialog.open(TransactionComponent, {
       width: '100%',
       height: '75%'
     })
   }
   PdfSwitch() {
-
-  
     this.pdfview = !this.pdfview;
     this.loadTableData();
-
   }
 
   loadTableData() {
