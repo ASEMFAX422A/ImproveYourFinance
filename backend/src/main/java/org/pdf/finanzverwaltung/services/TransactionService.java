@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import org.pdf.finanzverwaltung.dto.EditCategoryQuery;
 import org.pdf.finanzverwaltung.dto.Transaction;
 import org.pdf.finanzverwaltung.dto.TransactionCategory;
 import org.pdf.finanzverwaltung.dto.User;
@@ -20,13 +21,40 @@ import org.springframework.stereotype.Service;
 public class TransactionService {
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private TransactionRepo transactionRepo;
 
     @Autowired
     private TransactionCategoryRepo transactionCategoryRepo;
 
-    @Autowired
-    private UserService userService;
+    public TransactionService() {
+    }
+
+    public boolean createForCurrentUser(EditCategoryQuery newCategory) {
+        try {
+            DTransactionCategory transactionCategory = new DTransactionCategory(userService.getCurrentDUser(),
+                    newCategory.name, newCategory.matcherPattern, newCategory.matchDescription);
+            transactionCategoryRepo.save(transactionCategory);
+            return true;
+        } catch (Exception e) {
+        }
+
+        return false;
+    }
+
+    public Set<TransactionCategory> getAllCategoriesForCurrentUser() {
+        final List<DTransactionCategory> dCategories = transactionCategoryRepo
+                .findAllByUser(userService.getCurrentDUser());
+
+        final Set<TransactionCategory> categories = new HashSet<>();
+        for (DTransactionCategory dCategory : dCategories) {
+            categories.add(dCategoryToCategory(dCategory));
+        }
+
+        return categories;
+    }
 
     public Set<TransactionCategory> getAllCategoriesForUser(User user) {
         List<DTransactionCategory> dCategories = transactionCategoryRepo.findAllByUser(userService.userToDUser(user));
@@ -42,22 +70,10 @@ public class TransactionService {
     public Set<Transaction> getAllBetweenForCurrentUser(Date startDate, Date endDate) {
         final Set<Transaction> transactions = new HashSet<>();
 
-        // TODO bank account check
-        for (DTransaction transaction : transactionRepo.findByDateBetween(startDate, endDate)) {
+        for (DTransaction transaction : transactionRepo.findByUserAndDateBetween(userService.getCurrentDUser(),
+                startDate, endDate)) {
             transactions.add(dTransactionToTransaction(transaction));
         }
-
-        return transactions;
-    }
-
-    public Set<Transaction> getByIdBetweenForCurrentUser(String id, Date startDate, Date endDate) {
-        final Set<Transaction> transactions = new HashSet<>();
-
-        // TODO Get
-        // for (DTransaction transaction : transactionRepo.findByDateBetween(startDate,
-        // endDate)) {
-        // transactions.add(dTransactionToTransaction(transaction));
-        // }
 
         return transactions;
     }
@@ -67,6 +83,9 @@ public class TransactionService {
     }
 
     public Transaction dTransactionToTransaction(DTransaction transaction) {
+        if (transaction == null)
+            return null;
+
         DTransactionCategory cat = transaction.getCategory();
         TransactionCategory category = null;
 
@@ -77,8 +96,11 @@ public class TransactionService {
                 transaction.getDescription(), transaction.getAmount(), category);
     }
 
-    public DTransaction transactionToDTransaction(Transaction trans) {
-        Optional<DTransaction> transactionOpt = transactionRepo.findById(trans.getId());
+    public DTransaction transactionToDTransaction(Transaction transaction) {
+        if (transaction == null)
+            return null;
+
+        Optional<DTransaction> transactionOpt = transactionRepo.findById(transaction.getId());
         if (transactionOpt.isPresent())
             return transactionOpt.get();
 

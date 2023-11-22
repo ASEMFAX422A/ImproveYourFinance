@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
+import org.pdf.finanzverwaltung.dto.Currency;
 import org.pdf.finanzverwaltung.models.DTransaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -89,9 +90,12 @@ public class CommerzbankParser implements BankStatementParser {
             }
         }
 
+        bankStatement.bic = getBic(pages);
+        bankStatement.currency = new Currency("€", "Euro");
         bankStatement.transactions = transactions;
         bankStatement.newBalance = bankStatement.oldBalance
                 + transactions.stream().mapToDouble(o -> o.getAmount()).sum();
+        bankStatement.newBalance = Math.round(bankStatement.newBalance * 100.0) / 100.0;
 
         return bankStatement;
     }
@@ -150,7 +154,7 @@ public class CommerzbankParser implements BankStatementParser {
             logger.error("Could not parse date: " + date, e);
         }
 
-        trans.setTitle(firstLine.toString());
+        trans.setTitle(firstLine.toString().trim());
         trans.setDescription(transaction.toString().trim());
 
         transaction.delete(0, transaction.length());

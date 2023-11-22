@@ -1,7 +1,5 @@
 package org.pdf.finanzverwaltung.services;
 
-import java.util.Optional;
-
 import org.pdf.finanzverwaltung.dto.Currency;
 import org.pdf.finanzverwaltung.models.DCurrency;
 import org.pdf.finanzverwaltung.repos.currency.CurrencyRepo;
@@ -17,13 +15,19 @@ public class CurrencyService {
     }
 
     public Currency dCurrencyToCurrency(DCurrency currency) {
+        if (currency == null)
+            return null;
+
         return new Currency(currency.getShortName(), currency.getLongName());
     }
 
     public DCurrency currencyToDCurrency(Currency currency) {
-        Optional<DCurrency> curOpt = currencyRepo.findByShortName(currency.getShortName());
-        if (curOpt.isPresent())
-            return curOpt.get();
+        if (currency == null)
+            return null;
+
+        final DCurrency cur = currencyRepo.findByShortName(currency.getShortName());
+        if (cur != null)
+            return cur;
 
         return new DCurrency(currency.getShortName(), currency.getLongName());
     }

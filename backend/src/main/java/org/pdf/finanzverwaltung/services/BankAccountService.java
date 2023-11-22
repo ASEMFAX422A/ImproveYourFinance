@@ -32,6 +32,20 @@ public class BankAccountService {
     public BankAccountService() {
     }
 
+    public boolean currentUserHasAccount(String id) {
+        return bankAccountRepo.existsByIdAndUserId(id, userService.getCurrentDUser());
+    }
+
+    public Set<BankAccount> getAllForCurrentUser() {
+        List<DBankAccount> dBankAccounts = bankAccountRepo.findAllByUser(userService.getCurrentDUser());
+
+        Set<BankAccount> bankAccounts = new HashSet<>();
+        for (DBankAccount bankAccount : dBankAccounts) {
+            bankAccounts.add(dBankAccountToBankAccount(bankAccount));
+        }
+        return bankAccounts;
+    }
+
     public Set<BankAccount> getAllForUser(User user) {
         List<DBankAccount> dBankAccounts = bankAccountRepo.findAllByUser(userService.userToDUser(user));
 
@@ -42,32 +56,30 @@ public class BankAccountService {
         return bankAccounts;
     }
 
-    public Optional<BankAccount> getByIdAndCurrentUser(String iban) {
-        Optional<DBankAccount> bankAccountOpt = bankAccountRepo.findByIdAndUser(iban, userService.getCurrentDUser());
+    public BankAccount getByIdAndCurrentUser(String iban) {
+        final DBankAccount bankAccount = bankAccountRepo.findByIdAndUser(iban, userService.getCurrentDUser());
 
-        if (bankAccountOpt.isPresent()) {
-            return Optional.of(dBankAccountToBankAccount(bankAccountOpt.get()));
-        }
-
-        return Optional.empty();
+        return dBankAccountToBankAccount(bankAccount);
     }
 
-    public Optional<BankAccount> getByIdAndUser(String iban, User user) {
-        Optional<DBankAccount> bankAccountOpt = bankAccountRepo.findByIdAndUser(iban, userService.userToDUser(user));
+    public BankAccount getByIdAndUser(String iban, User user) {
+        final DBankAccount bankAccount = bankAccountRepo.findByIdAndUser(iban, userService.userToDUser(user));
 
-        if (bankAccountOpt.isPresent()) {
-            return Optional.of(dBankAccountToBankAccount(bankAccountOpt.get()));
-        }
-
-        return Optional.empty();
+        return dBankAccountToBankAccount(bankAccount);
     }
 
     public BankAccount dBankAccountToBankAccount(DBankAccount account) {
+        if (account == null)
+            return null;
+
         return new BankAccount(account.getIban(), account.getBic(), account.getUser().getId(),
                 currencyService.dCurrencyToCurrency(account.getCurrency()));
     }
 
     public DBankAccount bankAccountToDBankAccount(BankAccount account) {
+        if (account == null)
+            return null;
+
         Optional<DBankAccount> bankAccountOpt = bankAccountRepo.findById(account.getIban());
         if (bankAccountOpt.isPresent())
             return bankAccountOpt.get();
@@ -76,9 +88,5 @@ public class BankAccountService {
 
         return new DBankAccount(account.getIban(), account.getBic(), user.get(),
                 currencyService.currencyToDCurrency(account.getCurrency()));
-    }
-
-    public boolean currentUserHasAccount(String id) {
-        return bankAccountRepo.existsByIdAndUserId(id, userService.getCurrentDUser());
     }
 }

@@ -27,6 +27,10 @@ public class DBankStatement {
     @JoinColumn(name = "bank_account_id", nullable = false)
     private DBankAccount bankAccount;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private DUser user;
+
     @Temporal(TemporalType.TIME)
     @Column(nullable = false)
     private Date issuedDate;
@@ -46,9 +50,10 @@ public class DBankStatement {
     public DBankStatement() {
     }
 
-    public DBankStatement(DBankAccount bankAccount, Date issueDate, double oldBalance, double newBalance,
+    public DBankStatement(DBankAccount bankAccount, DUser user, Date issueDate, double oldBalance, double newBalance,
             String fileName) {
         this.bankAccount = bankAccount;
+        this.user = user;
         this.issuedDate = issueDate;
         this.oldBalance = oldBalance;
         this.newBalance = newBalance;
@@ -61,6 +66,10 @@ public class DBankStatement {
 
     public DBankAccount getBankAccount() {
         return bankAccount;
+    }
+
+    public DUser getUser() {
+        return user;
     }
 
     public Date getIssuedDate() {
@@ -89,6 +98,10 @@ public class DBankStatement {
 
     public void setBankAccount(DBankAccount bankAccount) {
         this.bankAccount = bankAccount;
+    }
+
+    public void setUser(DUser user) {
+        this.user = user;
     }
 
     public void setIssuedDate(Date issuedDate) {

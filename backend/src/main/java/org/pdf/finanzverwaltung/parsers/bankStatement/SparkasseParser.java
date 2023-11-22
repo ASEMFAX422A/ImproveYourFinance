@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
+import org.pdf.finanzverwaltung.dto.Currency;
 import org.pdf.finanzverwaltung.models.DTransaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,12 +48,15 @@ public class SparkasseParser implements BankStatementParser {
         int start = dateMatcher.find() && dateMatcher.find() ? dateMatcher.start() : 0;
         final String startStr = pages.substring(0, start);
 
+        bankStatement.bic = getBic(pages);
         bankStatement.iban = getIban(startStr);
         bankStatement.issuedDate = getDate(startStr);
         bankStatement.oldBalance = getOldBalance(startStr);
+        bankStatement.currency = new Currency("€", "Euro");
         bankStatement.transactions = getTransactions(pages, dateMatcher, start);
         bankStatement.newBalance = bankStatement.oldBalance
                 + bankStatement.transactions.stream().mapToDouble(o -> o.getAmount()).sum();
+        bankStatement.newBalance = Math.round(bankStatement.newBalance * 100.0) / 100.0;
 
         return bankStatement;
     }
@@ -111,7 +115,7 @@ public class SparkasseParser implements BankStatementParser {
 
         final Matcher amountMatcher = amountPattern.matcher(transaction.toString());
         if (!amountMatcher.find()) {
-            //TODO return error ???
+            // TODO return error ???
         }
 
         final String amount = amountMatcher.group().trim();
