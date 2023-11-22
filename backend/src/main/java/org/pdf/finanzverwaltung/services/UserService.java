@@ -29,7 +29,7 @@ public class UserService implements UserDetailsService {
      * @return True only when the user was added to the repo
      */
     public boolean addUser(User user) {
-        boolean userExists = userRepo.findByUsername(user.getUsername()).isPresent();
+        boolean userExists = userRepo.findByUsername(user.getUsername()) != null;
         if (userExists) {
             return false;
         }
@@ -42,8 +42,11 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepo.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("user: " + username + " not found"));
+        final DUser user = userRepo.findByUsername(username);
+        if (user == null)
+            throw new UsernameNotFoundException("user: " + username + " not found");
+
+        return user;
     }
 
     public User getById(long id) {
@@ -71,10 +74,16 @@ public class UserService implements UserDetailsService {
     }
 
     public User dUserToUser(DUser user) {
+        if (user == null)
+            return null;
+
         return new User(user.getId(), user.getUsername(), user.getPassword(), user.getRole());
     }
 
     public DUser userToDUser(User user) {
+        if (user == null)
+            return null;
+
         final DUser currentUser = getCurrentDUser();
         if (currentUser.getId() == user.getId())
             return currentUser;

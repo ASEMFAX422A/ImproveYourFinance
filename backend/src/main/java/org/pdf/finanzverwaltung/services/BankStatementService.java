@@ -2,20 +2,23 @@ package org.pdf.finanzverwaltung.services;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.pdf.finanzverwaltung.dto.BankStatement;
+import org.pdf.finanzverwaltung.dto.BankStatementDTO;
 import org.pdf.finanzverwaltung.dto.MessageDto;
-import org.pdf.finanzverwaltung.dto.Transaction;
+import org.pdf.finanzverwaltung.dto.TransactionDTO;
 import org.pdf.finanzverwaltung.dto.TransactionCategory;
 import org.pdf.finanzverwaltung.dto.User;
 import org.pdf.finanzverwaltung.models.DBankAccount;
 import org.pdf.finanzverwaltung.models.DBankStatement;
+import org.pdf.finanzverwaltung.models.DCurrency;
 import org.pdf.finanzverwaltung.models.DTransaction;
 import org.pdf.finanzverwaltung.models.DTransactionCategory;
 import org.pdf.finanzverwaltung.models.DUser;
@@ -23,6 +26,7 @@ import org.pdf.finanzverwaltung.parsers.bankStatement.BankStatementParser;
 import org.pdf.finanzverwaltung.parsers.bankStatement.ParsedBankStatement;
 import org.pdf.finanzverwaltung.repos.bank.BankAccountRepo;
 import org.pdf.finanzverwaltung.repos.bank.BankStatementRepo;
+import org.pdf.finanzverwaltung.repos.currency.CurrencyRepo;
 import org.pdf.finanzverwaltung.repos.transaction.TransactionCategoryRepo;
 import org.pdf.finanzverwaltung.repos.transaction.TransactionRepo;
 import org.slf4j.Logger;
@@ -35,12 +39,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class BankStatementService {
     private static final Logger logger = LoggerFactory.getLogger(BankStatementService.class);
+    private static final String BANK_STATEMENT_FOLDER = "/bank-statements";
 
     @Autowired
     private List<BankStatementParser> parsers;
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private CurrencyRepo currencyRepo;
 
     @Autowired
     private StorageService storageService;
@@ -80,17 +88,26 @@ public class BankStatementService {
 
             final DUser dUser = userService.userToDUser(user);
 
-            final Optional<DBankAccount> bankAccount = bankAccountRepo.findByIdAndUser(bankStatement.iban, dUser);
-            if (!bankAccount.isPresent())
-                return MessageDto.createResponse(HttpStatus.BAD_REQUEST, "No bank account found for bank statement");
+            DBankAccount bankAccount = bankAccountRepo.findByIdAndUser(bankStatement.iban, dUser);
+            if (bankAccount == null) {
+                DCurrency cur = currencyRepo.findByShortName(bankStatement.currency.shortName);
+                if (cur == null) {
+                    cur = new DCurrency(bankStatement.currency.shortName, bankStatement.currency.longName);
+                    currencyRepo.save(cur);
+                }
 
-            final Optional<DBankStatement> bankStatementOpt = bankStatementRepo
-                    .findFirstByIssuedDateAndBankAccount(bankStatement.issuedDate, bankAccount.get());
-            if (bankStatementOpt.isPresent())
+                bankAccount = new DBankAccount(bankStatement.iban, bankStatement.bic, dUser, cur);
+                bankAccountRepo.save(bankAccount);
+            }
+
+            final DBankStatement bankStatementOpt = bankStatementRepo
+                    .findFirstByIssuedDateAndBankAccount(bankStatement.issuedDate, bankAccount);
+            if (bankStatementOpt != null)
                 return MessageDto.createResponse(HttpStatus.BAD_REQUEST, "Bank statement already exists");
 
             final DBankStatement newBankStatement = bankStatementRepo
-                    .save(new DBankStatement(bankAccount.get(), bankStatement.issuedDate, bankStatement.oldBalance,
+                    .save(new DBankStatement(bankAccount, dUser, bankStatement.issuedDate,
+                            bankStatement.oldBalance,
                             bankStatement.newBalance, bankStatementFile.getName()));
 
             final List<DTransactionCategory> categories = transactionCategoryRepo
@@ -98,12 +115,15 @@ public class BankStatementService {
 
             for (DTransaction trans : bankStatement.transactions) {
                 trans.setBankStatement(newBankStatement);
+                trans.setUser(dUser);
 
                 for (DTransactionCategory category : categories) {
                     if (category.getMatcherPattern() == null)
                         continue;
 
-                    if (trans.getTitle().matches(category.getMatcherPattern())) {
+                    if (trans.getTitle().matches(category.getMatcherPattern()) || (category.isMatchDescription()
+                            && Pattern.compile(category.getMatcherPattern(), Pattern.MULTILINE)
+                                    .matcher(trans.getDescription()).find())) {
                         trans.setCategory(category);
                         break;
                     }
@@ -119,33 +139,62 @@ public class BankStatementService {
         return MessageDto.createResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Unknown parse error");
     }
 
-    public BankStatement getById(long id) {
-        Optional<DBankStatement> bankStatementOpt = bankStatementRepo.findById(id);
-        if (bankStatementOpt.isEmpty())
-            return null;
-
-        return dBankStatementToBankStatement(bankStatementOpt.get());
-    }
-
     public File getBankStatementFile(long id) {
         Optional<DBankStatement> bankStatementOpt = bankStatementRepo.findById(id);
         if (bankStatementOpt.isEmpty())
             return null;
 
-        return new File(storageService.getUserDir() + "/bank-statements", bankStatementOpt.get().getFileName());
+        return new File(storageService.getUserDir() + BANK_STATEMENT_FOLDER, bankStatementOpt.get().getFileName());
     }
 
-    public Set<BankStatement> getAllByIbanAndUser(String iban, User user) {
-        Set<BankStatement> bankAccounts = new HashSet<>();
+    public BankStatementDTO getById(long id) {
+        final Optional<DBankStatement> bankStatementOpt = bankStatementRepo.findById(id);
+        return dBankStatementToBankStatement(bankStatementOpt.get());
+    }
 
-        Optional<DBankAccount> bankAccountOpt = bankAccountRepo.findById(iban);
-        if (!bankAccountOpt.isPresent())
+    public BankStatementDTO getByUserAndBankAccountAndIssuedDateBetween(String id, Date startDate, Date endDate) {
+        final DBankAccount bankAccount = bankAccountRepo.findByIdAndUser(id, userService.getCurrentDUser());
+        if (bankAccount == null)
+            return null;
+
+        final DBankStatement bankStatement = bankStatementRepo
+                .findByUserAndBankAccountAndIssuedDateBetween(userService.getCurrentDUser(), bankAccount, startDate,
+                        endDate);
+        return dBankStatementToBankStatement(bankStatement);
+    }
+
+    public Set<BankStatementDTO> getByCurrentUserAndIssuedDateBetween(Date startDate, Date endDate) {
+        final List<DBankStatement> bankStatements = bankStatementRepo.findByUserAndIssuedDateBetween(
+                userService.getCurrentDUser(), startDate, endDate);
+        return dBankStatementsToBankStatements(bankStatements);
+    }
+
+    public BankStatementDTO getByIdAndCurrentUser(long id) {
+        final DBankStatement bankStatement = bankStatementRepo.findByIdAndUser(id, userService.getCurrentDUser());
+        return dBankStatementToBankStatement(bankStatement);
+    }
+
+    public BankStatementDTO getByIdAndUser(long id, User user) {
+        final DBankStatement bankStatement = bankStatementRepo.findByIdAndUser(id, userService.userToDUser(user));
+        return dBankStatementToBankStatement(bankStatement);
+    }
+
+    public Set<BankStatementDTO> getAllByIdAndCurrentUser(String iban) {
+        return getAllByIdAndUser(iban, userService.getCurrentDUser());
+    }
+
+    public Set<BankStatementDTO> getAllByIdAndUser(String iban, User user) {
+        return getAllByIdAndUser(iban, userService.userToDUser(user));
+    }
+
+    private Set<BankStatementDTO> getAllByIdAndUser(String iban, DUser user) {
+        Set<BankStatementDTO> bankAccounts = new HashSet<>();
+
+        DBankAccount bankAccountOpt = bankAccountRepo.findByIdAndUser(iban, user);
+        if (bankAccountOpt == null)
             return bankAccounts;
 
-        if (bankAccountOpt.get().getUser().getId() != user.getId())
-            return bankAccounts;
-
-        List<DBankStatement> dBankAccounts = bankStatementRepo.findAllByBankAccount(bankAccountOpt.get());
+        List<DBankStatement> dBankAccounts = bankStatementRepo.findAllByBankAccount(bankAccountOpt);
         for (DBankStatement dBankStatement : dBankAccounts) {
             bankAccounts.add(dBankStatementToBankStatement(dBankStatement));
         }
@@ -153,8 +202,24 @@ public class BankStatementService {
         return bankAccounts;
     }
 
-    public BankStatement dBankStatementToBankStatement(DBankStatement statement) {
-        Set<Transaction> transactions = new HashSet<>();
+    public Set<BankStatementDTO> dBankStatementsToBankStatements(List<DBankStatement> statements) {
+        Set<BankStatementDTO> bankAccounts = new HashSet<>();
+
+        if (statements == null)
+            return bankAccounts;
+
+        for (DBankStatement dBankStatement : statements) {
+            bankAccounts.add(dBankStatementToBankStatement(dBankStatement));
+        }
+
+        return bankAccounts;
+    }
+
+    public BankStatementDTO dBankStatementToBankStatement(DBankStatement statement) {
+        if (statement == null)
+            return null;
+
+        Set<TransactionDTO> transactions = new HashSet<>();
         for (DTransaction transaction : statement.getTransactions()) {
 
             DTransactionCategory cat = transaction.getCategory();
@@ -164,15 +229,18 @@ public class BankStatementService {
                 category = new TransactionCategory(cat.getId(), cat.getName(), cat.getMatcherPattern());
 
             transactions.add(
-                    new Transaction(transaction.getId(), transaction.getDate(), transaction.getTitle(),
+                    new TransactionDTO(transaction.getId(), transaction.getDate(), transaction.getTitle(),
                             transaction.getDescription(), transaction.getAmount(), category));
         }
 
-        return new BankStatement(statement.getId(), statement.getIssuedDate(), statement.getOldBalance(),
+        return new BankStatementDTO(statement.getId(), statement.getIssuedDate(), statement.getOldBalance(),
                 statement.getNewBalance(), transactions);
     }
 
-    public DBankStatement bankStatementToDBankStatement(BankStatement statement) {
+    public DBankStatement bankStatementToDBankStatement(BankStatementDTO statement) {
+        if (statement == null)
+            return null;
+
         Optional<DBankStatement> bankStatementOpt = bankStatementRepo.findById(statement.getId());
         if (bankStatementOpt.isPresent())
             return bankStatementOpt.get();

@@ -40,17 +40,22 @@ public class DTransaction {
     @JoinColumn(name = "category_id", nullable = true)
     private DTransactionCategory category;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private DUser user;
+
     public DTransaction() {
     }
 
     public DTransaction(Date date, String title, String desc, double amount, DBankStatement bankStatement,
-            DTransactionCategory category) {
+            DTransactionCategory category, DUser user) {
         this.date = date;
         this.title = title;
         this.desc = desc;
         this.amount = amount;
         this.bankStatement = bankStatement;
         this.category = category;
+        this.user = user;
     }
 
     public long getId() {
@@ -81,6 +86,10 @@ public class DTransaction {
         return category;
     }
 
+    public DUser getUser() {
+        return user;
+    }
+
     public void setId(long id) {
         this.id = id;
     }
@@ -107,5 +116,9 @@ public class DTransaction {
 
     public void setCategory(DTransactionCategory category) {
         this.category = category;
+    }
+
+    public void setUser(DUser user) {
+        this.user = user;
     }
 }

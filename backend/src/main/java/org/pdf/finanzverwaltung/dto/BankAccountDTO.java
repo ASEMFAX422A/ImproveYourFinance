@@ -1,12 +1,12 @@
 package org.pdf.finanzverwaltung.dto;
 
-public class BankAccount {
-    private Currency currency;
+public class BankAccountDTO {
+    private CurrencyDTO currency;
     private String iban;
     private String bic;
     private long owner;
 
-    public BankAccount(String iban, String bic, long owner, Currency currency) {
+    public BankAccountDTO(String iban, String bic, long owner, CurrencyDTO currency) {
         this.iban = iban;
         this.bic = bic;
         this.owner = owner;
@@ -25,7 +25,7 @@ public class BankAccount {
         return owner;
     }
 
-    public Currency getCurrency() {
+    public CurrencyDTO getCurrency() {
         return currency;
     }
 }

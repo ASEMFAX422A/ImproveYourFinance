@@ -1,8 +1,6 @@
 package org.pdf.finanzverwaltung.services;
 
-import java.util.Optional;
-
-import org.pdf.finanzverwaltung.dto.Currency;
+import org.pdf.finanzverwaltung.dto.CurrencyDTO;
 import org.pdf.finanzverwaltung.models.DCurrency;
 import org.pdf.finanzverwaltung.repos.currency.CurrencyRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,15 +14,21 @@ public class CurrencyService {
     public CurrencyService() {
     }
 
-    public Currency dCurrencyToCurrency(DCurrency currency) {
-        return new Currency(currency.getShortName(), currency.getLongName());
+    public CurrencyDTO dCurrencyToCurrency(DCurrency currency) {
+        if (currency == null)
+            return null;
+
+        return new CurrencyDTO(currency.getShortName(), currency.getLongName());
     }
 
-    public DCurrency currencyToDCurrency(Currency currency) {
-        Optional<DCurrency> curOpt = currencyRepo.findByShortName(currency.getShortName());
-        if (curOpt.isPresent())
-            return curOpt.get();
+    public DCurrency currencyToDCurrency(CurrencyDTO currency) {
+        if (currency == null)
+            return null;
 
-        return new DCurrency(currency.getShortName(), currency.getLongName());
+        final DCurrency cur = currencyRepo.findByShortName(currency.shortName);
+        if (cur != null)
+            return cur;
+
+        return new DCurrency(currency.shortName, currency.longName);
     }
 }
