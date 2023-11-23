@@ -73,6 +73,14 @@ public class AppConfiguration {
         return environment.getProperty("security.password.min-special-characters", Integer.class, 1);
     }
 
+    public int getPasswordMinLowerCharacters() {
+        return environment.getProperty("security.password.min-lower-characters", Integer.class, 1);
+    }
+
+    public int getPasswordMinUpperCharacters() {
+        return environment.getProperty("security.password.min-upper-characters", Integer.class, 1);
+    }
+
     public File getAppFolder() {
         return new File(environment.getProperty("app.data-folder", "./"));
     }

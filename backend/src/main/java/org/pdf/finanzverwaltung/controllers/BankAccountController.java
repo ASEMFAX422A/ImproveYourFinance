@@ -15,7 +15,6 @@ import org.pdf.finanzverwaltung.dto.DailyExpensesDTO;
 import org.pdf.finanzverwaltung.dto.TransactionDTO;
 import org.pdf.finanzverwaltung.services.BankAccountService;
 import org.pdf.finanzverwaltung.services.BankStatementService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,14 +24,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/bank-account")
 public class BankAccountController {
-
-    @Autowired
     private BankStatementService bankStatementService;
-
-    @Autowired
     private BankAccountService bankAccountService;
 
-    public BankAccountController() {
+    public BankAccountController(BankStatementService bankStatementService, BankAccountService bankAccountService) {
+        this.bankStatementService = bankStatementService;
+        this.bankAccountService = bankAccountService;
     }
 
     @PostMapping("/query-accounts")
