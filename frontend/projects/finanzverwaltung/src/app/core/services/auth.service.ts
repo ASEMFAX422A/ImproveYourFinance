@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { RequestService } from './request.service';
-import { Observable, catchError, of, throwError } from 'rxjs';
-import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
+import { catchError, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +10,7 @@ export class AuthService {
   private readonly jwtToken : string = 'jwtToken';
   private jwtHelper: JwtHelperService;
 
-  constructor(private requestService: RequestService,private route: Router,) {
+  constructor(private requestService: RequestService) {
     this.jwtHelper = new JwtHelperService();
   }
 
@@ -44,7 +43,7 @@ export class AuthService {
       //isTokenExpired prüft selbst, ob token leer ist
       return !this.jwtHelper.isTokenExpired(token);
     }catch(error){
-
+      console.log(error);
     }
     return false;
   }
@@ -59,9 +58,10 @@ export class AuthService {
         resolve(false);
         return of(false);
       })).subscribe((response: any) => {
-        if(response != ""){
-          this.setToken(response.token);
+        if (response && response.message != ""){
+          this.setToken(response.message);
         }
+
         resolve(this.isAuthenticated());
       });
     });
