@@ -7,6 +7,8 @@ public class TransactionsDto {
     public double income;
     public double expenses;
     public List<TransactionDTO> transactions;
+    public List<DailyExpensesDTO> dailyIncome;
     public List<DailyExpensesDTO> dailyExpenses;
+    public List<DailyExpensesDTO> dailyFinances;
     public List<CategoryExpensesDTO> categoryExpenses;
 }

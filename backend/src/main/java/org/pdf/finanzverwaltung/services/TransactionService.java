@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import org.pdf.finanzverwaltung.dto.EditCategoryQuery;
 import org.pdf.finanzverwaltung.dto.TransactionDTO;
 import org.pdf.finanzverwaltung.dto.TransactionCategory;
-import org.pdf.finanzverwaltung.dto.User;
+import org.pdf.finanzverwaltung.dto.UserDTO;
 import org.pdf.finanzverwaltung.models.DBankAccount;
 import org.pdf.finanzverwaltung.models.DTransaction;
 import org.pdf.finanzverwaltung.models.DTransactionCategory;
@@ -81,7 +81,7 @@ public class TransactionService {
         return categories;
     }
 
-    public Set<TransactionCategory> getAllCategoriesForUser(User user) {
+    public Set<TransactionCategory> getAllCategoriesForUser(UserDTO user) {
         List<DTransactionCategory> dCategories = transactionCategoryRepo.findAllByUser(userService.userToDUser(user));
 
         Set<TransactionCategory> categories = new HashSet<>();
@@ -92,7 +92,8 @@ public class TransactionService {
         return categories;
     }
 
-    public List<TransactionDTO> getAllForBankAccountAndBetweenAndCurrentUser(String iban, Date startDate, Date endDate) {
+    public List<TransactionDTO> getAllForBankAccountAndBetweenAndCurrentUser(String iban, Date startDate,
+            Date endDate) {
         Optional<DBankAccount> bankAccountOpt = bankAccountRepo.findById(iban);
         if (bankAccountOpt.isEmpty())
             return null;

@@ -9,7 +9,7 @@ import org.pdf.finanzverwaltung.AppConfiguration;
 import org.pdf.finanzverwaltung.constants.AuthMessageConstants;
 import org.pdf.finanzverwaltung.dto.MessageDto;
 import org.pdf.finanzverwaltung.dto.RegistrationRequest;
-import org.pdf.finanzverwaltung.dto.User;
+import org.pdf.finanzverwaltung.dto.UserDTO;
 import org.pdf.finanzverwaltung.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +34,7 @@ public class RegistrationControllerTest {
 
     @Test
     public void testSuccessfulRegistration() {
-        when(userService.addUser(any(User.class))).thenReturn(true);
+        when(userService.addUser(any(UserDTO.class))).thenReturn(true);
 
         ResponseEntity<MessageDto> response = registrationController.register(registrationRequest);
 
@@ -44,7 +44,7 @@ public class RegistrationControllerTest {
 
     @Test
     public void testUserAlreadyExists() {
-        when(userService.addUser(any(User.class))).thenReturn(false);
+        when(userService.addUser(any(UserDTO.class))).thenReturn(false);
 
         ResponseEntity<MessageDto> response = registrationController.register(registrationRequest);
 

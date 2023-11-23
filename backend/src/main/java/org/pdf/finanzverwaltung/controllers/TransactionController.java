@@ -59,7 +59,9 @@ public class TransactionController {
     public ResponseEntity<TransactionsDto> queryTransactions(@RequestBody BankAccountOverviewQuery query) {
         final TransactionsDto response = new TransactionsDto();
         response.id = query.id;
+        response.dailyIncome = new ArrayList<>();
         response.dailyExpenses = new ArrayList<>();
+        response.dailyFinances = new ArrayList<>();
         response.categoryExpenses = new ArrayList<>();
 
         if (query.id.equalsIgnoreCase("all")) {
@@ -97,7 +99,42 @@ public class TransactionController {
                 dailyExpenses.date = trans.date;
                 response.dailyExpenses.add(dailyExpenses);
             }
-            dailyExpenses.amount += trans.amount;
+
+            /* ==== Creating Daily Income ==== */
+            DailyExpensesDTO dailyIncome = null;
+            for (DailyExpensesDTO dailyExp : response.dailyIncome) {
+                if (dailyExp.date.compareTo(trans.date) == 0) {
+                    dailyIncome = dailyExp;
+                    break;
+                }
+            }
+
+            if (dailyIncome == null) {
+                dailyIncome = new DailyExpensesDTO();
+                dailyIncome.date = trans.date;
+                response.dailyIncome.add(dailyIncome);
+            }
+
+            if (trans.amount < 0)
+                dailyExpenses.amount += trans.amount;
+            else
+                dailyIncome.amount += trans.amount;
+
+            /* ==== Creating Daily Finances ==== */
+            DailyExpensesDTO dailyFinances = null;
+            for (DailyExpensesDTO dailyExp : response.dailyFinances) {
+                if (dailyExp.date.compareTo(trans.date) == 0) {
+                    dailyFinances = dailyExp;
+                    break;
+                }
+            }
+
+            if (dailyFinances == null) {
+                dailyFinances = new DailyExpensesDTO();
+                dailyFinances.date = trans.date;
+                response.dailyFinances.add(dailyFinances);
+            }
+            dailyFinances.amount += trans.amount;
 
             /* ==== Creating Category Expenses ==== */
             if (trans.category == null) {
@@ -130,7 +167,9 @@ public class TransactionController {
             categoryExpenses.amount += trans.amount;
         }
 
+        response.dailyIncome.sort((o1, o2) -> o1.date.compareTo(o2.date));
         response.dailyExpenses.sort((o1, o2) -> o1.date.compareTo(o2.date));
+        response.dailyFinances.sort((o1, o2) -> o1.date.compareTo(o2.date));
         return ResponseEntity.ok(response);
     }
 }

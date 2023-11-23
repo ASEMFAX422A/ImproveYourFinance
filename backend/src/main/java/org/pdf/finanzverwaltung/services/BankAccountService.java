@@ -6,7 +6,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.pdf.finanzverwaltung.dto.BankAccountDTO;
-import org.pdf.finanzverwaltung.dto.User;
+import org.pdf.finanzverwaltung.dto.UserDTO;
 import org.pdf.finanzverwaltung.models.DBankAccount;
 import org.pdf.finanzverwaltung.models.DUser;
 import org.pdf.finanzverwaltung.repos.bank.BankAccountRepo;
@@ -46,7 +46,7 @@ public class BankAccountService {
         return bankAccounts;
     }
 
-    public Set<BankAccountDTO> getAllForUser(User user) {
+    public Set<BankAccountDTO> getAllForUser(UserDTO user) {
         List<DBankAccount> dBankAccounts = bankAccountRepo.findAllByUser(userService.userToDUser(user));
 
         Set<BankAccountDTO> bankAccounts = new HashSet<>();
@@ -62,7 +62,7 @@ public class BankAccountService {
         return dBankAccountToBankAccount(bankAccount);
     }
 
-    public BankAccountDTO getByIdAndUser(String iban, User user) {
+    public BankAccountDTO getByIdAndUser(String iban, UserDTO user) {
         final DBankAccount bankAccount = bankAccountRepo.findByIdAndUser(iban, userService.userToDUser(user));
 
         return dBankAccountToBankAccount(bankAccount);

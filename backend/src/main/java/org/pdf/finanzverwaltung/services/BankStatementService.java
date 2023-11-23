@@ -16,7 +16,7 @@ import org.pdf.finanzverwaltung.dto.BankStatementDTO;
 import org.pdf.finanzverwaltung.dto.MessageDto;
 import org.pdf.finanzverwaltung.dto.TransactionDTO;
 import org.pdf.finanzverwaltung.dto.TransactionCategory;
-import org.pdf.finanzverwaltung.dto.User;
+import org.pdf.finanzverwaltung.dto.UserDTO;
 import org.pdf.finanzverwaltung.models.DBankAccount;
 import org.pdf.finanzverwaltung.models.DBankStatement;
 import org.pdf.finanzverwaltung.models.DCurrency;
@@ -77,7 +77,7 @@ public class BankStatementService {
         return null;
     }
 
-    public ResponseEntity<MessageDto> parseAndSave(User user, File bankStatementFile) {
+    public ResponseEntity<MessageDto> parseAndSave(UserDTO user, File bankStatementFile) {
         try (PDDocument document = Loader.loadPDF(bankStatementFile)) {
             if (document.getNumberOfPages() <= 0) {
                 return MessageDto.createResponse(HttpStatus.BAD_REQUEST, "Invalid PDF file");
@@ -175,7 +175,7 @@ public class BankStatementService {
         return dBankStatementToBankStatement(bankStatement);
     }
 
-    public BankStatementDTO getByIdAndUser(long id, User user) {
+    public BankStatementDTO getByIdAndUser(long id, UserDTO user) {
         final DBankStatement bankStatement = bankStatementRepo.findByIdAndUser(id, userService.userToDUser(user));
         return dBankStatementToBankStatement(bankStatement);
     }
@@ -195,7 +195,7 @@ public class BankStatementService {
 
     }
 
-    public Set<BankStatementDTO> getAllByIdAndUser(String iban, User user) {
+    public Set<BankStatementDTO> getAllByIdAndUser(String iban, UserDTO user) {
         return getAllByIdAndUser(iban, userService.userToDUser(user));
     }
 
