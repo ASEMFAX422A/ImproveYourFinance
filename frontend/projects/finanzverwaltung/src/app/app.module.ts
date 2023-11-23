@@ -11,7 +11,6 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { ToastrModule } from 'ngx-toastr';
 import { TransactionModule } from './extras/transaction/transaction.module';
 import { FooterComponent } from './extras/footer/footer.component';
-import { FooterModule } from './extras/footer/footer.module';
 import { MaterialModule } from './material/material.module';
 import { BankAccountService } from './core/services/bankAccountService';
 
@@ -25,7 +24,6 @@ import { BankAccountService } from './core/services/bankAccountService';
     HttpClientModule,
     AppRoutingModule,
     MaterialModule,
-    FooterModule,
     FooterComponent,
     TransactionModule,
     BrowserAnimationsModule,
