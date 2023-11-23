@@ -84,7 +84,13 @@ public class BankStatementController {
 
     @PostMapping("/query-statements")
     public ResponseEntity<Set<BankStatementDTO>> queryBankStatements(@RequestBody BankAccountQuery query) {
-        final Set<BankStatementDTO> bankStatements = bankStatementService.getAllByIdAndCurrentUser(query.iban);
+        
+        Set<BankStatementDTO> bankStatements;
+        if (query.iban.equalsIgnoreCase("all")) {
+            bankStatements = bankStatementService.getAllByCurrentUser();
+        } else {
+            bankStatements = bankStatementService.getAllByIdAndCurrentUser(query.iban);
+        }
 
         return ResponseEntity.ok(bankStatements);
     }

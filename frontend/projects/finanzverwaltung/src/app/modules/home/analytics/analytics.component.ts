@@ -20,27 +20,26 @@ import {
 import { FormControl, FormGroup } from '@angular/forms';
 import { ChartSettingsModule } from '../../../core/chartSettings/chartSettings.module';
 import { ToastrService } from 'ngx-toastr';
+import { RequestService } from '../../../core/services/request.service';
 
 
-export type chartData = {
+export type ChartData = {
   series: ApexAxisChartSeries;
   donut_data: ApexNonAxisChartSeries;
   xaxis: ApexXAxis;
   grid: ApexGrid;
   title: ApexTitleSubtitle;
-  donut_labels: any;
+  chart: ApexChart;
+  plotOptions: ApexPlotOptions;
+  dataLabels: ApexDataLabels;
+  fill: ApexFill;
+  yaxis: ApexYAxis;
 
 };
-export type ChartOptions = {
-  series: ApexAxisChartSeries;
-  chart: ApexChart;
-  dataLabels: ApexDataLabels;
-  plotOptions: ApexPlotOptions;
-  yaxis: ApexYAxis;
-  xaxis: ApexXAxis;
-  fill: ApexFill;
-  title: ApexTitleSubtitle;
-};
+export interface BankAccount{
+  iban:string;
+
+}
 const today = new Date();
 const month = today.getMonth();
 const year = today.getFullYear();
@@ -51,66 +50,127 @@ const year = today.getFullYear();
 })
 
 export class AnalyticsComponent {
+  @ViewChild("chart") chart!: ChartComponent;
+  public lineChartData: Partial<ChartData>;
+  public columnChartData: Partial<ChartData>;
+  public balkenChartData: Partial<ChartData>;
+  public bankAccounts?: BankAccount[];
+  public currentBankAccount: string = "all";
+  income = 0;
+  expenses = 0;
+  
   campaignOne = new FormGroup({
     start: new FormControl(new Date(year, month, today.getDate())),
-    end: new FormControl(new Date(year, month,today.getDate()+1)),
+    end: new FormControl(new Date(year, month, today.getDate() + 1)),
   });
-  
-  getDataDate(){
-    
+
+  changeDate() {
+    this.loadData();
     const startEndDate = this.campaignOne.value;
-    console.log(startEndDate);
-    console.log(startEndDate.start?.getTime());
-    console.log(startEndDate.end?.getTime());
     this.toastr.success("Ausgewählter Zeitraum: " + startEndDate.start?.toLocaleDateString('de-DE') + " bis " + startEndDate.end?.toLocaleDateString('de-DE'));
   }
-  //username= this.auth.getUsername();
+  loadData() {
+    this.requestService.post("transactions/query-transactions", {
+      "id": this.currentBankAccount,
+      "start": this.campaignOne.value.start?.getTime(),
+      "end": this.campaignOne.value.end?.getTime(),
+    }).subscribe(response => {
+      this.updateData(response);
 
+    });
+  }
+  updateData(data: any) {
+    console.log(data);
+    this.income = data.income.toFixed(2);
+    this.expenses = data.expenses.toFixed(2);
+    const startDate = this.campaignOne.value.start;
 
-  @ViewChild("chart") chart!: ChartComponent;
-
-  public chartData: Partial<chartData>;
-  public chartOptions: Partial<ChartOptions>;
-
-
-
-
-
-  constructor(public chartSettings: ChartSettingsModule, private toastr: ToastrService) {
-
-
-    this.chartData = {
-      series: [
-        {
-          name: "Ausgaben",
-          data: [1, 2, 3, 4, 55],
+    this.lineChartData.title = { text: "Einnahmen/Ausgaben Übersicht für: " + startDate?.toLocaleString('de-DE', { month: 'long' }) };
+    this.lineChartData.series = [{
+      name: "Einnahmen",
+      data: data.transactions.map((transaction: any) => {
+        var amount = transaction.amount.toFixed(2);	
+        if(amount >= 0){
+          return amount;
         }
-      ],
-      xaxis: {
-        categories: [1, 2, 3, 5, 7],
+        return 0;
+      }),
+    },
+    {
+      name: "Ausgaben",
+      data: data.transactions.map((transaction: any) => {
+        var amount = transaction.amount.toFixed(2);	
+        if(amount <= 0){
+          return amount;
+        }
+        return 0;
+      }),
+    },
+  ];
 
-      },
-      donut_data: [44],
+    this.lineChartData.xaxis = {
+      categories: data.dailyExpenses.map((transaction: any) => new Date(transaction.date).getDate().toString() + "."),
+    }
 
+    this.columnChartData.title = {
+      text: "Einnahmen/Ausgaben Übersicht für: " + startDate?.toLocaleString('de-DE', { month: 'long' }),
+    }
 
-      donut_labels: ["Team A", "Team B", "Team C", "Team D", "Team E"],
+    this.columnChartData.series = [{
+      name: "Einnahmen/Ausgaben",
+      data: data.dailyExpenses.map((transaction: any) => transaction.amount.toFixed(2)),
+    }];
+    this.columnChartData.xaxis = {
+      categories: data.dailyExpenses.map((transaction: any) => new Date(transaction.date).getDate().toString() + "."),
+    }
+    this.balkenChartData.series = [{
+      name: "basic",
+      data: data.categoryExpenses.map((category: any) => category.amount.toFixed(2))
+    }];
 
-      title: {
-        text: "Ausgabe Übersicht für: " + "",
-
-      },
-
+    this.balkenChartData.xaxis = {
+      categories: data.categoryExpenses.map((category: any) => {
+        var categoryName = category.category?.name;
+        if (categoryName == null) {
+          return "Nicht Kategorisiert";
+        }
+        return categoryName;
+      })
     };
-    this.chartOptions = {
-      series: [
-        {
-          name: "Inflation",
-          data: [2.3, 3.1, 4.0, 200, 4.0, 3.6, 3.2, 2.3, 1.4, 0.8, 0.5, -222]
-        }
-      ],
+  }
+  loadBankAccounts(){
+    this.requestService.post("bank-account/query-accounts",{}).subscribe(data=>{
+
+      this.bankAccounts = data;
+      console.log(this.bankAccounts);
+    });
+    
+  }
+  changeBankAccount(bankAccount:string){
+    this.currentBankAccount = bankAccount;
+    this.loadData();
+  }
+  constructor(public chartSettings: ChartSettingsModule, private toastr: ToastrService, private requestService: RequestService, private auth: AuthService) {
+
+    this.loadBankAccounts();
+
+    this.lineChartData = {};
+
+    this.columnChartData = {
       chart: {
         height: 280,
-        type: "bar"
+        type: "bar",
+        zoom: {
+          enabled: false
+        }
+      },
+      title: {
+        floating: false,
+        offsetY: 20,
+        align: "center",
+        style: {
+          color: "#444"
+        }
       },
       plotOptions: {
         bar: {
@@ -121,64 +181,18 @@ export class AnalyticsComponent {
       },
       dataLabels: {
         enabled: true,
-        formatter: function(val) {
-          return val + "%";
-        },
         offsetY: -20,
         style: {
           fontSize: "12px",
           colors: ["#212121"]
         }
       },
-
-      xaxis: {
-        categories: [
-          "Jan",
-          "Feb",
-          "Mar",
-          "Apr",
-          "May",
-          "Jun",
-          "Jul",
-          "Aug",
-          "Sep",
-          "Oct",
-          "Nov",
-          "Dec"
-        ],
-        position: "top",
-        labels: {
-          offsetY: -18
-        },
-        axisBorder: {
-          show: false
-        },
-        axisTicks: {
-          show: false
-        },
-        crosshairs: {
-          fill: {
-            type: "gradient",
-            gradient: {
-              colorFrom: "#D8E3F0",
-              colorTo: "#BED1E6",
-              stops: [0, 100],
-              opacityFrom: 0.4,
-              opacityTo: 0.5
-            }
-          }
-        },
-        tooltip: {
-          enabled: true,
-          offsetY: -35
-        }
-      },
       fill: {
-        colors: [function({ value, seriesIndex, w }:{ value: number, seriesIndex: number, w: any }) {
-          if(value < 0) {
-              return '#fd0606'
+        colors: [function ({ value, seriesIndex, w }: { value: number, seriesIndex: number, w: any }) {
+          if (value < 0) {
+            return '#fd0606'
           } else {
-              return '#06fd1b'
+            return '#06fd1b'
           }
         }]
       },
@@ -191,23 +205,34 @@ export class AnalyticsComponent {
         },
         labels: {
           show: false,
-          formatter: function(val) {
-            return val + "%";
-          }
         }
       },
-      title: {
-        text: "Monthly Inflation in Argentina, 2002",
-        floating: false,
-        offsetY: 320,
-        align: "center",
-        style: {
-          color: "#444"
-        }
-      }
     };
 
-
-
+    this.balkenChartData = {
+      chart: {
+        type: "bar",
+        height: 350
+      },
+      plotOptions: {
+        bar: {
+          horizontal: true
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      fill: {
+        colors: [function ({ value, seriesIndex, w }: { value: number, seriesIndex: number, w: any }) {
+          if (value < 0) {
+            return '#fd0606'
+          } else {
+            return '#06fd1b'
+          }
+        }]
+      },
+    };
+    this.loadData();
   }
 }
+

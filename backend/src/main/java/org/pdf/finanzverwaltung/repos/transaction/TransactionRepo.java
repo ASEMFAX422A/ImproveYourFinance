@@ -23,8 +23,9 @@ public interface TransactionRepo extends JpaRepository<DTransaction, Long> {
     @Query("SELECT t FROM DTransaction t " +
             "WHERE t.user = :user " +
             "AND t.date BETWEEN :startDate AND :endDate " +
-            "AND t.bankStatement.bankAccount = :bankAccount")
-    List<DTransaction> findTransactionsByUserAndDateRangeAndBankAccount(
+            "AND t.bankStatement.bankAccount = :bankAccount " +
+            "ORDER BY t.date")
+    public List<DTransaction> findTransactionsByUserAndDateRangeAndBankAccountSortByDate(
             @Param("user") DUser user,
             @Param("startDate") Date startDate,
             @Param("endDate") Date endDate,

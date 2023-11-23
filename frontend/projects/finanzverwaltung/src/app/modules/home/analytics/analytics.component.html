@@ -16,38 +16,46 @@
         <mat-date-range-picker #campaignOnePicker></mat-date-range-picker>
        </mat-form-field>
       </div>
+      <div class="menu">
+        <button mat-raised-button color="primary" [matMenuTriggerFor]="menu">Konto Auswählen</button>
+        <mat-menu #menu="matMenu"  class="menuDrop" >
+          <button mat-menu-item (click)="changeBankAccount('all')" >Alle</button>
+          <button mat-menu-item (click)="changeBankAccount(item.iban)"*ngFor="let item of this.bankAccounts">{{item.iban}}</button>
+        </mat-menu><h1>{{currentBankAccount}}</h1>
+      </div>
+      <button mat-raised-button class="submit-button" color="primary"  (click)="changeDate()">Zeitraum auswählen</button>
 
-      <button mat-raised-button class="submit-button" color="primary"  (click)="getDataDate()">Zeitraum auswählen</button>
+
    </div>
    <div class="fin">
-    <h3>Deine Ausgabe vom Zeitraum.</h3>
-    <p style="color:red">123</p>
+    <h3>Deine Ausgabe vom Zeitraum:</h3>
+    <p style="color:red">{{expenses}}</p>
   </div>
   <div class="fin-1">
-    <h3>Kontostand am Anfang des Zeitraums.</h3>
-    <p style="color:green">123</p>
+    <h3>Einnahmen über den Zeitraum:</h3>
+    <p style="color:green">{{income}}</p>
   </div>
   <div class="chart-box">
-    <div id="chart">
+    <div class="chart">
       <apx-chart
-        [series]="chartOptions.series"
-        [chart]="chartOptions.chart"
-        [dataLabels]="chartOptions.dataLabels"
-        [plotOptions]="chartOptions.plotOptions"
-        [yaxis]="chartOptions.yaxis"
-        [xaxis]="chartOptions.xaxis"
-        [fill]="chartOptions.fill"
-        [title]="chartOptions.title"
+        [series]="columnChartData.series"
+        [chart]="columnChartData.chart"
+        [dataLabels]="columnChartData.dataLabels"
+        [plotOptions]="columnChartData.plotOptions"
+        [yaxis]="columnChartData.yaxis"
+        [xaxis]="columnChartData.xaxis"
+        [fill]="columnChartData.fill"
+        [title]="columnChartData.title"
         [responsive]="chartSettings.settings.responsiveLine"
       ></apx-chart>
     </div>
   </div>
    <div class="chart-box2">
-    <div id="chart">
+    <div class="chart">
       <apx-chart 
-        [series]="chartData.series"
-        [title]="chartData.title" 
-        [xaxis]="chartData.xaxis"
+        [series]="lineChartData.series"
+        [title]="lineChartData.title" 
+        [xaxis]="lineChartData.xaxis"
         [chart]="chartSettings.settings.lineChart"
         [stroke]="chartSettings.settings.lineStroke"
         [grid]="chartSettings.settings.lineChartGrid"
@@ -57,12 +65,15 @@
     </div>
   </div>
   <div class="chart-donut">
-    <div id="chartt">
-      <apx-chart 
-        [series]="chartData.donut_data"
-        [labels]="chartData.donut_labels"
-        [chart]="chartSettings.settings.chart">
-      </apx-chart>
+    <div class="chart">
+      <apx-chart
+        [series]="balkenChartData.series"
+        [chart]="balkenChartData.chart"
+        [dataLabels]="balkenChartData.dataLabels"
+        [plotOptions]="balkenChartData.plotOptions"
+        [xaxis]="balkenChartData.xaxis"
+        [fill]="balkenChartData.fill"
+      ></apx-chart>
     </div>
   </div>
 </div>

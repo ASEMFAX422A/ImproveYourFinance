@@ -17,7 +17,10 @@
   background-size: 100%;
   min-height: 100%;
 }
-
+.chart {
+  padding: 15px;
+  width: 95%;
+}
 .welcome-box {
   top: 10%;
   width: 41%;
@@ -201,7 +204,7 @@
   .chart-donut {
     height: 42%;
   }
-  #chartt {
+  .chartt {
     width: 100%;
   }
   .fin {
@@ -256,7 +259,7 @@
     width: 38%;
   }
 
-  #chartt {
+  .chartt {
     width: 100%;
   }
 
@@ -271,7 +274,7 @@
 
   }
 
-  #chartt {
+  .chartt {
     width: 80%;
   }
 
@@ -280,7 +283,7 @@
 
 @media screen and (min-width: 1100px) {
 
-  #chartt {
+  .chartt {
     width: 70%;
   }
 }

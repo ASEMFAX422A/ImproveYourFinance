@@ -4,8 +4,7 @@
   <span routerLink="">ImproveYourFinance</span>
   <span class="example-spacer"></span>
   <button mat-button *ngIf="!this.auth.isAuthenticated()" [matMenuTriggerFor]="menu">Account</button>
-  <button mat-button *ngIf="this.auth.isAuthenticated()" (click)="this.auth.logout()"
-   class="fas fa-sign-out-alt"></button>
+  <button mat-button *ngIf="this.auth.isAuthenticated()" (click)="this.auth.logout()" class="fas fa-sign-out-alt"></button>
   <mat-menu #menu="matMenu">
    <button mat-menu-item routerLink="login">Login</button>
    <button mat-menu-item routerLink="register">Register</button>

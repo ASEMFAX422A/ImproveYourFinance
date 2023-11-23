@@ -16,26 +16,26 @@
       <p style="color:green">{{endBalance}}</p>
     </div>
     <div class="chart-box">
-      <div id="chart">
+      <div class="chart">
         <apx-chart
-          [series]="chartOptions.series"
-          [chart]="chartOptions.chart"
-          [dataLabels]="chartOptions.dataLabels"
-          [plotOptions]="chartOptions.plotOptions"
-          [yaxis]="chartOptions.yaxis"
-          [xaxis]="chartOptions.xaxis"
-          [fill]="chartOptions.fill"
-          [title]="chartOptions.title"
+          [series]="columnChartData.series"
+          [chart]="columnChartData.chart"
+          [dataLabels]="columnChartData.dataLabels"
+          [plotOptions]="columnChartData.plotOptions"
+          [yaxis]="columnChartData.yaxis"
+          [xaxis]="columnChartData.xaxis"
+          [fill]="columnChartData.fill"
+          [title]="columnChartData.title"
           [responsive]="chartSettings.settings.responsiveLine"
         ></apx-chart>
       </div>
     </div>
      <div class="chart-box2">
-      <div id="chart">
+      <div class="chart">
         <apx-chart 
-          [series]="chartData.series"
-          [title]="chartData.title" 
-          [xaxis]="chartData.xaxis"
+          [series]="lineChartData.series"
+          [title]="lineChartData.title" 
+          [xaxis]="lineChartData.xaxis"
           [chart]="chartSettings.settings.lineChart"
           [stroke]="chartSettings.settings.lineStroke"
           [grid]="chartSettings.settings.lineChartGrid"
@@ -45,12 +45,15 @@
       </div>
     </div>
     <div class="chart-donut">
-      <div id="chartt">
-        <apx-chart 
-          [series]="chartData.donut_data"
-          [labels]="chartData.donut_labels"
-          [chart]="chartSettings.settings.chart">
-        </apx-chart>
+      <div class="chart">
+        <apx-chart
+          [series]="balkenChartData.series"
+          [chart]="balkenChartData.chart"
+          [dataLabels]="balkenChartData.dataLabels"
+          [plotOptions]="balkenChartData.plotOptions"
+          [xaxis]="balkenChartData.xaxis"
+          [fill]="balkenChartData.fill"
+        ></apx-chart>
       </div>
     </div>
   </div>

@@ -2,6 +2,7 @@ package org.pdf.finanzverwaltung.services;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -181,6 +182,17 @@ public class BankStatementService {
 
     public Set<BankStatementDTO> getAllByIdAndCurrentUser(String iban) {
         return getAllByIdAndUser(iban, userService.getCurrentDUser());
+    }
+
+    public Set<BankStatementDTO> getAllByCurrentUser() {
+        List<DBankStatement> statements = bankStatementRepo.findAllByUser(userService.getCurrentDUser());
+        Set<BankStatementDTO> statementDTOs = new HashSet<>();
+        for (DBankStatement statement : statements) {
+            statementDTOs.add(dBankStatementToBankStatement(statement));
+
+        }
+        return statementDTOs;
+
     }
 
     public Set<BankStatementDTO> getAllByIdAndUser(String iban, User user) {

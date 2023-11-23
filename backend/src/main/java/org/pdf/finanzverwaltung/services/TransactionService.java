@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.ArrayList;
 
 import org.pdf.finanzverwaltung.dto.EditCategoryQuery;
 import org.pdf.finanzverwaltung.dto.TransactionDTO;
@@ -91,14 +92,14 @@ public class TransactionService {
         return categories;
     }
 
-    public Set<TransactionDTO> getAllForBankAccountAndBetweenAndCurrentUser(String iban, Date startDate, Date endDate) {
+    public List<TransactionDTO> getAllForBankAccountAndBetweenAndCurrentUser(String iban, Date startDate, Date endDate) {
         Optional<DBankAccount> bankAccountOpt = bankAccountRepo.findById(iban);
         if (bankAccountOpt.isEmpty())
             return null;
 
-        final Set<TransactionDTO> transactions = new HashSet<>();
+        final List<TransactionDTO> transactions = new ArrayList<>();
 
-        for (DTransaction transaction : transactionRepo.findTransactionsByUserAndDateRangeAndBankAccount(
+        for (DTransaction transaction : transactionRepo.findTransactionsByUserAndDateRangeAndBankAccountSortByDate(
                 userService.getCurrentDUser(),
                 startDate, endDate, bankAccountOpt.get())) {
             transactions.add(dTransactionToTransaction(transaction));
@@ -107,8 +108,8 @@ public class TransactionService {
         return transactions;
     }
 
-    public Set<TransactionDTO> getAllBetweenForCurrentUser(Date startDate, Date endDate) {
-        final Set<TransactionDTO> transactions = new HashSet<>();
+    public List<TransactionDTO> getAllBetweenForCurrentUser(Date startDate, Date endDate) {
+        final List<TransactionDTO> transactions = new ArrayList<>();
 
         for (DTransaction transaction : transactionRepo.findByUserAndDateBetween(userService.getCurrentDUser(),
                 startDate, endDate)) {
