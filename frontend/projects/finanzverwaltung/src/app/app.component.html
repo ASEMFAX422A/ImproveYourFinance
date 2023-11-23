@@ -1,13 +1,13 @@
 <header>
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
  <mat-toolbar class="nav">
-  <span routerLink="">ImproveYourFinance</span>
+  <span routerLink="/">ImproveYourFinance</span>
   <span class="example-spacer"></span>
   <button mat-button *ngIf="!this.auth.isAuthenticated()" [matMenuTriggerFor]="menu">Account</button>
   <button mat-button *ngIf="this.auth.isAuthenticated()" (click)="this.auth.logout()" class="fas fa-sign-out-alt"></button>
   <mat-menu #menu="matMenu">
-   <button mat-menu-item routerLink="login">Login</button>
-   <button mat-menu-item routerLink="register">Register</button>
+   <button mat-menu-item routerLink="/login">Login</button>
+   <button mat-menu-item routerLink="/register">Register</button>
   </mat-menu>
  </mat-toolbar>
 </header>
