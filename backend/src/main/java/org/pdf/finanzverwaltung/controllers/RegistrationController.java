@@ -8,7 +8,7 @@ import org.pdf.finanzverwaltung.constants.AuthMessageConstants;
 import org.pdf.finanzverwaltung.constants.GeneralMessageConstants;
 import org.pdf.finanzverwaltung.dto.MessageDto;
 import org.pdf.finanzverwaltung.dto.RegistrationRequest;
-import org.pdf.finanzverwaltung.dto.User;
+import org.pdf.finanzverwaltung.dto.UserDTO;
 import org.pdf.finanzverwaltung.models.UserRole;
 import org.pdf.finanzverwaltung.services.UserService;
 import org.springframework.http.HttpStatus;
@@ -51,21 +51,24 @@ public class RegistrationController {
                 return MessageDto.createResponse(HttpStatus.BAD_REQUEST, AuthMessageConstants.PASSWORD_MISSING_LOWER);
 
             if (!minAmountPatternCheck(numberPattern, request.getPassword(), config.getPasswordMinNumbers()))
-                return MessageDto.createResponse(HttpStatus.BAD_REQUEST, AuthMessageConstants.PASSWORD_NOT_ENOUGH_NUMBERS);
+                return MessageDto.createResponse(HttpStatus.BAD_REQUEST,
+                        AuthMessageConstants.PASSWORD_NOT_ENOUGH_NUMBERS);
 
-            if (!minAmountPatternCheck(specialCharsPattern, request.getPassword(), config.getPasswordMinSpecialCharacters()))
-                return MessageDto.createResponse(HttpStatus.BAD_REQUEST, AuthMessageConstants.PASSWORD_NOT_ENOUGH_SPECIAL_CHARACTERS);
-
+            if (!minAmountPatternCheck(specialCharsPattern, request.getPassword(),
+                    config.getPasswordMinSpecialCharacters()))
+                return MessageDto.createResponse(HttpStatus.BAD_REQUEST,
+                        AuthMessageConstants.PASSWORD_NOT_ENOUGH_SPECIAL_CHARACTERS);
 
             final boolean added = userService
-                    .addUser(new User(request.getUsername(), request.getPassword(), UserRole.USER));
+                    .addUser(new UserDTO(request.getUsername(), request.getPassword(), UserRole.USER));
 
             if (added)
                 return MessageDto.createResponse(HttpStatus.OK, AuthMessageConstants.USER_REGISTERED);
             else
                 return MessageDto.createResponse(HttpStatus.BAD_REQUEST, AuthMessageConstants.USER_ALREADY_EXISTS);
-        }  catch (Exception e) {
-            return MessageDto.createResponse(HttpStatus.INTERNAL_SERVER_ERROR, GeneralMessageConstants.INTERNAL_SERVER_ERROR);
+        } catch (Exception e) {
+            return MessageDto.createResponse(HttpStatus.INTERNAL_SERVER_ERROR,
+                    GeneralMessageConstants.INTERNAL_SERVER_ERROR);
         }
     }
 

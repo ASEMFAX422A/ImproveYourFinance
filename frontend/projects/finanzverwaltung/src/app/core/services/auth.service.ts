@@ -8,7 +8,7 @@ import { HttpErrorResponse } from '@angular/common/http';
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly jwtToken : string = 'jwtToken';
+  private readonly jwtToken: string = 'jwtToken';
   private jwtHelper: JwtHelperService;
 
   constructor(private requestService: RequestService) {
@@ -26,30 +26,30 @@ export class AuthService {
     localStorage.removeItem(this.jwtToken);
   }
 
-  logout() : void {
+  logout(): void {
     this.deleteToken();
     window.location.reload();
   }
-  
+
   getUsername(): string {
     const decodedToken = this.jwtHelper.decodeToken(this.getToken());
 
     return decodedToken.sub;
   }
 
-  
+
   isAuthenticated(): boolean {
     const token = this.getToken();
-    try{
+    try {
       //isTokenExpired prüft selbst, ob token leer ist
       return !this.jwtHelper.isTokenExpired(token);
-    }catch(error){
+    } catch (error) {
       console.log(error);
     }
     return false;
   }
 
-  login(loginInfo: { username: string; password: string }) : Promise<boolean | undefined> {
+  login(loginInfo: { username: string; password: string }): Promise<boolean | undefined> {
     if (this.isAuthenticated()) {
       return Promise.resolve(false);
     }
@@ -59,7 +59,7 @@ export class AuthService {
         resolve(error.status === 0 ? undefined : false);
         return of(false);
       })).subscribe((response: any) => {
-        if (response && response.message != ""){
+        if (response && response.message != "") {
           this.setToken(response.message);
         }
 
@@ -68,7 +68,7 @@ export class AuthService {
     });
   }
 
-  register(registrationInfo: { username: string; password: string }) : Promise<boolean> {
+  register(registrationInfo: { username: string; password: string }): Promise<boolean> {
     return new Promise((resolve, reject) => {
       this.requestService.post("auth/registration", registrationInfo).pipe(catchError(error => {
         resolve(false);

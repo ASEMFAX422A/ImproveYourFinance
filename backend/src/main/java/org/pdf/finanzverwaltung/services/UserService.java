@@ -2,7 +2,7 @@ package org.pdf.finanzverwaltung.services;
 
 import java.util.Optional;
 
-import org.pdf.finanzverwaltung.dto.User;
+import org.pdf.finanzverwaltung.dto.UserDTO;
 import org.pdf.finanzverwaltung.models.DUser;
 import org.pdf.finanzverwaltung.repos.user.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ public class UserService implements UserDetailsService {
     /**
      * @return True only when the user was added to the repo
      */
-    public boolean addUser(User user) {
+    public boolean addUser(UserDTO user) {
         boolean userExists = userRepo.findByUsername(user.getUsername()) != null;
         if (userExists) {
             return false;
@@ -49,7 +49,7 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
-    public User getById(long id) {
+    public UserDTO getById(long id) {
         Optional<DUser> userOpt = userRepo.findById(id);
         if (!userOpt.isPresent())
             return null;
@@ -57,7 +57,7 @@ public class UserService implements UserDetailsService {
         return dUserToUser(userOpt.get());
     }
 
-    public User getCurrentUser() {
+    public UserDTO getCurrentUser() {
         Object user = getCurrentDUser();
         if (user == null)
             return null;
@@ -73,14 +73,14 @@ public class UserService implements UserDetailsService {
         return (DUser) user;
     }
 
-    public User dUserToUser(DUser user) {
+    public UserDTO dUserToUser(DUser user) {
         if (user == null)
             return null;
 
-        return new User(user.getId(), user.getUsername(), user.getPassword(), user.getRole());
+        return new UserDTO(user.getId(), user.getUsername(), user.getPassword(), user.getRole());
     }
 
-    public DUser userToDUser(User user) {
+    public DUser userToDUser(UserDTO user) {
         if (user == null)
             return null;
 

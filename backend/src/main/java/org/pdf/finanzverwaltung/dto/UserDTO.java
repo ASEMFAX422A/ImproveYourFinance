@@ -2,20 +2,20 @@ package org.pdf.finanzverwaltung.dto;
 
 import org.pdf.finanzverwaltung.models.UserRole;
 
-public class User {
+public class UserDTO {
 
     private long id;
     private String username;
     private String password;
     private UserRole userRole;
 
-    public User(String username, String password, UserRole userRole) {
+    public UserDTO(String username, String password, UserRole userRole) {
         this.username = username;
         this.password = password;
         this.userRole = userRole;
     }
 
-    public User(long id, String username, String password, UserRole userRole) {
+    public UserDTO(long id, String username, String password, UserRole userRole) {
         this(username, password, userRole);
         this.id = id;
     }

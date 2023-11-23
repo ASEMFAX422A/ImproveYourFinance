@@ -25,7 +25,7 @@ public class CommerzbankParser implements BankStatementParser {
     private static final Pattern bicPattern = Pattern.compile("BIC\\s+:\\s*(\\S+)");
     private static final Pattern datePattern = Pattern.compile("\\d{2,}\\.\\d{2,}\\.\\d{4,}");
     private static final Pattern ibanPattern = Pattern.compile("IBAN:\\s*(.*?)\\s*(US|$)");
-    private static final Pattern transactionPattern = Pattern.compile("\\d{2}\\.\\d{2} \\d+,\\d+-*$");
+    private static final Pattern transactionPattern = Pattern.compile("\\d{2}\\.\\d{2} \\d*\\.{0,1}\\d+,\\d+-*$");
     private static final Pattern transactionEndReached = Pattern
             .compile("(^Folgeseite\\s+\\d+\\s+)|(^Buchungsdatum:\\s*\\d{2,}\\.\\d{2,}\\.\\d{4,})");
     private static final Pattern endReached = Pattern.compile("^Rechnungsabschluss\\s+\\d{2}.\\d{2}");
@@ -143,7 +143,7 @@ public class CommerzbankParser implements BankStatementParser {
         transaction.delete(0, endLineIndex);
 
         final String amount = removeLastWord(firstLine);
-        trans.setAmount(Double.parseDouble(amount.replaceAll("\\,", ".").replaceAll("\\-", "")));
+        trans.setAmount(Double.parseDouble(amount.replaceAll("\\.", "").replaceAll("\\,", ".").replaceAll("\\-", "")));
         if (amount.endsWith("-"))
             trans.setAmount(trans.getAmount() * -1);
 

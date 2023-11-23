@@ -10,17 +10,16 @@ import { SideBarComponent } from '../../extras/side-bar/side-bar.component';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { ChartSettingsModule } from '../../core/chartSettings/chartSettings.module';
 
-import { PdfDialogComponent } from '../../extras/pdf-dialog/pdf-dialog.component';
 import { PdfDialogModule } from '../../extras/pdf-dialog/pdf-dialog.module';
 import { FooterComponent } from '../../extras/footer/footer.component';
 import { ToastrModule } from 'ngx-toastr';
 
 const routes: Routes = [
-  {path: 'analytics', component: AnalyticsComponent,},
-  {path: 'overview', component: OverviewComponent,},
-  {path: 'statements', component: StatementsComponent,},
-  
+  { path: 'analytics', component: AnalyticsComponent, },
+  { path: 'overview', component: OverviewComponent, },
+  { path: 'statements', component: StatementsComponent, },
 ]
+
 @NgModule({
   declarations: [
     AnalyticsComponent,
