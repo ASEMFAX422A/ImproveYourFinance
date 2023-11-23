@@ -1,0 +1,81 @@
+<div class="container">
+<app-side-bar></app-side-bar>
+<div class="main-body">
+   <div class="welcome-box">
+     <div class="welcome-content">
+      <h2>Zwischen Zahlen und Zaster: Deine Finanzen auf einen Blick.</h2>
+      <p>Wähle deinen gewünschten Zeitraum!</p>
+      <mat-form-field class="example-form-field">
+        <mat-date-range-input
+          [formGroup]="campaignOne"
+          [rangePicker]="campaignOnePicker">
+          <input matStartDate placeholder="Start date" formControlName="start">
+          <input matEndDate placeholder="End date" formControlName="end">
+        </mat-date-range-input>
+        <mat-datepicker-toggle matIconSuffix [for]="campaignOnePicker"></mat-datepicker-toggle>
+        <mat-date-range-picker #campaignOnePicker></mat-date-range-picker>
+       </mat-form-field>
+      </div>
+      <div class="menu">
+        <button mat-raised-button color="primary" [matMenuTriggerFor]="menu">Konto Auswählen</button>
+        <mat-menu #menu="matMenu"  class="menuDrop" >
+          <button mat-menu-item (click)="changeBankAccount('all')" >Alle</button>
+          <button mat-menu-item (click)="changeBankAccount(item.iban)"*ngFor="let item of this.bankAccounts">{{item.iban}}</button>
+        </mat-menu><h1>{{currentBankAccount}}</h1>
+      </div>
+      <button mat-raised-button class="submit-button" color="primary"  (click)="changeDate()">Zeitraum auswählen</button>
+
+
+   </div>
+   <div class="fin">
+    <h3>Deine Ausgabe vom Zeitraum:</h3>
+    <p style="color:red">{{expenses}}</p>
+  </div>
+  <div class="fin-1">
+    <h3>Einnahmen über den Zeitraum:</h3>
+    <p style="color:green">{{income}}</p>
+  </div>
+  <div class="chart-box">
+    <div class="chart">
+      <apx-chart
+        [series]="columnChartData.series"
+        [chart]="columnChartData.chart"
+        [dataLabels]="columnChartData.dataLabels"
+        [plotOptions]="columnChartData.plotOptions"
+        [yaxis]="columnChartData.yaxis"
+        [xaxis]="columnChartData.xaxis"
+        [fill]="columnChartData.fill"
+        [title]="columnChartData.title"
+        [responsive]="chartSettings.settings.responsiveLine"
+      ></apx-chart>
+    </div>
+  </div>
+   <div class="chart-box2">
+    <div class="chart">
+      <apx-chart 
+        [series]="lineChartData.series"
+        [title]="lineChartData.title" 
+        [xaxis]="lineChartData.xaxis"
+        [chart]="chartSettings.settings.lineChart"
+        [stroke]="chartSettings.settings.lineStroke"
+        [grid]="chartSettings.settings.lineChartGrid"
+        [responsive]="chartSettings.settings.responsiveLine">
+        
+      </apx-chart>
+    </div>
+  </div>
+  <div class="chart-donut">
+    <div class="chart">
+      <apx-chart
+        [series]="balkenChartData.series"
+        [chart]="balkenChartData.chart"
+        [dataLabels]="balkenChartData.dataLabels"
+        [plotOptions]="balkenChartData.plotOptions"
+        [xaxis]="balkenChartData.xaxis"
+        [fill]="balkenChartData.fill"
+      ></apx-chart>
+    </div>
+  </div>
+</div>
+</div>
+<app-footer></app-footer>

@@ -1,0 +1,15 @@
+<div class="login-container">
+  <form>
+    <a class ="logo" routerLink="/"><img src="assets/logo.png"></a>
+    <h1>Willkommen</h1>
+    <div class="input-group">
+      <input type="text" id="username" placeholder="Benutzername" name="username" [(ngModel)]="this.loginObject.username" required>
+    </div>
+    <div class="input-group">
+      <input type="password" id="password" placeholder="Passwort" name="password" [(ngModel)]="this.loginObject.password" required>
+    </div>
+    <a routerLink="/register">Noch keinen Account?</a>
+    <button mat-flat-button type="submit" (click)="this.sendForm()">Login</button>
+  </form>
+</div>
+<app-footer></app-footer>

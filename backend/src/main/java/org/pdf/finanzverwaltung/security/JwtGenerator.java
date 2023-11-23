@@ -2,9 +2,8 @@ package org.pdf.finanzverwaltung.security;
 
 import java.util.Date;
 
-import javax.crypto.SecretKey;
-
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.pdf.finanzverwaltung.AppConfiguration;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
@@ -13,26 +12,26 @@ import io.jsonwebtoken.Jwts;
 
 @Component
 public class JwtGenerator {
-    // TODO Config
-    private final SecretKey key = Jwts.SIG.HS256.key().build();
+
+    @Autowired
+    private AppConfiguration config;
 
     public String generateToken(Authentication authentication) {
         String username = authentication.getName();
-        Date currentDate = new Date();
-        Date expireDate = new Date(currentDate.getTime() + SecurityConstants.JWT_EXPIRATION);
+        Date expireDate = new Date(new Date().getTime() + config.getJwtExpirationMs());
 
         String token = Jwts.builder()
                 .subject(username)
                 .issuedAt(new Date())
                 .expiration(expireDate)
-                .signWith(key)
+                .signWith(config.getJwtKey())
                 .compact();
         return token;
     }
 
     public String getUsernameFromJWT(String token) {
         Claims claims = Jwts.parser()
-                .verifyWith(key)
+                .verifyWith(config.getJwtKey())
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
@@ -43,13 +42,12 @@ public class JwtGenerator {
         try {
             Jwts
                     .parser()
-                    .verifyWith(key)
+                    .verifyWith(config.getJwtKey())
                     .build()
                     .parseSignedClaims(token);
             return true;
         } catch (Exception ex) {
-            throw new AuthenticationCredentialsNotFoundException("JWT was exprired or incorrect",
-                    ex.fillInStackTrace());
         }
+        return false;
     }
 }

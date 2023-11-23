@@ -1,0 +1,32 @@
+.create-button button{
+  margin-right: 1%;
+  margin-top: 1%;
+
+}
+
+.nav {
+  display: block;
+  float: left;
+  height: 100%;
+}
+
+.main{
+  height: 100%;
+}
+
+.tab{
+  position: absolute;
+  left: 17.5%;
+  top: 15%;
+  width: 80%;
+}
+
+@media screen and (max-width: 600px){
+  .tab{
+    width: 82%;
+  }
+  .test{
+    padding: 0;
+    font-size: 8px;
+  }
+}

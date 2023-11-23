@@ -1,5 +1,7 @@
 dependency-reduced-pom.xml
-db.yml
 target/*
 .settings/*
 .factorypath
+*.sqlite
+.vscode/
+*.pdf
