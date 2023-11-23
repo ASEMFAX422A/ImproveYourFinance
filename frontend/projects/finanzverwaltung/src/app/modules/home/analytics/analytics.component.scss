@@ -1,0 +1,323 @@
+* {
+  margin: 0;
+  padding: 0;
+  outline: none;
+  border: none;
+  text-decoration: none;
+  box-sizing: border-box;
+
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  background-size: 100%;
+  background: url('../../../../assets/background-main.jpg') no-repeat center center fixed;
+  height: 100%;
+  background-size: 100%;
+  min-height: 100%;
+}
+.chart {
+  padding: 15px;
+  width: 95%;
+}
+.welcome-box {
+  top: 10%;
+  width: 41%;
+  height: 33%;
+  position: absolute;
+  color: #212121;
+  padding: 15px;
+  background: #f8f8f8;
+  border-radius: 25px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+  padding-left: 30px;
+  display: block;
+  margin: 0;
+}
+
+ .welcome-box button{
+  width: 20%;
+  margin-bottom: 10px;
+  border-radius: 15px;
+  
+ }
+
+ .welcome-content h2 {
+  padding-top: 20px;
+  font-style: italic;
+  font-size: 155%;
+ }
+ .welcome-content p{
+  padding-top: 10px;
+  padding-bottom: 35px;
+ }
+
+
+ .chart-box {
+  position: absolute;
+  width: 41%;
+  top: 63%;
+  background-color: #f8f8f8;
+  border-radius: 25px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+  padding: 25px;
+
+}
+
+.chart-box2 {
+
+  position: absolute;
+ 
+  width: 41%;
+  right: 15px;
+  top: 63%;
+  background-color: #f8f8f8;
+  border-radius: 25px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+  padding: 25px;
+
+}
+
+.chart-donut {
+  top: 10%;
+  position: absolute;
+  right: 15px;
+  display: flex;
+  background-color: #f8f8f8;
+  border-radius: 30px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+  width: 41%;
+  margin-bottom: 5%;
+}
+
+.fin {
+
+  width: 20%;
+  height: 15%;
+  position: absolute;
+  top: 45%;
+  color: #212121;
+  padding: 15px;
+  background: #f8f8f8;
+  border-radius: 25px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+
+}
+.fin p{
+  padding-top: 30px;
+  text-align: center;
+ }
+.fin-1 p{
+  padding-top: 30px;
+  text-align: center;
+ }
+.fin-1 {
+
+  width: 20%;
+  height: 15%;
+  position: absolute;
+  top: 45%;
+  left: 36%;
+  color: #212121;
+  padding: 15px;
+  background: #f8f8f8;
+  border-radius: 25px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+
+}
+.buttonBox p{
+  text-align: left;
+  padding: 10px;
+
+}
+
+@media screen and (max-width: 1000px){
+  
+
+  .container{
+    height: 120%;
+  }
+  .welcome-box {
+    left: 15%;
+    width: 82%;
+    height: 28%;
+    top: 8%;
+  }
+
+  .welcome-content h2 {
+    font-size: 15px;
+  }
+
+  .welcome-content span {
+    font-size: 11px;
+  }
+
+  .fin {
+    left: 15%;
+    width: 40%;
+    height: 10%;
+    top: 38%;
+    font-size: 10px;
+
+  }
+
+  .fin-1 {
+    left: 57%;
+    width: 40%;
+    height: 10%;
+    top: 38%;
+    font-size: 10px;
+  }
+
+  .chart-donut {
+    width: 82%;
+    height: 21%;
+    top: 50%;
+    left: 15%;
+  }
+
+  .chart-box {
+    left: 15%;
+    height: 26%;
+    width: 82%;
+    top: 72%;
+    padding: 20px;
+
+  }
+
+  .chart-box2 {
+    left: 15%;
+    height: 26%;
+    width: 82%;
+    top: 99%;
+    padding: 20px;
+  }
+  .submit-button{
+    width: 100%;
+    text-align: center;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding: 15px 0;
+    font-size: 10px;
+  }
+.menu button{
+  text-align: center;
+}
+
+}
+@media screen and (min-width: 1000px) and (max-width:1500px) {
+  .welcome-content h2 {
+    font-size: 15px;
+  }
+  .container{
+    height: 110%;
+  }
+  .welcome-box {
+    width: 30%;
+    height: 25%;
+    left: 24.5%;
+
+  }
+  .chart-box {
+    height: 25%;
+    width: 74%;
+    top: 59%;
+    padding: 25px;
+    left: 24.5%;
+
+  }
+  .chart-box2 {
+    height: 25%;
+    width: 74%;
+    top: 85%;
+    padding: 25px;
+    left: 24.5%;
+
+  }
+  .chart-donut {
+    height: 48%;
+  }
+
+  .fin {
+    top: 36.5%;
+    height: 10%;
+    width: 30%;
+    left: 24.5%;
+  }
+  .fin-1 {
+    top: 48%;
+    height: 10%;
+    width: 30%;
+    left: 0;
+    left: 24.5%;
+  }
+
+}
+
+@media screen and (min-width: 1300px) and (max-width:1500px) {
+  
+  .chart-donut {
+    height: 40%;
+
+  }
+
+}
+
+@media screen and (min-width: 1500px) and (max-width:1800px) {
+  .welcome-box {
+    width: 40%;
+  }
+
+  .chart-donut {
+    width: 39%;
+    height: 45%;
+  }
+
+  .fin {
+    width: 18.5%;
+  }
+
+  .fin-1 {
+    left: 38%;
+    width: 18.5%;
+  }
+
+  .chart-box {
+    width: 39%;
+  }
+
+  .chart-box {
+    width: 38%;
+  }
+
+
+
+
+}
+
+@media screen and (min-width: 1600px) and (max-width:1900px) {
+
+  .chart-donut {
+    width: 41%;
+    height: 51%;
+
+  }
+
+
+
+}
+
+
+@media screen and (max-width: 1800px){
+  .container {
+    background-size: cover;
+  }
+}
+
+
+
+
+
+
+

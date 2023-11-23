@@ -6,7 +6,13 @@ server:
 
 spring:
   config:
-    import: optional:file:./db.yml
+    import: optional:file:./settings.yml
+  servlet:
+    multipart:
+      max-file-size: 5MB
+  datasource:
+    driverClassName: org.sqlite.JDBC
+    url: jdbc:sqlite:./db.sqlite
   jpa:
     hibernate:
       ddl-auto: update

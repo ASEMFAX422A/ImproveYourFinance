@@ -2,7 +2,7 @@ package org.pdf.finanzverwaltung.security;
 
 import java.io.IOException;
 
-import org.pdf.finanzverwaltung.user.UserService;
+import org.pdf.finanzverwaltung.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,8 +18,10 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
+
     @Autowired
     private UserService userService;
+    
     @Autowired
     private JwtGenerator jwtGenerator;
 

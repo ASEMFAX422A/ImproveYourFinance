@@ -1,0 +1,24 @@
+<div class="pdf-main">
+  <h1>Kontoauszug hinzufügen</h1>
+  
+  <div class="upload-area">
+    <div
+    id="drop-area"
+    (drop)="onDrop($event)"
+    (dragover)="onDragOver($event)"
+    (dragleave)="onDragLeave($event)">
+     
+    <p type="file">Drag & Drop</p>
+    <p *ngIf="selectedFile != null">{{selectedFile.name}}</p>
+  </div>
+  <div class="pdf-main-content">
+    <input type="file" accept=".pdf" (change)="onFileChange($event)" #fileInput style="display: none;"/><br>
+    <button (click)="fileInput.click()">Datei Auswählen</button>
+  </div>
+  <div class="pdf-actions">
+    <button mat-raised-button (click)="onClose()">Abbrechen</button>
+    <button mat-raised-button (click)="uploadFile()">Hinzufügen</button>
+  </div>
+</div>
+
+

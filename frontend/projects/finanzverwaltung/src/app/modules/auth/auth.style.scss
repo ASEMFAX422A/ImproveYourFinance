@@ -1,0 +1,126 @@
+.login-container {
+  background-color: #fff;
+  border-radius: 50px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  padding: 4%;
+  text-align: center;
+  width: 20%;
+  min-height: 45%;
+  height: auto;
+  margin: 10% auto;
+
+}
+img{
+  width:60%;
+}
+h1 {
+  margin: 0;
+  padding: 0;
+}
+
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+}
+
+.input-group {
+  margin: 8% 0;
+  text-align: left;
+  margin-bottom: 3%;
+}
+
+
+input {
+  display: block;
+  padding: 18px;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  font-size: 20px;
+}
+
+button{
+  margin-top: 5%;
+  font-size: 100%;
+  padding: 7% 15%;
+  border-radius: 15px;
+}
+button.mat-unthemed{
+  background-color: #212121;
+}
+button:disabled{
+  background-color: darkred;
+}
+
+
+@media screen and (max-width: 600px) {
+  .login-container {
+    margin: 15%;
+    border-radius: 30px;
+    width: 60%;
+    font-size: 15px;
+    
+  }
+  img{
+    margin-top: 8%;
+    width:40%;
+  }
+
+
+  
+}
+@media screen and (min-width: 600px) and (max-width:800px){
+  .login-container {
+
+    border-radius: 50px;
+    width: 50%;
+    height: auto;
+    font-size: 15px;
+    
+  }
+  img{
+    width:40%;
+  }
+}
+@media screen and (min-width: 800px) and (max-width:1000px){
+  .login-container {
+    margin-top:10%;
+    margin-bottom: 25%;
+    border-radius: 60px;
+    width: 45%;
+    height: auto;
+    font-size: 15px;
+    
+  }
+  img{
+    margin-top: 8%;
+    width:35%;
+  }
+
+
+  
+}
+@media screen and (min-width: 1000px) and (max-width:1200px){
+  .login-container {
+    border-radius: 60px;
+    width: 30%;
+    margin-top:10%;
+    margin-bottom: 15%;
+    
+  }
+  img{
+    margin-top: 8%;
+    width:30%;
+  }
+
+
+  
+}
+
+
+
+
+
+
