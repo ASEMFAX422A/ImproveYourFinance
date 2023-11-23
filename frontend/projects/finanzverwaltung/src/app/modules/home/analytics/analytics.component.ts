@@ -2,7 +2,7 @@ import { AuthService } from '../../../core/services/auth.service';
 import { RegisterComponent } from '../../auth/register/register.component';
 import { LoginComponent } from '../../auth/login/login.component';
 import { OverviewComponent } from '../overview/overview.component';
-import { Component, ViewChild } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import * as ApexCharts from 'apexcharts';
 import {
   ChartComponent,
@@ -21,6 +21,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { ChartSettingsModule } from '../../../core/chartSettings/chartSettings.module';
 import { ToastrService } from 'ngx-toastr';
 import { RequestService } from '../../../core/services/request.service';
+import { BankAccount, BankAccountService } from '../../../core/services/bankAccountService';
 
 
 export type ChartData = {
@@ -36,10 +37,6 @@ export type ChartData = {
   yaxis: ApexYAxis;
 
 };
-export interface BankAccount{
-  iban:string;
-
-}
 const today = new Date();
 const month = today.getMonth();
 const year = today.getFullYear();
@@ -49,7 +46,7 @@ const year = today.getFullYear();
   styleUrls: ['./analytics.component.scss']
 })
 
-export class AnalyticsComponent {
+export class AnalyticsComponent implements OnInit {
   @ViewChild("chart") chart!: ChartComponent;
   public lineChartData: Partial<ChartData>;
   public columnChartData: Partial<ChartData>;
@@ -138,21 +135,22 @@ export class AnalyticsComponent {
       })
     };
   }
-  loadBankAccounts(){
-    this.requestService.post("bank-account/query-accounts",{}).subscribe(data=>{
-
-      this.bankAccounts = data;
-      console.log(this.bankAccounts);
+  
+  changeBankAccount(bankAccount:string){
+    this.bankAccountService.changeBankAccount(bankAccount);
+  }
+  ngOnInit() {
+    this.bankAccountService.currentBankAccount$.subscribe((chosenBankAccount) => {
+      this.currentBankAccount = chosenBankAccount;
+      this.loadData();
     });
     
+    this.bankAccountService.bankAccounts$.subscribe((bankAccounts) => {
+      this.bankAccounts = bankAccounts;
+    });
   }
-  changeBankAccount(bankAccount:string){
-    this.currentBankAccount = bankAccount;
-    this.loadData();
-  }
-  constructor(public chartSettings: ChartSettingsModule, private toastr: ToastrService, private requestService: RequestService, private auth: AuthService) {
+  constructor(public chartSettings: ChartSettingsModule, private toastr: ToastrService, private requestService: RequestService, private bankAccountService: BankAccountService) {
 
-    this.loadBankAccounts();
 
     this.lineChartData = {};
 

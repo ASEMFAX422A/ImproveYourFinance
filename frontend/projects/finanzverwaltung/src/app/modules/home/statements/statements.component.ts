@@ -3,7 +3,7 @@ import { AfterViewInit, ViewChild } from '@angular/core';
 import { Component } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { OverviewComponent } from '../overview/overview.component';
-import { AnalyticsComponent, BankAccount } from '../analytics/analytics.component';
+import { AnalyticsComponent } from '../analytics/analytics.component';
 import { LandingPageComponent } from '../../landing-page/landing-page.component';
 import { LoginComponent } from '../../auth/login/login.component';
 import { PdfDialogComponent } from '../../../extras/pdf-dialog/pdf-dialog.component';
@@ -12,6 +12,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { ChangeDetectorRef } from '@angular/core';
 import { TransactionComponent } from '../../../extras/transaction/transaction.component';
 import { RequestService } from '../../../core/services/request.service';
+import { BankAccount, BankAccountService } from '../../../core/services/bankAccountService';
 
 export interface BankStatement {
   transactions: Transaction[];
@@ -53,7 +54,7 @@ export class StatementsComponent implements AfterViewInit {
     this.loadTableData();
   }
 
-  constructor(private requestService: RequestService, public dialog: MatDialog, private cdr: ChangeDetectorRef ) { this.loadBankAccounts();}
+  constructor(private requestService: RequestService, public dialog: MatDialog, private bankAccountService: BankAccountService ) {}
   openPdf(id:number){
     this.requestService.get("bank-statement/get-pdf?id="+id, {
       observe: 'response',
@@ -86,15 +87,18 @@ export class StatementsComponent implements AfterViewInit {
       this.dataSource.data=data;
     })
   }
+  
   changeBankAccount(bankAccount:string){
-    this.currentBankAccount = bankAccount;
-    this.loadTableData();
+    this.bankAccountService.changeBankAccount(bankAccount);
   }
-  loadBankAccounts(){
-    this.requestService.post("bank-account/query-accounts",{}).subscribe(data=>{
-
-      this.bankAccounts = data;
-      console.log(this.bankAccounts);
+  ngOnInit() {
+    this.bankAccountService.currentBankAccount$.subscribe((chosenBankAccount) => {
+      this.currentBankAccount = chosenBankAccount;
+      this.loadTableData();
+    });
+    
+    this.bankAccountService.bankAccounts$.subscribe((bankAccounts) => {
+      this.bankAccounts = bankAccounts;
     });
   }
 }
