@@ -1,2 +1,2 @@
-# Finanzverwaltung
-Finanzverwaltung - Kontoauszüge, Kassenbons und mehr
+# ImproveYourFinance
+ImproveYourFinance - Kontoauszüge, Kassenbons und mehr
