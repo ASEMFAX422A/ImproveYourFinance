@@ -1,4 +1,4 @@
-import { AfterViewInit, ViewChild } from '@angular/core';
+import { AfterViewInit, OnInit, ViewChild } from '@angular/core';
 
 import { Component } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -36,7 +36,7 @@ export interface Category{
   templateUrl: './statements.component.html',
   styleUrls: ['./statements.component.scss']
 })
-export class StatementsComponent implements AfterViewInit {
+export class StatementsComponent implements AfterViewInit, OnInit {
 
   public bankAccounts?: BankAccount[];
   public currentBankAccount: string = "all";
@@ -87,7 +87,7 @@ export class StatementsComponent implements AfterViewInit {
       this.dataSource.data=data;
     })
   }
-  
+
   changeBankAccount(bankAccount:string){
     this.bankAccountService.changeBankAccount(bankAccount);
   }

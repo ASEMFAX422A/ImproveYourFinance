@@ -14,7 +14,6 @@ export class BankAccountService {
 
   constructor(private requestService: RequestService) {
     this.loadBankAccounts();
-    console.log("bankAccService constructor");
   }
 
 
@@ -22,9 +21,7 @@ export class BankAccountService {
     this.requestService.post("bank-account/query-accounts",{}).subscribe(data=>{
 
       this.bankAccounts.next(data);
-      console.log(this.bankAccounts);
     });
-    
   }
   changeBankAccount(bankAccount:string){
     this.currentBankAccount.next(bankAccount);

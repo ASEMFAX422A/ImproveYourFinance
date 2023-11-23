@@ -13,6 +13,7 @@ import { TransactionModule } from './extras/transaction/transaction.module';
 import { FooterComponent } from './extras/footer/footer.component';
 import { FooterModule } from './extras/footer/footer.module';
 import { MaterialModule } from './material/material.module';
+import { BankAccountService } from './core/services/bankAccountService';
 
 
 @NgModule({
@@ -42,7 +43,8 @@ import { MaterialModule } from './material/material.module';
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-    { provide: MAT_DATE_LOCALE, useValue: 'de-DE' }
+    { provide: MAT_DATE_LOCALE, useValue: 'de-DE' },
+    BankAccountService
   ],
   bootstrap: [AppComponent]
 })
