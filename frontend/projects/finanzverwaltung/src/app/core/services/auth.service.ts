@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { RequestService } from './request.service';
 import { catchError, of } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -48,14 +49,14 @@ export class AuthService {
     return false;
   }
 
-  login(loginInfo: { username: string; password: string }) : Promise<boolean> {
+  login(loginInfo: { username: string; password: string }) : Promise<boolean | undefined> {
     if (this.isAuthenticated()) {
       return Promise.resolve(false);
     }
 
     return new Promise((resolve, reject) => {
-      this.requestService.post("auth/login", loginInfo).pipe(catchError(error => {
-        resolve(false);
+      this.requestService.post("auth/login", loginInfo).pipe(catchError((error: HttpErrorResponse) => {
+        resolve(error.status === 0 ? undefined : false);
         return of(false);
       })).subscribe((response: any) => {
         if (response && response.message != ""){

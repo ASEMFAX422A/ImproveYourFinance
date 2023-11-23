@@ -17,11 +17,12 @@ export class LoginComponent {
 
   public sendForm() {
     this.authService.login(this.loginObject).then(result=>{
-      if(result){
+      if (result === undefined) {
+        this.toastr.error('Verbindung zu Backend fehlgeschlagen!');
+      } else if (result){
         this.router.navigate(["/overview"]);
         this.toastr.success('Erfolgreich eingeloggt!');
-      }
-      else{
+      } else {
         this.toastr.error('Logindaten ungültig!');
       }
     });
