@@ -3,17 +3,15 @@
 </div>
 <div class="main">
   <div class="create-button">
-    <button mat-raised-button color="primary" (click)="openUploadDialog()">Hinzufügen</button>
+    <button mat-raised-button color="primary" style="display: inline-block;" (click)="openUploadDialog()">Hinzufügen</button>
+      <button mat-raised-button color="primary" [matMenuTriggerFor]="menu" style="display: inline-block;">Konto Auswählen</button>
+      <mat-menu #menu="matMenu" class="menuDrop">
+        <button mat-menu-item (click)="changeBankAccount('all')">Alle</button>
+        <button mat-menu-item (click)="changeBankAccount(item.iban)" *ngFor="let item of this.bankAccounts">{{item.iban}}</button>
+      </mat-menu>
+      <p>Kontonummer: {{currentBankAccount}}</p>
   </div>
-  <div class="menu">
-    <button mat-raised-button color="primary" [matMenuTriggerFor]="menu">Konto Auswählen</button>
-    <mat-menu #menu="matMenu" class="menuDrop">
-      <button mat-menu-item (click)="changeBankAccount('all')">Alle</button>
-      <button mat-menu-item (click)="changeBankAccount(item.iban)"
-        *ngFor="let item of this.bankAccounts">{{item.iban}}</button>
-    </mat-menu>
-    <h1>{{currentBankAccount}}</h1>
-  </div>
+
   <div class="tab">
     <table mat-table [dataSource]="dataSource">
       <ng-container matColumnDef="id">

@@ -149,8 +149,12 @@ export class AnalyticsComponent {
   }
 
   changeDate() {
-    this.loadData();
     const startEndDate = this.dateRange.value;
+    if(startEndDate.end == undefined || startEndDate.start == undefined){
+      this.toastr.warning("Ausgewählter Zeitraum ist ungültig: " + startEndDate.start?.toLocaleDateString('de-DE') + " bis " + startEndDate.end?.toLocaleDateString('de-DE'));
+      return;
+    }
+    this.loadData();
     this.toastr.success("Ausgewählter Zeitraum: " + startEndDate.start?.toLocaleDateString('de-DE') + " bis " + startEndDate.end?.toLocaleDateString('de-DE'));
   }
 

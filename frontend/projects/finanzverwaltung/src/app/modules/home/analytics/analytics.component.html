@@ -14,19 +14,21 @@
           <mat-date-range-picker #campaignOnePicker></mat-date-range-picker>
         </mat-form-field>
       </div>
-      <div class="menu">
-        <button mat-raised-button color="primary" [matMenuTriggerFor]="menu">Konto Auswählen</button>
-        <mat-menu #menu="matMenu" class="menuDrop">
-          <button mat-menu-item (click)="changeBankAccount('all')">Alle</button>
-          <button mat-menu-item (click)="changeBankAccount(item.iban)"
-            *ngFor="let item of this.bankAccounts">{{item.iban}}</button>
-        </mat-menu>
-        <h1>{{currentBankAccount}}</h1>
+      <div class="buttonBox">
+        <div class="menu">
+          <button mat-raised-button style="display: inline-block;" color="primary" [matMenuTriggerFor]="menu">Konto Auswählen</button>
+          <mat-menu #menu="matMenu" class="menuDrop">
+            <button mat-menu-item (click)="changeBankAccount('all')">Alle</button>
+            <button mat-menu-item (click)="changeBankAccount(item.iban)" *ngFor="let item of this.bankAccounts">{{item.iban}}</button>
+            
+          </mat-menu>
+          <button mat-raised-button style="display: inline-block; margin-left: 15px;" class="submit-button" color="primary" (click)="changeDate()">Zeitraum auswählen</button>
+        </div>
+        <p>Kontonummer: {{currentBankAccount}}</p>
+        
       </div>
-      <button mat-raised-button class="submit-button" color="primary" (click)="changeDate()">Zeitraum auswählen</button>
-
-
     </div>
+
     <div class="fin">
       <h3>Deine Ausgabe über den Zeitraum:</h3>
       <p style="color:red">{{expenses}}</p>
