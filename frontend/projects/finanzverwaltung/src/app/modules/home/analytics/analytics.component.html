@@ -39,10 +39,15 @@
     </div>
     <div class="chart-box">
       <div class="chart">
-        <apx-chart [series]="columnChartData.series" [chart]="columnChartData.chart"
-          [dataLabels]="columnChartData.dataLabels" [plotOptions]="columnChartData.plotOptions"
-          [yaxis]="columnChartData.yaxis" [xaxis]="columnChartData.xaxis" [fill]="columnChartData.fill"
-          [title]="columnChartData.title" [responsive]="chartSettings.settings.responsiveLine"></apx-chart>
+        <apx-chart [series]="columnChartData.series"
+        [chart]="columnChartData.chart"
+        [dataLabels]="columnChartData.dataLabels" 
+        [plotOptions]="columnChartData.plotOptions"
+        [yaxis]="columnChartData.yaxis" 
+        [xaxis]="columnChartData.xaxis" 
+        [fill]="columnChartData.fill"
+        [title]="columnChartData.title"
+        [responsive]="chartSettings.settings.responsiveLine"></apx-chart>
       </div>
     </div>
     <div class="chart-box2">
@@ -58,7 +63,9 @@
       <div class="chart">
         <apx-chart [series]="balkenChartData.series" [chart]="balkenChartData.chart"
           [dataLabels]="balkenChartData.dataLabels" [plotOptions]="balkenChartData.plotOptions"
-          [xaxis]="balkenChartData.xaxis" [fill]="balkenChartData.fill"></apx-chart>
+          [xaxis]="balkenChartData.xaxis"
+          [responsive]="chartSettings.settings.responsiveLine" 
+          [fill]="balkenChartData.fill"></apx-chart>
       </div>
     </div>
   </div>
